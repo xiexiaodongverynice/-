@@ -1,0 +1,195 @@
+<ion-view hide-nav-bar="isIos" view-title="中医养生" id="zyys-sy">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right"> </ion-nav-buttons>
+    <style>
+        #zyys-sy {
+            color: #666;
+        }
+
+        #zyys-sy .header-top {
+            width: 100%;
+            height: 150px;
+        }
+
+        #zyys-sy .imgstyle {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /*
+        #zyys .tab-list {
+            border-color: #ebebeb;
+            border-style: solid;
+            border-width: 0 0 1px 0;
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #zyys .tab-list span {
+            display: inline-block;
+            height: 42px;
+            padding: 0 20px;
+            line-height: 42px;
+            box-sizing: border-box;
+        }
+
+        #zyys .tab {
+            width: 50%;
+            float: left;
+        }
+
+        #zyys .current_tab {
+            border-bottom: 2px solid #18B4ED;
+        }
+*/
+
+        #zyys-sy .s-list {
+            height: 41px;
+            width: 100%;
+            line-height: 41px;
+            border-color: #ebebeb;
+            border-style: solid;
+            border-width: 0 0 1px 0;
+            padding-left: 1.25rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* #zyys-sy .s-list ul {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #zyys-sy .s-list li {
+            text-align: center;
+            margin-left: 1.25rem;
+            display: inline-block;
+        } */
+
+        #zyys-sy .list_box {
+            height: 12rem;
+            border-bottom: 1px solid #ebebeb;
+        }
+
+        #zyys-sy .image_box {
+            margin: 1.5rem 1.25rem;
+            position: absolute;
+            width: 13.5rem;
+            height: 9rem;
+        }
+
+        #zyys-sy .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #zyys-sy .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 16rem;
+            padding-right: 1.25rem;
+            white-space: nowrap;
+            height: 12rem;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        #zyys-sy .content p {
+            margin: 0;
+        }
+
+        #zyys-sy .content h4 {
+            margin: 0 0 .8rem;
+            padding: 0;
+            font-size: 2rem;
+            color: #333;
+            font-weight: bold;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        #zyys-sy .content p {
+            font-size: 1.75rem;
+            color: #999;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        #zyys-sy .titleBox {
+            position: absolute;
+        }
+       
+    </style>
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <!-- <div class="header-top">
+            <img class="imgstyle" id="img-zyys" src="img/zyys.jpg" />
+        </div> -->
+        <!-- <div class="tab-list">
+            <div ng-repeat="it in tabList" class="tab">
+                <span ng-class="{true:'current_tab',false:''}[showTabValue == it.value]" ng-click="switchTab(it.value)"> {{it.title}} </span>
+            </div>
+        </div> -->
+        <div class="s-list" ng-click="xuanTiaoJiao()">
+                筛选条件:
+            <span ng-repeat="sx in choseItems track by $index" ng-if="$index<3" > {{sx.item.dicItemName}}</span>
+            <span  ng-if="choseItems.length>3" >...</span>
+            <i class="icon iconfont icon-shaixuan" style="color:#00b5ee;"></i>
+        </div>
+        
+    </nav>
+    <!-- 返回首页 -->
+    <div class="m-body f-m-body" id="m-body" style="display:none" ng-if="isIos">
+        <go-shouye-in-menu></go-shouye-in-menu>
+        <div ng-click="goZyys()" class="fl-child" id="tzView">
+            <i class="icon iconfont icon-zyys"  ng-if="type!=='tzpg'"></i>
+        </div>
+    </div>
+    <div class="floatdiv float-menu" id="switch" ng-click="menuSwitch($event)" ng-if="isIos">
+        <i class="icon ion-plus" id="floatIcon" ng-class="{true:'menu-show',false:''}[isMenuShow]" ></i>
+    </div>
+
+    <ion-content ng-click="hideMenuClick($event)"  delegate-handle="dashboard" id="img-content" ng-style="{top:(isIos)? '41px': '90px'}" style="padding-top: 0px;">
+        <!-- 膳食列表 -->
+        <div ng-if="showFood">
+            <div class="list_box" ng-repeat="item in ShanShilist track by $index" ng-click="goDetail(item.pid)">
+                <div class="image_box">
+                    <img class="image" ng-src="{{imgBaseUrl}}{{item.iconImage}}">
+                </div>
+                <div class="content">
+                    <h4>{{item.shanShiMing}}</h4>
+                    <p style="margin: 0;"  ng-bind-html="'适应症:'+item.shiyingZhengDisplay" compile-html></p>
+                    <p style="margin: 0;">主治功效：{{item.zhongyiGongxiaoDisplay}}</p>
+                </div>
+            </div>
+        </div>
+        <!-- 穴位列表 -->
+        <div class="list_box" ng-repeat="item in ShanShilist" ng-if="!showFood" ng-click="goDetail(item.zuheKey)">
+            <div class="image_box">
+                <img class="image" src="{{imgBaseUrl}}{{item.iconImage}}">
+            </div>
+            <div class="content">
+                    <h4>{{item.zhuXue}}、{{item.peiXues}}
+                            <!-- <span class="px">{{item.peiXues}}</span> -->
+                        </h4>
+                        <p style="margin: 0;" ng-bind-html="'适应症:'+item.shiYingZheng" compile-html></p>
+                        <p style="margin: 0;">主治功效：{{item.gongXiaoZhuZhi}}</p>
+            </div>
+        </div>
+
+        <div ng-hide="task_hasMoreItem" style="text-align: center; margin-top: 15px;">
+            <span style="font-size: 14px; color: #8F8E94">{{reusltNullTip}}</span>
+        </div>
+        <ion-infinite-scroll ng-if="isShow" immediate-check="false" on-infinite="loadMore()" distance="1%" ng-class="{true:'active',false:''}[task_hasMoreItem]"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

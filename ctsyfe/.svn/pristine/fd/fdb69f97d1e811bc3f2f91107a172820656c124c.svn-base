@@ -1,0 +1,57 @@
+angular.module('starter.audioCtrl', [])
+    /**
+     * 语音播放控制器,停止、下一段、上一段、关闭
+     * 
+     <audio-control>
+     */
+    .directive('audioControl', ['audioControl', 'Popup', '$state', function (audioControl, Popup, $state) {
+        return {
+            scope: {
+                isClickPlay: "@"
+            },
+            restrict: 'ACE',
+            transclude: true,
+            template: '<div class="audio-ctrl" ng-show="audioCtrlShow"><div><i class="icon iconfont icon-yuyin1 voiceI"></i><span>正在收听：{{ctrl.items[playing].title}}</span><i class="icon iconfont icon-menu audio-menu"></i></div><div class="ctrl-buts"><i class="icon iconfont icon-xiangshang"></i><i class="icon iconfont icon-zanting"></i><i class="icon iconfont icon-xiangxia"></i><i class="icon iconfont icon-guanbi"></i></div></div><div class="audio-menu-body"><ul><li ng-repeat="item in ctrl.items" ng-bind="item.title"></li></ul></div>',
+            link: function ($scope, iElm, iAttrs, controller) {
+                $scope.clickPlay = function () {
+                    /*                	var parent=iElm[0].parentElement;
+                                        var p=parent.querySelector('[showallp]');
+                                        var showaudio=parent.querySelector('[showaudio]');
+                                        var eventi=parent.querySelector('[changei]');
+                    //                	判断p是否存在
+                    //                	if(p){
+                                        if(showaudio){	
+                    //                		if(p.className=="showf ng-binding"||p.className=="ng-binding showf"){
+                                            if(showaudio.className=="hide"){
+                                                showaudio.className="";
+                    //                    		p.className="f ng-binding";
+                                                eventi.className="icon ion-chevron-down activated";
+                                            }else{
+                                                showaudio.className="hide";
+                    //                    		p.className="showf ng-binding";
+                                                eventi.className="icon ion-chevron-right activated";
+                                            }
+                                        }*/
+
+                    //                	判断语音状态是否是打开状态
+                    //                	if(localStorage.getItem("yyzhuangtai") === "打开"){
+                    if (typeof $scope.isClickPlay == 'undefined') {
+                        $scope.isClickPlay = true;
+                    }
+                    if ($scope.isClickPlay == true) {
+                        audioControl.play(iElm[0].textContent);
+                    }
+                    //                	}
+
+                };
+                //                双击事件执行方法
+                $scope.doubleclick = function () {
+                    //                	Popup.zhanshi(iElm[0].textContent);
+                    $state.go("textshow", {
+                        textxq: iElm[0].textContent
+                    });
+                }
+            }
+        };
+    }])
+    ;

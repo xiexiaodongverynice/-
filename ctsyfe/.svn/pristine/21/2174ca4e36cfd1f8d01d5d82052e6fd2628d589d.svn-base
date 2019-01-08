@@ -1,0 +1,350 @@
+<ion-view hide-nav-bar="isIos" view-title="健康圈" class="jkq">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+        .card {
+            box-shadow: 0 0px 0px rgba(0, 0, 0, .3);
+        }
+        
+        .backgroundsize {
+            background-size: 100% 0px;
+        }
+        
+        .jkq .tabSelect {
+            float: left;
+            width: 50%;
+            text-align: center;
+            line-height: 44px;
+            font-size: 16px;
+        }
+        
+        .findquanzi {
+            float: left;
+            text-align: center;
+            margin-right: 7px;
+            margin-bottom: 7px;
+        }
+        
+        .findclick {
+            border-bottom: 2px solid;
+            color: #00b5ee;
+        }
+        
+        .findclick span {
+            font-size: 2rem;
+        }
+        
+        .icon-quanzi {
+            color: #04B0F8;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .icon-quanbu {
+            color: #FFF;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .qz_tb {
+            float: right;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .show_qz_info {
+            width: 70%;
+            /*margin-left: 25px;*/
+            font: 1rem Microsoft Yahei;
+            padding: 0.15rem 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .show_qz_list {
+            margin-left: 1rem;
+            height: 8rem;
+        }
+        
+        .qz_image {
+            float: left;
+            margin-top: 1rem;
+            width: 25%;
+        }
+        
+        .qz_name {
+            float: left;
+            margin-top: 1.5rem;
+            width: 45%;
+        }
+        
+        .jkq #img {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 6rem;
+        }
+        
+        .jkq .tubiao_word {
+            display: block;
+            font-size: 11px;
+        }
+        
+        .tb_area {
+            display: inline-block;
+            text-align: center;
+            width: 4rem;
+        }
+        
+        .not_jr {
+            color: rgb(0, 204, 255);
+        }
+        
+        .was_jr {
+            color: black;
+        }
+        
+        .add_qz {
+            display: list-item;
+            text-align: center;
+            margin-top: 0px;
+            margin-left: 0.75rem;
+        }
+        
+        .addimg {
+            font-size: 3rem;
+        }
+        /**外层div*/
+        
+        .wc_div {
+            background-color: #FFF;
+            /* margin-top: 10px; */
+            padding: 10px 10px 0 10px;
+            border-top: 10px solid #F3F4F5
+        }
+        
+        .huanyipi {
+            float: right;
+            margin-right: 5px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .tjqz {
+            margin-left: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .floatdiv {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        
+        #switch {
+            right: 25px;
+            bottom: 50px;
+            width: 44px;
+            height: 44px;
+            background-color: #333;
+            ;
+            opacity: .8;
+            /* box-shadow: 0 10px 10px rgba(25,187,238,0.7); */
+        }
+        
+        .m-body {
+            position: fixed;
+            bottom: 95px;
+            right: 1px;
+            color: #FFF;
+            z-index: 11;
+        }
+        .daosj {
+            position: relative;
+            left: 47px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #333;
+            opacity: .8;
+        }
+        
+        .tz-view {
+            line-height: 32px;
+            text-align: left;
+            background: #333;
+            opacity: .8;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+
+        }
+        
+        .tz-write {
+            line-height: 32px;
+            text-align: left;
+            border-bottom: 1px solid #fff;
+            background: #333;
+            opacity: .8;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+
+        }
+        
+        .participatediv {
+            background-color: #00b6ed;
+            z-index: 10;
+            position: fixed;
+            border-radius: 50%;
+            bottom: 4rem;
+            left: 8%;
+            width: 4rem;
+            height: 4rem;
+            text-align: center;
+            line-height: 4rem;
+        }
+        
+        .loadmore {
+            text-align: center;
+            background: white;
+            margin-top: 1rem;
+            align-items: center;
+        }
+        
+        .guanzhu {
+            background-color: red;
+            z-index: 10;
+            position: fixed;
+            border-radius: 50%;
+            /* top: 12px; */
+            margin-left: 1rem;
+            width: 2rem;
+            height: 2rem;
+            text-align: center;
+            line-height: 2rem;
+            color: white
+        }
+        
+        .ion-infinite-scroll:not(.active) .icon:before,
+        ion-infinite-scroll:not(.active) .spinner {
+            display: block;
+        }
+        
+        #imglook {
+            width: 150px;
+            height: 100%;
+            margin-left: 30%;
+        }
+    </style>
+    <div  style="background-color: white;z-index: 10;position: fixed;width: 100%;top:0;" ng-style="{top:(isIos)? '': '50px'}">
+        <ul style="overflow: auto;">
+            <li class="tabSelect" ng-class="{true:'findclick',false:''}[isfind]" ng-click="clickfind()"><span>发现</span></li>
+            <li class="tabSelect" ng-class="{true:'findclick',false:''}[!isfind]" ng-click="clickguanzhu()"><span>关注</span><sup class="guanzhu" ng-style="{top:(isIos)? '12px': '62px'}" ng-show="jkqfindlist.gzsl>0">{{(jkqfindlist.gzsl>99) ? "99+" : jkqfindlist.gzsl}}</sup></li>
+        </ul>
+        <div class="wc_div" ng-show="isfind">
+            <span class="tjqz">推荐圈子</span>
+            <span class="huanyipi" ng-click="batch()" ng-if="ishuanyihuan"><i class="icon iconfont icon-shuaxin"></i>换一批</span>
+            <ul style="overflow: auto;width: 100%; margin-top: 10px;">
+                <li class="findquanzi qz-ls">
+                    <span class="yuanjiao" ng-click="goquanziguangchang()"><i class="icon iconfont icon-quanbu"></i>圈子列表</span>
+                </li>
+                <li class="findquanzi" ng-repeat="item in qzlist                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ">
+                    <span class="yuanjiao" ng-click="goquanzi(item.id)"><i class="icon iconfont icon-quanzi"></i>{{item.name}}</span>
+                </li>
+    
+            </ul>
+        </div>
+    </div>
+   
+    <!-- 书写内容标记 -->
+    <div class="m-body" id="m-body" style="display: none">
+        <div ng-click="xietiezi()" class="tz-write" id="tzWrite">
+            <i class="icon iconfont icon-xietie" style="color: white;font-size: 20px;"></i>发布话题
+        </div>
+        <div ng-click="goparticipate()" class="tz-view" id="tzView">
+            <i class="icon iconfont icon-wodetiezi" style="color: white;font-size: 20px;"></i>已参与话题
+        </div>
+        <div class="daosj"></div>
+        <!-- 倒三角 -->
+    </div>
+
+    <div class="floatdiv" id="switch" ng-click="menuSwitch()">
+        <i class="icon ion-ios-more" id="floatIcon" style="color: white;font-size: 30px;"></i>
+    </div>
+    
+    <ion-content id="shouye" style="background-color:#f3f4f5;top:3rem;" ng-style="{top:(isIos)? '140px': '188px'}" ng-click="stopanniu()" >
+        <ion-refresher ng-if="isfind" pulling-text="正在刷新中..." on-refresh="findRefresh()"></ion-refresher>
+        <ion-refresher ng-if="!isfind&&isguanzhu" pulling-text="正在刷新中..." on-refresh="guanzhuRefresh()"></ion-refresher>
+        <ion-refresher ng-if="!isfind&&!isguanzhu" pulling-text="正在刷新中..." on-refresh="noguanzhuRefresh()"></ion-refresher>
+        <!-- 换一批 -->
+        
+        <!-- 发现页面展示 -->
+        <div>
+            <div ng-show="isfind">
+                <show-messagejkq ge-ren="itemfaxianjiazai" qz-xiangqing="true"></show-messagejkq>
+                <div ng-if="isfaxiananydata.length==0" style="margin-top: 30%">
+                    <img src="img/xiangzi.png" alt="" id="imglook">
+                    <div style="margin-top: 30px">
+                        <p style="text-align: center;color: #999999;font-size: 16px;">还未发现任何话题</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+                <!-- 关注-已关注展示页面-->
+            <div ng-show="!isfind&&isguanzhu">
+                <show-messagejkq ge-ren="itemguanzhujiazai" qz-xiangqing="true"></show-messagejkq>
+                <div ng-if="isguanzhuanydata.length==0" style="margin-top: 30%">
+                    <img src="img/xiangzi.png" alt="" id="imglook">
+                    <div style="margin-top: 30px">
+                        <p style="text-align: center;color: #999999;font-size: 16px;">您关注的圈子还未发布话题</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 没有关注圈子时展示页面 -->
+            <div ng-show="!isfind&&!isguanzhu">
+                <div class="wc_div" style="text-align: center;height: 9rem;background: #F5FBFD">
+                    <img src="img/nofind.png" style="display: flex;margin: 0 auto;height: 55%;" />
+                    <span style="display: inline-block;font-size: 12px">加入圈子后就会有精彩的内容更新噢</span>
+                </div>
+                <div class="liebiao wc_div">
+                    <span style="font-size: 2rem;padding: 1rem;">猜你喜欢</span>
+                    <ul class="list no-float">
+                        <li class="show_li_list show_qz_list" style="border-bottom: 1px solid #dedede;" ng-repeat="qz in notfollowedlist track by $index">
+                            <div ng-click="goquanzi(qz.id)">
+                                <div class="qz_image"><img id="img" ng-src="{{qz.qzpicture}}"></div>
+                                <div class="qz_name">
+                                    <span class="show_qz_info" style="font-size:15px;">{{qz.name}}</span>
+                                    <span class="show_qz_info" style="font-size:13px;">成员&nbsp;&nbsp;{{qz.chengyuanshu}}</span>
+                                </div>
+                            </div>
+                            <div class="qz_tb" ng-click="add_quanZi(qz.id,qz.shifoujiaru)" ng-if="qz.shifoujiaru=='0'">
+                                <i class="icon iconfont icon-guanzhu tubiao tb_area was_jr"></i>
+                                <span class="tubiao_word was_jr">加入圈子</span>
+                            </div>
+                            <div class="qz_tb" ng-click="add_quanZi(qz.id,qz.shifoujiaru)" ng-if="qz.shifoujiaru=='1'">
+                                <i class="icon iconfont icon-yijiaru tubiao tb_area not_jr"></i>
+                                <span class="tubiao_word not_jr">已加入</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+       
+        <!-- 加载更多 -->
+        <div class="loadmore" ng-if="hasmore">
+            <!-- <span>加载更多。。。</span>   -->
+            <ion-infinite-scroll ng-if="hasmore" on-infinite="loadMore()" distance="1%"></ion-infinite-scroll>
+        </div>
+
+    </ion-content>
+</ion-view>

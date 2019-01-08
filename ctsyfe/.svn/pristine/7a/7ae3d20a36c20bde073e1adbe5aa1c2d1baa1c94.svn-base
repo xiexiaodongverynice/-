@@ -1,0 +1,267 @@
+<ion-view hide-nav-bar="isIos" view-title="高级搜索" id="zyys-tj">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right"> </ion-nav-buttons>
+    <style>
+        #zyys-tj {
+            padding: 0;
+            height: 100%;
+            color: #666;
+        }
+
+        #zyys-tj .tj-title {
+            font-size: 16px;
+            height: 42px;
+            line-height: 42px;
+            border-bottom: 1px solid #ebebeb;
+
+        }
+
+        #zyys-tj .tj-title i {
+            margin: 5px;
+            font-size: 18px;
+        }
+
+        #zyys-tj .close {
+            position: absolute;
+            line-height: 28px;
+            top: 7px;
+            right: 7px;
+        }
+
+        #zyys-tj .close i {
+            opacity: 0.5;
+            font-size: 28px;
+            color: #333;
+
+        }
+
+        #zyys-tj .tj-selected {
+            width: 100%;
+            max-height: 80px;
+            overflow-y: scroll;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+
+        }
+
+        #zyys-tj .tj-op {
+
+            height: 100%;
+            z-index: -1;
+        }
+
+        #zyys-tj .left-lb {
+            width: 27%;
+            position: fixed;
+            left: 0;
+            height: 100%;
+
+        } 
+        #zyys-tj .right-lb ul.list,
+        #zyys-tj .left-lb ul.list{
+            padding: 0;
+        }
+
+        #zyys-tj li {
+            display: block;
+            font-size: 15px;
+            padding-left: 15px;
+            height: 50px;
+            line-height: 50px;
+            box-sizing: border-box;
+        }
+
+        #zyys-tj .left-lb .show_li_list {
+            border-top: none;
+            border-right: none;
+        }
+
+        #zyys-tj .tj-op .right-lb {
+            width: 100%;
+            height: auto;
+            overflow-y: scroll;
+        }
+
+        #zyys-tj .tj-op .right-lb i {
+            color: #00b5ee;
+        }
+
+        #zyys-tj .tj-op .right-lb .show_li_list {
+            border-bottom: 1px solid #ebebeb;
+        }
+
+        #zyys-tj .chose {
+            border-left: 2px solid #00b5ee;
+            color: #00b5ee;
+        }
+
+        #zyys-tj .t-left {
+            padding-left: 16px;
+            line-height: 50px;
+            font-size: 16px;
+            color: #00b5ee;
+            width: 27%;
+            float: left;
+        }
+
+        #op-topLine {
+            width: 73%;
+            padding-left: 23px;
+            text-align: left;
+            border-bottom: none;
+            position: fixed; left:27%; z-index: 10;
+            height: 50px;
+        }
+
+        #op-topLine .search-bar {
+            width: 90%;
+            position: relative;
+            display: inline-block;
+            height: 30px;
+            margin: 10px auto;
+            background-color: #F3F4F5;
+            padding: 0 5px;
+            border-radius: 5px;
+
+        }
+
+        #op-topLine .search-bar button {
+            position: absolute;
+            width: 30px;
+            left: -7px;
+            top: -7px;
+        }
+
+        #zyys-tj .search-bar input {
+            margin-left: 35px;
+            padding: 0;
+            height: 30px;
+            width: 80%;
+            background-color: #F3F4F5;
+        }
+
+
+
+        #zyys-tj .tj-selected .tj-item {
+            display: inline-block;
+            height: 25px;
+            margin: 5px 5px 0 0;
+            padding: 0 2.5px;
+            background-color: #F2F9FF;
+            line-height: 25px;
+            color: #00b5ee;
+            font-size: 15px;
+            border-radius: 5px;
+        }
+
+
+        #zyys-tj .tj-op .item {
+            color: #666;
+            border-right: none;
+            border-left: none;
+        }
+
+        #zyys-tj #sub-line {
+            z-index: 5;
+            opacity: 1;
+            width: 73%;
+            margin-left: 27%;
+            text-align: center;
+        }
+
+        #zyys-tj #sub-line input {
+            font-size: 16px;
+            width: 24%;
+            height: 34px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        #zyys-tj #sub-line .cancel {
+            background-color: #FFF;
+            color: #666;
+            border: 1px solid #EBEBEB;
+            box-sizing: border-box;
+            margin-right: 5%;
+
+        }
+
+        .tj-top {
+            border-bottom: 1px solid #ebebeb;
+            position: fixed;
+            z-index: 9;
+            width: 100%;
+            height: 122px;
+            left: 0;
+        }
+    </style>
+    <div class="tj-top" ng-style="{top:(isIos)? '0': '44px'}">
+        <div class="tj-title">
+            <i class="icon iconfont icon-shaixuan" style="color:#00b5ee;"></i>筛选条件
+            <!-- <div class="close" ng-click="modal.hide()">
+                        <i class="icon iconfont icon-guanbi1"></i>
+                    </div> -->
+        </div>
+        <div class="tj-selected" id="div-selected">
+            <div style="height:auto">
+                <span class="tj-item" ng-repeat="it in choseItems" ng-click="delTj(it)">{{it.item.dicItemName}}
+                    <i class="icon iconfont icon-guanbi1"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="sub-line">
+        <div class="sub-left"></div>
+        <input type="submit" class="cancel" value="清空" ng-click="clearTj()">
+        <input type="submit" class="ok" value="确定" ng-click="submitTj()">
+    </div>
+
+    <!-- 左 -->
+    <div class="liebiao left-lb" ng-style="{top:(isIos)? '122px': '166px'}">
+        <ul class="list no-float">
+            <li class="show_li_list" ng-repeat="sx in shaixuanList" ng-click="loadTj(sx.value)" ng-class="[{'chose':zdParams.typeCode===sx.value}]">
+                <span>{{sx.title}}</span>
+            </li>
+        </ul>
+    </div>
+    <!-- 搜索 -->
+    <div class="show_li_list" id="op-topLine" ng-style="{top:(isIos)? '122px': '166px'}" >
+        <div class="search-bar">
+            <button ng-click="" type="button" name="" class="button button-clear ion-android-search" style="color: #ccc; font-size: 25px; height: 30px; "></button>
+            <input ng-model="zdParams.inputText" ng-change="loadTj()" type="search" ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="请输入要搜索的关键字">
+        </div>
+    </div>
+    <ion-content ng-style="{top:(isIos)? '172px': '216px'}" style="width:73%;bottom: 64px; left:27%;">
+        <div class="tj-all">
+
+            <!-- 选条件 -->
+            <div class="tj-op">
+                <!-- 右 -->
+                <div class="liebiao right-lb">
+                    <ul class="list no-float" id="ul-radioList">
+                        <li class="show_li_list" ng-repeat="item in mrysZdList[zdParams.typeCode]">
+                            <ion-checkbox ng-model="item.checked" ng-checked="item.checked" name="radio{{screen}}" ng-click="chooseTj(item)">
+                                {{item.dicItemName}}
+                            </ion-checkbox>
+                        </li>
+                    </ul>
+                    <ion-infinite-scroll ng-if="isShow" immediate-check="false" on-infinite="loadMicMore()" distance="1%"></ion-infinite-scroll>
+                    <div ng-hide="task_hasMoreItem" class="t-c m-10">{{reusltNullTip}}</div>
+                </div>
+            </div>
+
+        </div>
+
+        
+    </ion-content>
+    <!-- <right-list cru-gn="'ZYYS'" style="z-index: 10;"></right-list>
+    <div ng-show="ishsowzimu&&zimu" id="dazimudiv" style="position: fixed;z-index: 2;background: #bcbcbc;width: 80px;height: 80px;text-align: center;vertical-align: middle;padding-top: 30px;font-size: 2em;margin-left: 40%;margin-top: 70%;border-radius: 50%;opacity: 0.8;color:white;">{{zimu}}</div> -->
+</ion-view>

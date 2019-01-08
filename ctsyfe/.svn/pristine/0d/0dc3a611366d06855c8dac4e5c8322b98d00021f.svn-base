@@ -1,0 +1,43 @@
+<ion-view hide-nav-bar="isIos" view-title="体重管理" class="tiZhong jkda-item-main">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                    <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <style type="text/css"></style>
+     <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content>
+        <div class="top">
+            <div class="circle {{circleClass}}">
+                <p class="f-12">{{tizhongnew.RIQI|limitTo:10:5}}</p>
+                <!-- <p class="f-12">早餐前</p> -->
+                <p class="f-28">{{tizhongnew.JIEGUO?tizhongnew.JIEGUO:'--'}}</p>
+                <p class="f-20">{{tizhongnew.TIZHONG}}</p>
+                <p class="f-12">kg</p>
+            </div>
+            <button class="blue-border-button btn-sdjl" ng-click="goWriteTiZhong()">手动记录</button>
+            <div class="zcz">
+                    <p ng-click="goFanWei()"><i class="icon ion-help-circled"></i><span>正常值标准</span></p>
+            </div>
+        </div>
+        <div class="p-10 xt-info">
+            <h3 class="{{iconCls}}"><i class="icon iconfont icon-tizhong"></i>{{tizhongnew.JIEGUO?tizhongnew.JIEGUO:'未知'}}</h3>
+            <p class="color-9" ng-if="tizhongnew.JIEGUO=='肥胖'">您的体重高于正常值，请注意控制饮食，并开始减肥。</p>
+            <p class="color-9" ng-if="tizhongnew.JIEGUO=='超重'">您的体重高于正常值，请注意控制饮食，必要时需要减肥。</p>
+            <p class="color-9" ng-if="tizhongnew.JIEGUO=='正常'">您的体重状态正常，请继续保持好身材。</p>
+            <p class="color-9" ng-if="tizhongnew.JIEGUO=='偏瘦'">您的体重低于正常值，请注意增加营养。</p>
+        </div>
+        <div class="p-10 chart-container">
+            <h3 class="s-14 color-3">最近7次体重趋势图<a class="more" ng-click="goList()">全部<i class="icon ion-ios-arrow-right color-9"></i></a></h3>
+            <ti-zhong class="chart" id="chartTiZhong" userid="userId"></ti-zhong>
+        </div>
+    </ion-content>
+</ion-view>

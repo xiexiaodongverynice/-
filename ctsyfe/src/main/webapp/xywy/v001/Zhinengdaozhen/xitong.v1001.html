@@ -1,0 +1,65 @@
+<ion-view hide-nav-bar="isIos" view-title="{{data.xitong}}">
+    <!-- <ion-view hide-nav-bar="isIos"  view-title="疾病列表"> -->
+    <style type="text/css">
+        .inputIos {
+            height: auto !important;
+            padding-top: 6px !important;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+   
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+
+    <ion-content>
+        <div class="bar item-input-inset" style="height: auto;padding-bottom:15px">
+            <div class="item-input-wrapper">
+                <input ng-model="data.keyword" type="search" ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="{{data.morenxiaoxi}}">
+                <i ng-click="clean()" ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']"
+                    style="font-size: 16px;padding-right: 8px;padding-top: 1px;"></i>
+                <button ng-click="search()" type="button" name="" class="button button-clear ion-android-search" style="color:initial;font-size: 20px;height: 28px;padding-top: 1px;"></button>
+            </div>
+        </div>
+        <div ng-if="!data.searchSuc" class="liebiao">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-click="chooseZz2(zz)" ng-repeat="zz in zzlist">
+                    <!-- <li class="item flexdiv padding" ng-click="chooseZz2(zz)" ng-repeat="zz in zzlist">
+	        		<span style="white-space:normal;align-self:center">{{zz.MC}}</span>
+	        		<i style="align-self: center" class="icon ion-chevron-right"></i> -->
+                    <span class="show_span_info">{{zz.MC}}</span>
+                    <i class="icon ion-chevron-right i_tuBiao"></i>
+                </li>
+            </ul>
+        </div>
+        <!-- <span ng-if="data.searchSuc" style="color:#18B4ED" class="xywy-center">找到以下相关疾病</span> -->
+        <h5 ng-if="data.searchSuc" style="border-bottom: 1px solid #ddd;padding-left: 25px;color:#a2a2a2;margin-bottom:0px;margin-top:0px">找到以下相关疾病</h5>
+        <div ng-if="data.searchSuc" class="liebiao">
+            <!-- <span class="xywy-center">找到以下相关疾病</span> -->
+            <ul class="list no-float">
+                <li class="show_li_list" ng-click="chooseZz2(zz)" ng-repeat="zz in searchzz">
+                    <span class="show_span_info">{{zz.MC}}</span>
+                    <i class="icon ion-chevron-right i_tuBiao"></i>
+                </li>
+            </ul>
+        </div>
+        <!-- <a ng-click="fankui()" class="show text-center guahao sticknote" style="top: 90%;">找不到合适的症状？立即反馈<i class="ion-android-mail"></i>给我们</a> -->
+        <!--         <a ng-href="mailto:someone@xinbohit.com?subject=症状词反馈&body={{data.notfound}}"
+         >找不到合适的症状？立即反馈<i class="ion-android-mail"></i>给我们</a> -->
+    </ion-content>
+</ion-view>

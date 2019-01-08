@@ -1,0 +1,38 @@
+<ion-view hide-nav-bar="isIos" view-title="手动记录体重" class="jkda-item-edit">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css"></style>
+    <ion-content>
+        <form id="tiZhongForm">
+            <fieldset class="jbxx">
+                <div>
+                    <label for="tiZhong">体重</label>
+                    <div class="input-div">
+                        <input type="number" id="tiZhong" name="tiZhong" step="0.01" placeholder="请输入体重" ng-model="subData.tiZhong" ng-change="valiForm()" required />
+                        <span class="danwei"><label for="tiZhong">kg</label></span>
+                        <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="celiangriqi">测量日期</label>
+                    <input type="text" id="celiangriqi" name="celiangriqi"  readonly="readonly" data-year="" data-month="" data-date="" ng-blur="valiForm()" ng-click="datePiker('celiangriqi')" unselectable="on"  onfocus="this.blur()" required/>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div>
+                    <label for="celiangshijian">测量时间</label>
+                    <input type="time" id="celiangshijian" name="celiangshijian"  required />
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+
+            </fieldset>
+
+        </form>
+    </ion-content>
+    <div class="bar bar-footer bar-gray">
+        <input type="submit" value="保存" form="tiZhongForm" id="submit" ng-disabled="valiForm()" ng-click="submitForm()">
+    </div>
+</ion-view>

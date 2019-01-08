@@ -1,0 +1,733 @@
+angular.module('starter.ZhongYiYangShengNewControllers', ['ionic'])
+
+
+    .controller('zyysMainC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, GoZzJbYp) {
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+        //首页
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", {
+                    hosorgCode: hosorgCode,
+                    openid: openid,
+                    token: token,
+                    yxzsurl: yxzsurl
+                });
+            } else {
+                $state.go("shouye", {
+                    openid: openid,
+                    token: token
+                });
+            }
+        };
+
+
+        // 体质评估
+        $scope.tzpg = function () {
+            // 判断是否有历史评估
+            XywyService.query('/loadLqHisList', { params: { myself: "1", userId: sessionStorage.getItem('openId'), tempCode: 'LNRTZ' } }).then(function (response) {
+                var dataSize = response.data.groupList.length;
+                if (dataSize > 0) {
+                    $state.go('pingGuMain', { type: "tzpg" });
+                } else {
+                    $state.go('pingGu', { type: "tzpg" });
+                }
+            }, function (reason) {
+                Popup.alert(reason)
+            });
+        };
+
+        /**
+         * 膳食养生
+         */
+        $scope.ssys = function () {
+            $state.go('ssys', { type: "ss" });
+        };
+        /**
+         * 穴位养生
+         */
+        $scope.xwys = function () {
+            //$state.go('zyys');
+            $state.go('xwys', { type: "xw" });
+        };
+
+
+    })
+    // 膳食养生
+    .controller('ssysC', function (wxApi, $ionicViewSwitcher, $scope, $timeout, $state, $stateParams, XywyService, Popup, Outlet, $ionicScrollDelegate, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, GoZzJbYp) {
+        $scope.imgBaseUrl = myConfig.imgBaseUrl;
+        $scope.isShowPx = [false, false, false];
+        $scope.choseStr = {
+            "1": "",
+            "2": "",
+            "3": ""
+        };
+        var queryZimu = {// 字母参数
+            "1": "",
+            "2": "",
+            "3": ""
+        }, zdParams = {// 搜索菜单查询参数
+            pageNum: 1,
+            typeCode: "2",
+            pinYinSzm: ""
+        }, listParams = { // 列表参数
+            pageNum: 1
+        };
+        $scope.choseItems = { "1": [], "2": [], "3": [] };//已经选择的条件
+        XywyService.getRem(750);
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () { $window.history.back(); };
+
+        if ($stateParams.type == "ss") {
+            $scope.showFood = true;
+        }
+        else {
+            $scope.showFood = false;
+        }
+
+        //每日一膳tab页
+        $scope.shaixuanList = [{
+            title: "中医体质",
+            value: "2"
+        }, {
+            title: "主治功效",
+            value: "1"
+        }, {
+            title: "适应症",
+            value: "3"
+        }];
+        //每日一穴tab页
+        $scope.shaixuanPointList = [{
+            title: "主治功效",
+            value: "1"
+        }, {
+            title: "适应症",
+            value: "2"
+        }];
+
+        //
+        $scope.headtabType = {
+            "1": "zhongYiGongXiao",
+            "2": "shiYingTiZhi",
+            "3": "shiYingZheng"
+        }
+
+        $scope.xwheadtabType = {
+            "1": "gongXiaoZhuZhi",
+            "2": "shiYingZheng"
+        }
+
+        //每日一膳变量定义
+        $scope.mrysCurrentTab = 2;
+        $scope.mrysZdList = {}; //存所有分类的字典列表，给ShanShilist赋值
+
+        $scope.ShanShilist; //页面上显示的数据
+        $scope.ShanShiFlList = {}; //存所有分类的膳食列表，给ShanShilist赋值
+        $scope.mrysCurrentZd;
+        $scope.CurrentZdPageNum = {
+            zhongYiGongXiao: 1,
+            shiYingTiZhi: 1,
+            shiYingZheng: 1
+        };
+        $scope.CurrentListPageNum = {
+            zhongYiGongXiao: 1,
+            shiYingTiZhi: 1,
+            shiYingZheng: 1
+        };
+        $scope.pageListCount = {};
+        $scope.pageZdCount = {};
+        $scope.curChose = {
+            1: '',
+            2: '',
+            3: ''
+        };
+
+        //每日一穴变量定义
+        $scope.xwCurrentTab = 1;
+
+        $scope.xwShanShilist; //页面上显示的数据
+        $scope.xwShanShiFlList = {}; //存所有分类的穴位列表，给ShanShilist赋值
+
+        $scope.xwCurrentListPageNum = {
+            gongXiaoZhuZhi: 1,
+            shiYingZheng: 1,
+        };
+        $scope.xwpageListCount = {};
+
+        // 条件选择
+        $scope.chooseTj = function (item) {
+            var type = zdParams.typeCode;
+            if (item.checked == true) {
+                $scope.choseItems[type].push(item);
+                if ($scope.choseItems[type].length == 1) {
+                    if (type == "1" || type == "3" || $scope.showFood == false) {
+                        var h = $("#contentDiv" + type).height();
+                        document.getElementById("contentDiv" + type).style.height = h - 42 + "px";
+                    }
+                }
+            } else {
+                for (var i = 0; i < $scope.choseItems[type].length; i++) {
+                    if ($scope.choseItems[type][i].code == item.code) {
+                        $scope.choseItems[type].splice(i, 1);
+                    }
+                }
+                if ($scope.choseItems[type].length == 0) {
+                    if (type == "1" || type == "3" || $scope.showFood == false) {
+                        var h = $("#contentDiv" + type).height();
+                        document.getElementById("contentDiv" + type).style.height = h + 42 + "px";
+                    }
+
+                }
+            }
+
+            event.stopPropagation();
+
+        }
+
+        // selected div中 删除选项
+        $scope.delTj = function (item) {
+            var type = zdParams.typeCode;
+            var index = $scope.choseItems[type].indexOf(item);
+            if (index > -1) {
+                $scope.choseItems[type].splice(index, 1);
+            }
+            // 设置列表中数据为false
+            for (var i = 0; i < $scope.mrysZdList[type].length; i++) {
+                if ($scope.mrysZdList[type][i].checked) {
+                    if ($scope.mrysZdList[type][i].code == item.code) {
+                        $scope.mrysZdList[type][i].checked = false;
+                        if ($scope.choseItems[type].length == 0) {
+                            if (type == "1" || type == "3" || $scope.showFood == false) {
+                                var h = $("#contentDiv" + type).height();
+                                document.getElementById("contentDiv" + type).style.height = h + 42 + "px";
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            event.stopPropagation();
+        };
+
+
+        //字母查询
+        $scope.$on('zimu', function (event, zimu) {
+            //清空查询条件 恢复默认值
+            $scope.ishsowzimu = true;
+            zdParams.pageNum = 1;
+            zdParams.pinYinSzm = zimu.zimu;
+            queryZimu[zdParams.typeCode] = zimu.zimu
+            queryZdList("equals", zdParams);
+            $timeout(function () {
+                $scope.ishsowzimu = false;
+            }, 2000);
+        });
+        //条件列表的下拉事件
+        $scope.loadMicMore = function () {
+            var type = zdParams.typeCode;
+            $scope.CurrentZdPageNum[type] += 1;
+            var pageNum = $scope.CurrentZdPageNum[type];
+            var Count = $scope.pageZdCount[type];
+            if (pageNum <= Count) {
+                $scope.doLoadMore = true;
+                //隐藏无数据提示
+                $scope.task_hasMoreItem = true;
+                var para = {
+                    pageNum: pageNum,
+                    typeCode: type
+                }
+                queryZdList("push", para, function () {
+                    //禁止上拉滑动
+                });
+            } else {
+                if (pageNum) {
+                    //显现提示
+                    $scope.doLoadMore = false;
+                    $scope.task_hasMoreItem = false;
+                    $scope.reusltNullTip = "已加载全部！";
+
+                    //隐藏上拉加载
+                    $scope.isShow = true;
+                    //禁止上拉滑动
+                }
+            }
+
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
+        //膳食的列表下拉事件
+        $scope.loadShanShiMore = function () {
+            if ($scope.showFood) {
+                var type = $scope.headtabType[$scope.mrysCurrentTab];
+                $scope.CurrentListPageNum[type] += 1;
+                var Count = $scope.pageListCount[type];
+                var pageNum = $scope.CurrentListPageNum[type];
+                if (pageNum <= Count) {
+                    //隐藏无数据提示
+                    $scope.task_hasSsMoreItem = true;
+                    $scope.doLoadSsMore = false;
+                    listParams.pageNum = pageNum;
+                    queryLsShanShiList("push");
+                } else {
+                    //显现提示
+                    $scope.doLoadSsMore = false;
+                    $scope.task_hasSsMoreItem = false;
+                    $scope.reusltSsNullTip = "已加载全部";
+                    //隐藏上拉加载
+                    $scope.isSsShow = false;
+                    //禁止上拉滑动
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                }
+            } else {
+                var type = $scope.xwheadtabType[$scope.xwCurrentTab];
+                $scope.xwCurrentListPageNum[type] += 1;
+                var Count = $scope.xwpageListCount[type];
+                var pageNum = $scope.xwCurrentListPageNum[type];
+                if (pageNum <= Count) {
+                    //隐藏无数据提示
+                    $scope.task_hasSsMoreItem = true;
+                    listParams.pageNum = pageNum;
+                    queryLsShanShiList("push");
+                } else {
+                    //显现提示
+                    $scope.task_hasSsMoreItem = false;
+                    $scope.reusltSsNullTip = "已加载全部";
+
+                    //隐藏上拉加载
+                    $scope.isSsShow = false;
+                    //禁止上拉滑动
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                }
+            }
+
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
+
+        // 查询字典公共方法
+        function queryZdList(style, params) {
+            var url;
+            if ($scope.showFood) {
+                url = "/zyys/getMeiRiYiShanZidian";
+            } else {
+                url = "/zyys/getMeiRiYiXueZidian";
+            }
+            params.pinYinSzm = queryZimu[zdParams.typeCode];
+            XywyService.save(url, params)
+                .then(function (response) {
+                    if (response.data.data) {
+                        var ary = getZd(response.data.data);
+                        var type = zdParams.typeCode;
+                        if (style == "equals") {
+                            $scope.CurrentZdPageNum[type] = 1;
+                            $scope.pageZdCount[type] = response.data.pageCount;
+                            $scope.mrysZdList[type] = ary;
+                            if (response.data.pageCount == 0) {
+                                $scope.isShow = false;
+                                $scope.task_hasMoreItem = false;
+                                $scope.reusltNullTip = "暂无相关搜索结果！";
+                                $scope.doLoadMore = false;
+                                return;
+                            }
+                            else {
+                                $scope.isShow = true;
+                                $scope.doLoadMore = true;
+                                $scope.$broadcast('scroll.infiniteScrollComplete');
+                            }
+
+                        } else if (style == "push") {
+                            $scope.mrysZdList[type] = $scope.mrysZdList[type].concat(ary);
+                            $scope.doLoadMore = true;
+                            $scope.$broadcast('scroll.infiniteScrollComplete');
+                        }
+
+                    }
+                }, Popup.alert);
+            $scope.reusltNullTip = "";
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
+
+        //膳食列表查询,根据style判断是push还是equals
+        function queryLsShanShiList(style) {
+            if ($scope.showFood) {
+                XywyService.save("/zyys/getMeiRiYiShanList", listParams)
+                    .then(function (response) {
+                        console.log(response,"555")
+                        $scope.shanshifalg = response.data.displayAllFlag
+                        var type = $scope.headtabType[$scope.mrysCurrentTab];
+                        if (style == "equals") {
+                            $scope.ShanShiFlList[type] = response.data.data;
+                            $scope.pageListCount[type] = response.data.pageCount;
+                            $scope.CurrentListPageNum[type] = 1;
+                            $scope.ShanShilist = response.data.data;
+                        } else if (style == "push") {
+                            $scope.ShanShilist = $scope.ShanShilist.concat(response.data.data);
+                            $scope.ShanShiFlList[type] = $scope.ShanShiFlList[type].concat(response.data.data);
+                        }
+                        $scope.doLoadSsMore = true;
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    }, Popup.alert);
+            } else {
+                XywyService.save("/zyys/getMeiRiYiXueList.json", listParams)
+                    .then(function (response) {
+                        $scope.xueweiflag = response.data.displayAllFlag
+                        var type = $scope.xwheadtabType[$scope.xwCurrentTab];
+                        if (style == "equals") {
+                            $scope.xwShanShiFlList[type] = response.data.data;
+                            $scope.xwpageListCount[type] = response.data.pageCount;
+                            $scope.xwCurrentListPageNum[type] = 1;
+                            $scope.xwShanShilist = response.data.data;
+                        } else if (style == "push") {
+                            $scope.xwShanShilist = $scope.xwShanShilist.concat(response.data.data);
+                            $scope.xwShanShiFlList[type] = $scope.xwShanShiFlList[type].concat(response.data.data);
+                        }
+                        $scope.doLoadSsMore = true;
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    }, Popup.alert);
+            }
+        }
+
+        // 重新组织后台返回的数据(设置数据选中)
+        function getZd(data) {
+            var array = new Array(), type = zdParams.typeCode;
+            for (var i = 0; i < data.length; i++) {
+                var obj = {
+                    title: data[i].dicItemName,
+                    code: data[i].dicItemCode,
+                    pinYin: data[i].dicItemNamePinyin,
+                    checked: false
+                }
+
+                if ($scope.choseItems[type]) {
+                    for (var j = 0; j < $scope.choseItems[type].length; j++) {
+                        if ($scope.choseItems[type][j].code == obj.code) {
+                            obj.checked = true;
+                        }
+                    }
+                }
+                array.push(obj);
+            }
+            return array;
+        };
+
+        //跳转详情页面
+        $scope.goDetail = function (pid,mc) {
+            if ($scope.showFood) {
+                $state.go("shanshidetail", {
+                    pid: pid,
+                    viewTitle:mc,
+                    displayAllContentFlag: $scope.shanshifalg
+                });
+            } else {
+                $state.go("xueweidetail", {
+                    pid: pid,
+                    viewTitle:mc,
+                    displayAllContentFlag: $scope.xueweiflag
+                });
+            }
+
+        };
+        // 取消选择
+        function qxxz(item) {
+            item.checked = false;
+            return false;
+        }
+        /**
+         * 页面重置按钮点击事件
+         */
+        $scope.cansel = function () {
+            var type = zdParams.typeCode;
+            var curSelect = $scope.choseItems[type].length;
+            //$scope.choseItems = { "1": [], "2": [], "3": [] };
+            $scope.choseItems[type] = [];
+            // 菜单选中状态设为false
+            $scope.mrysZdList[type].map(qxxz);
+            if (curSelect > 0 && (type == "1" || type == "3" || $scope.showFood == false)) {
+                var h = $("#contentDiv" + type).height();
+                document.getElementById("contentDiv" + type).style.height = h + 42 + "px";
+            }
+            event.stopPropagation()
+        };
+
+
+        //点击确定按钮查询事件
+        $scope.doQuery = function () {
+            var type;
+            var getCode = function (data) {
+                var arr = [];
+                for (var i = 0; i < data.length; i++) {
+                    arr.push(data[i].code)
+                }
+                return arr;
+            }
+            listParams.pageNum = 1;
+            for (var key in $scope.choseItems) {
+                if ($scope.showFood)
+                    type = $scope.headtabType[key];
+                else { type = $scope.xwheadtabType[key]; }
+                if ($scope.choseItems[key].length > 0) {
+                    var arr = getCode($scope.choseItems[key]);
+                    listParams[type] = arr;
+                    if ($scope.choseItems[key].length == 1) {
+                        $scope.choseStr[key] = $scope.choseItems[key][0].title;
+                    }
+                    else if ($scope.choseItems[key].length > 2) {
+                        $scope.choseStr[key] = $scope.choseItems[key][0].title + "、" + $scope.choseItems[key][1].title + "、" + $scope.choseItems[key][2].title;
+                    }
+                    else if ($scope.choseItems[key].length > 1) {
+                        $scope.choseStr[key] = $scope.choseItems[key][0].title + "、" + $scope.choseItems[key][1].title;
+                    }
+
+                } else {
+                    if (listParams[type]) {
+                        delete listParams[type];
+                        $scope.choseStr[key] = null;
+                    }
+
+                }
+
+
+            }
+            queryLsShanShiList("equals");
+            $scope.isShowPx = $scope.isShowPx.map(close);
+            event.stopPropagation()
+        };
+
+        function close(x) {
+            return false;
+        }
+
+
+        /**
+         * 菜单开关
+         */
+        $scope.changeButton = function (index) {
+            var top = ($scope.isIos) ? 94 : 138, h = window.innerHeight - top - 50;
+            if (typeof index != "undefined") {
+                var oldValue = $scope.isShowPx[index];
+                $scope.isShowPx = $scope.isShowPx.map(close);
+                $scope.isShowPx[index] = !oldValue;
+                if ($scope.isShowPx[index]) {
+                    if (index == 0) {
+                        zdParams.typeCode = "2";
+                        queryZdList("equals", zdParams);
+                    }
+                    else if (index == 1) {
+
+                        zdParams.typeCode = "1";
+                        queryZdList("equals", zdParams);
+                        // 设置下拉框高度
+                        if ($scope.choseItems["1"].length == 0) {
+                            document.getElementById("contentDiv1").style.height = h + "px";
+                        }
+                    }
+                    else {
+                        if ($scope.showFood) {
+                            zdParams.typeCode = "3";
+                        } else {
+                            zdParams.typeCode = "2";
+                        }
+                        queryZdList("equals", zdParams);
+                        // 设置下拉框高度
+                        if ($scope.choseItems[zdParams.typeCode].length == 0) {
+                            document.getElementById("contentDiv" + zdParams.typeCode).style.height = h + "px";
+                        }
+                    }
+                }
+            } else {
+                $scope.isShowPx = $scope.isShowPx.map(close);
+            }
+            event.stopPropagation();
+        }
+
+        //首次进入页面查询列表和膳食列表
+        $scope.queryTabList = function () {
+            $scope.doLoadMore = true;
+            if ($scope.showFood) {
+                var pageNum = 1;
+                var para = {
+                    pageNum: pageNum,
+                    typeCode: $scope.mrysCurrentTab
+                }
+                queryZdList("equals", para);
+            } else {
+                var pageNum = 1;
+                var para = {
+                    pageNum: pageNum,
+                    typeCode: $scope.xwCurrentTab
+                }
+                queryZdList("equals", para);
+            }
+            queryLsShanShiList("equals");
+
+        }
+        $scope.queryTabList();
+
+        $scope.goSearch = function () {
+            var gn;
+            if ($scope.showFood) {
+                gn = "ss";
+            } else {
+                gn = "xw";
+            }
+            $state.go("jibingserch", { "gn": gn })
+            event.stopPropagation();
+        };
+
+
+        // 监听页面滑动事件,菜单显示时使页面滑动失效
+        document.addEventListener('touchmove', function (event) { 　　 //监听滚动事件
+            if ($scope.showFood && $scope.isShowPx[0]) {
+                event.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+            }
+        }, { passive: false });//passive 参数不能省略，用来兼容ios和android
+
+    })
+    .controller('ssDetailC', function ($scope, $stateParams, XywyService, Popup, $window, GoZzJbYp) {
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+            $scope.localyyzt = "打开";
+        }
+        var self = this;
+        if($stateParams.viewTitle){
+        	self.viewTitle = $stateParams.viewTitle;
+        }else{
+        	self.viewTitle = '膳食详情';
+        }
+        
+        XywyService.query("/zyys/getMeiRiYiShanDetail.json", { params: { pid: $stateParams.pid,displayAllContentFlag: $stateParams.displayAllContentFlag} })
+            .then(function (response) {
+                var imgBaseUrl = myConfig.imgBaseUrl;
+                var data = response.data.data;
+                self.haveResult = true;
+                self.items = [];
+                var push = Array.prototype.push.bind(self.items);
+                self.title = data.shanShiMing;
+//                self.viewTitle = data.shanShiMing;
+                self.fbsj = "发布时间：" + data.createDate;
+                function url(url) { return imgBaseUrl + url; }
+                self.tuPianAry = data.tupianMingchengNew.split(",");
+                self.tuPianAry = self.tuPianAry.map(url);
+                self.nrzc = "内容支持：" + data.contentSupport;
+                if(data.shiyingTizhiDisplay){
+                    push({ title: '中医体质', content: data.shiyingTizhiDisplay });
+                }
+                if(data.zhongyiGongxiaoDisplay){
+                    push({ title: '主治功效', content: data.zhongyiGongxiaoDisplay });
+                }
+                if(data.shiyingZhengDisplay){
+                    push({ title: '适应症', content: data.shiyingZhengDisplay });
+                }
+                if(data.jijieShiling){
+                    push({ title: '季节时令', content: data.jijieShiling });
+                }
+                
+                push({ title: '食材', content: data.shicai });
+                push({ title: '烹饪方法', content: data.pengtiaoFangfa });
+                push = null;
+            }, function (reason) {
+                Popup.alert(reason)
+            });
+        $scope.audioCtrlShow = 1;
+        $scope.switchAudioBar = function (e) {
+            if ($scope.audioCtrlShow == 1) {
+                $scope.audioCtrlShow = 0;
+            } else {
+                $scope.audioCtrlShow = 1;
+            }
+        };
+        $scope.$on('closeAudioBar', function () {
+            $scope.switchAudioBar();
+        });
+
+        $scope.yaopinlist = function (name, leixing) {
+            GoZzJbYp.yaopinlist(name, leixing);
+        };
+    })
+    .controller('xwDetailC', function ($scope, $stateParams, XywyService, Popup, $window, GoZzJbYp) {
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+            $scope.localyyzt = "打开";
+        }
+        var self = this;
+        if($stateParams.viewTitle){
+        	self.viewTitle = $stateParams.viewTitle;
+        }else{
+        	self.viewTitle = '穴位详情';
+        }
+        
+        XywyService.query("/zyys/getMeiRiYiXueDetail.json", { params: { zuheKey: $stateParams.pid,displayAllContentFlag: $stateParams.displayAllContentFlag } })
+            .then(function (data) {
+                var imgBaseUrl = myConfig.imgBaseUrl;
+                data = data.data;
+                self.haveResult = true;
+                self.items = [];
+                var push = Array.prototype.push.bind(self.items);
+                self.title = data.zuheXues;
+//                self.viewTitle = data.zuheXues;
+                self.fbsj = "发布时间：" + data.publishDate;
+                self.nrzc = "内容支持：" + data.contentSupport;
+                function img(url) {
+                    return "<img src='" + imgBaseUrl + url + "' style='width:100%'>"
+                }
+                if(data.shiYingZheng){
+                    push({ title: '适应症', content: data.shiYingZheng });
+                }
+                for (var i = 0; i < data.xwxxList.length; i++) {
+                    if (data.xwxxList[i].tupianMingchengNew) {
+                        var imgArr = data.xwxxList[i].tupianMingchengNew.split(",").map(img);
+                        data.xwxxList[i]['tuPianAry'] = imgArr.join('');
+                    }
+                    if (i == 0) {
+                        push({ title: '主穴', content: data.xwxxList[i].mingCheng });
+                    } else {
+                        push({ title: '配穴', content: data.xwxxList[i].mingCheng });
+                    }
+                    if(data.xwxxList[i].gongxiaoZhuzhiDisplay){
+                        push({ title: '主治功效', content: data.xwxxList[i].gongxiaoZhuzhiDisplay, show: true });
+                    }
+                    push({ title: '取穴', content: data.xwxxList[i].quXue?data.xwxxList[i].quXue:'' + data.xwxxList[i]['tuPianAry']});
+                    push({ title: '按揉方法', content: data.xwxxList[i].anrouFangfa });
+
+                }
+
+
+                push = null;
+            }, function (reason) {
+                Popup.alert(reason)
+            });
+        $scope.audioCtrlShow = 1;
+        $scope.switchAudioBar = function (e) {
+            if ($scope.audioCtrlShow == 1) {
+                $scope.audioCtrlShow = 0;
+            } else {
+                $scope.audioCtrlShow = 1;
+            }
+        };
+        $scope.$on('closeAudioBar', function () {
+            $scope.switchAudioBar();
+        });
+        $scope.yaopinlist = function (name, leixing) {
+            GoZzJbYp.yaopinlist(name, leixing);
+        };
+
+    })
+

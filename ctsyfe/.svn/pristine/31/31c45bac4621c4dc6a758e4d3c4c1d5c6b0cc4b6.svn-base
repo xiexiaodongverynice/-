@@ -1,0 +1,41 @@
+<ion-view hide-nav-bar="isIos" view-title="关于我们" >
+	<style type="text/css">
+	.guanyuiconfooter{
+	background-size: 0;
+	}
+	.guanyuneirong{
+	padding: 20px;
+	}
+	.guanyufootdiv{
+	height:auto;
+	background: #b2b2b2;
+	opacity: 0.5;
+	text-align: center;
+	position: absolute; 
+	display: block;
+	}
+	.guanyuh4{
+	text-align: center;
+	}
+	</style>
+	<ion-nav-buttons side="left">
+        <div style="text-align: center;height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()">
+            </button>
+        </div>
+    </ion-nav-buttons>
+	<ion-content>
+		<img class="imgstyle" src="img/guanyu.jpg">
+		<div class="guanyuneirong" style="padding-top: 10px;">
+			<h4 class="guanyuh4" style="padding-bottom: 5px;">草堂上医</h4>
+			<span>新博卓畅技术（北京）有限公司，作为新奥集团直属企业，是新奥事业版图中“生活”板块的重要组成部分，基于多年的医疗大数据技术积累，公司先后成功在多个城市实施了城市智慧医疗和医疗大数据应用项目，得到了社会各界的高度认可，并获得了国家发改委的立项和资金支持。在技术与业务领域方面，公司同GE、哈佛大学、清华大学以及北京301医院、协和医院等权威学术及业务机构形成了长期稳定的战略合作伙伴关系。</span>
+		</div>
+
+    </ion-content>
+    <ion-footer-bar class="guanyuiconfooter">
+        <div class="bar bar-footer guanyufootdiv">
+			<i class="icon-gywm" style="font-size: 35px;color: #18b4ed"></i><br>
+			<span style="color: black;">草堂上医</span>
+		</div>
+    </ion-footer-bar>
+</ion-view>

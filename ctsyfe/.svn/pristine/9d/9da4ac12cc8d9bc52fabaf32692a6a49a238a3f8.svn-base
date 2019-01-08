@@ -1,0 +1,153 @@
+<ion-view hide-nav-bar="isIos" view-title="我的收藏" class="wdsc-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <style>
+        .wdsc-list .sc-tabs {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            height: 44px;
+            font-size: 0;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+
+        }
+
+        .wdsc-list .sc-tabs li {
+            display: inline-block;
+            width: 20%;
+            height: 100%;
+            font-size: 16px;
+            line-height: 44px;
+            text-align: center;
+        }
+
+        .wdsc-list .sc-tabs li.on span {
+            display: inline-block;
+            height: 100%;
+            color: #00b5ee;
+            font-weight: bold;
+            border-bottom: 2px solid;
+        }
+
+        .line-2 {
+            text-overflow: -o-ellipsis-lastline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    </style>
+    <ul class="sc-tabs" ng-style="{top:(isIos)? '0': '44px'}">
+        <li ng-class="{true:'on',false:''}[type=='jkq']" ng-click="switchType('jkq')">
+            <span>健康圈</span>
+        </li>
+        <li ng-class="{true:'on',false:''}[type=='ss']" ng-click="switchType('ss')">
+            <span>膳食</span>
+        </li>
+        <li ng-class="{true:'on',false:''}[type=='xw']" ng-click="switchType('xw')">
+            <span>穴位</span>
+        </li>
+        <li ng-class="{true:'on',false:''}[type=='jb']" ng-click="switchType('jb')">
+            <span>疾病</span>
+        </li>
+        <li ng-class="{true:'on',false:''}[type=='yp']" ng-click="switchType('yp')">
+            <span>药品</span>
+        </li>
+    </ul>
+    <ion-content ng-style="{top:(isIos)? '44px': '89px'}">
+        <!-- 膳食列表 -->
+        <div class="ssys" ng-if="type=='ss'">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-repeat="item in dataList[type]" ng-click="goSs(item)">
+                    <div class="list_box">
+                        <div class="image_box">
+                            <img class="image" ng-src="{{imgBaseUrl+item.iconImage}}">
+                        </div>
+                        <div class="content">
+                            <h4>{{item.shanShiMing}}</h4>
+                            <p style="margin: 0;">中医体质：{{item.shiyingTizhiDisplay}}</p>
+                            <p style="margin: 0;">主治功效：{{item.zhongyiGongxiaoDisplay}}</p>
+                            <p style="margin: 0;" ng-bind-html="'适应症:'+item.shiyingZhengDisplay" compile-html></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 穴位养生 -->
+        <div class="ssys" ng-if="type=='xw'">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-repeat="item in dataList[type]" ng-click="goXw(item)">
+                    <div class="list_box">
+                        <div class="image_box">
+                            <img class="image" ng-src="{{imgBaseUrl+item.iconImage}}">
+                        </div>
+                        <div class="content">
+                            <h4>{{item.zhuXueName}}<span class="peixue">{{item.zuHeXueNames|limitTo:20:3}}</span></h4>
+                            <p style="margin: 0;">主治功效：{{item.gongXiaoZhuZhi}}</p>
+                            <p style="margin: 0;" ng-bind-html="'适应症:'+item.shiYingZheng" compile-html></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="ypzn" ng-if="type=='yp'">
+            <ul>
+                <li ng-repeat="micItem in dataList[type]" class="show_yp_list" ng-click="goYp(micItem)">
+                    <span ng-if="micItem.spmc!=''" class="show_yp_info" style="font-size: 16px;">
+                        {{micItem.tymc}}
+                        <!-- <span class="yp_sub">({{micItem.spmc}}) -->
+                        <span class="yp_sub">
+                            <span style="float : right">
+                                <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span>
+                                <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                                <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                            </span>
+                        </span>
+                    </span>
+                    <span ng-if="micItem.spmc==''" class="show_yp_info">{{micItem.tymc}}
+                        <!-- <span class="yp_sub">({{micItem.cjsx}}) -->
+                        <span class="yp_sub">
+                            <span style="float : right">
+                                <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span>
+                                <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                                <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                            </span>
+                        </span>
+                    </span>
+                    </span>
+                    <span ng-if="micItem.spmc && (!micItem.count || micItem.count==1 )" class="show_yp_info" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin-top: 5px; font-size:14px; color: #999;">
+                        {{micItem.spmc}}
+                    </span>
+                    <span ng-if="!micItem.spmc && (!micItem.count || micItem.count==1 ) && micItem.cjsx " class="show_yp_info yp-spmc">
+                        {{micItem.cjsx}}
+                    </span>
+                    <span class="show_yp_info yp-discription" ng-bind-html="micItem.syz" compile-html>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div ng-if="type=='jkq'">
+            <show-messagejkq ge-ren="dataList[type]" qz-xiangqing="true"></show-messagejkq>
+            <div ng-if="dataList[type].length==0" style="margin-top: 30%">
+                <img src="img/xiangzi.png" alt="" id="imglook">
+                <div style="margin-top: 30px">
+                    <p style="text-align: center;color: #999999;font-size: 16px;">还未发现任何话题</p>
+                </div>
+            </div>
+        </div>
+        <div ng-if="type=='jb'">
+            <ul>
+                <li ng-repeat="item in dataList[type]" class="p-10 b-b-1" ng-click="goJb(item)">
+                    <h5 ng-bind="item.jbmc" class="s-16 color-3"></h5>
+                    <p ng-bind="item.jbms" class="s-14 color-9 line-2"></p>
+                </li>
+            </ul>
+        </div>
+        <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isShow" immediate-check="false" on-infinite="!isShow&&loadMore()"
+            distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

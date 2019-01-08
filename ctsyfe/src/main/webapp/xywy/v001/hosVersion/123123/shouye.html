@@ -1,0 +1,100 @@
+<ion-view hide-nav-bar="isIos" view-title="数字家庭医生">
+		<!-- hide-nav-bar="true"-->
+	
+		<ion-nav-buttons side="left">
+			<!--<div style="text-align: center;width: 100%;">-->
+			<!--<button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>-->
+			<!--</div>-->
+			<a nav-direction="back" onclick="javascript:history.go(-1);">
+				<button class="button button-clear icon ion-chevron-left"></button>
+			</a>
+		</ion-nav-buttons>
+		<ion-content style="background: #eff0f4;">
+			<div class="header-top">
+				<img class="imgstyle" src="img/shouye_ad.jpg">
+				<div class="wyIcon" ng-click="wenyi()">
+					<span class="fixBox-text">快速问医</span>
+					<i class="icon ion-ios-arrow-right fixBox-icon" style="color:#ff9500"></i>
+				</div>
+				<div class="hand" ng-click="wenyi()">
+					<img src="img/hand.png" />
+				</div>
+				<div class="absIcon" ng-click="banned()">
+					<i class="icon" ng-class="{true: 'ion-android-volume-up',false: 'ion-android-volume-off'}[isBanned]"></i>
+	
+				</div>
+			</div>
+			<div class="main-pannel">
+					<dl ng-click="zwpg()">
+						<dt>
+							<i class="icon-zzpg"></i>
+							<span>症状评估</span>
+						</dt>
+						<dd>自我评估症状</dd>
+		
+					</dl>
+					<dl class="mid-col" ng-click="tzpg()">
+						<dt>
+							<i class="icon iconfont icon-tzpg"></i>
+							<span>体质评估</span>
+						</dt>
+						<dd>体质辨识健康指导</dd>
+					</dl>
+					<dl ng-click="fengxianpinggu()">
+						<dt>
+							<i class="icon iconfont icon-fxpg"></i>
+							<span>风险评估</span>
+						</dt>
+						<dd>疾病风险分析</dd>
+					</dl>
+					<dl ng-click="cjzz()">
+						<dt>
+							<i class="icon-zzzn"></i>
+							<span>症状指南</span>
+						</dt>
+						<dd>常见症状解析</dd>
+					</dl>
+					<dl class="mid-col" ng-click="yao()">
+						<dt>
+							<i class="icon-ypzn"></i>
+							<span>药品指南</span>
+						</dt>
+						<dd>禁忌症和不良反应</dd>
+					</dl>
+					<dl ng-click="wenjibing()">
+						<dt>
+							<i class="icon-jbzn"></i>
+							<span>疾病指南</span>
+						</dt>
+						<dd>常见疾病健康指导</dd>
+					</dl>
+					<dl ng-click="baogao()">
+						<dt>
+							<i class="icon-wzb"></i>
+							<span>指标解读</span>
+						</dt>
+						<dd>检验检查解读</dd>
+					</dl>
+					<dl class="mid-col" ng-click="zhongyiyangsheng()">
+						<dt>
+							<i class="icon iconfont icon-zyys"></i>
+							<span>中医养生</span>
+						</dt>
+						<dd>亚健康和慢病调理</dd>
+					</dl>
+					<dl>
+						<dt>
+							<i class="icon iconfont icon-fyjk"></i>
+							<span>妇幼健康</span>
+						</dt>
+						<dd>妇女儿童健康管理</dd>
+					</dl>
+					
+				</div>
+		</ion-content>
+		<ion-footer-bar style="height: 50px;background-color: #eff0f4;background-size: 0;">
+			<div class="bar bar-footer bar-balanced" style="height:auto;background: #b2b2b2;opacity: 0.5;">
+				<artice style="padding:0 2%;font-size:12px;color:#fff;">免责声明：草堂上医仅仅提供家庭健康管理的建议参考，不能作为医院诊断和治疗的方案或依据。</artice>
+			</div>
+		</ion-footer-bar>
+	</ion-view>

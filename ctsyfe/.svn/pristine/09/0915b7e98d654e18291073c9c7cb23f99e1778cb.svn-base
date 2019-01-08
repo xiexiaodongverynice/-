@@ -1,0 +1,159 @@
+<ion-view hide-nav-bar="isIos" view-title="预产期设置" class="ycqcz yqhh">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        .yqhh ion-content {
+            background: #F8F8F8;
+        }
+        
+        .ycqcz form {
+            background: #fff;
+        }
+        .ycqcz .tip{
+            margin-bottom: 10px;
+        }
+        .ycqcz .tabs-u {
+            text-align: center;
+            padding: 15px 15px 35px 15px;
+            font-size: 0;
+            background: #fff;
+        }
+        
+        .ycqcz .jbxx label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .ycqcz .tabs-u .tab {
+            display: inline-block;
+            width: 100px;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #00b5ee;
+            height: 28px;
+            line-height: 28px;
+            margin: 0;
+        }
+        
+        .ycqcz .tabs-u .tab.cur {
+            background: #00b5ee;
+            color: #fff;
+        }
+        
+        .ycqcz .tabs-u li:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .ycqcz .tabs-u li+li {
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .ycqcz .button-p {
+            text-align: center;
+        }
+        
+        .ycqcz input[type="button"] {
+            position: static;
+            height: 30px;
+            width: 100px;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            background: #00b5ee;
+            border-radius: 2px;
+            margin-top: 30px;
+            margin-bottom: 17px;
+        }
+        .ycqcz input[type="button"]:disabled{
+            background: #ccc;
+        }
+        
+        .ycqcz .result {
+            font-size: 16px;
+            color: #333;
+            background: #fff;
+            padding: 15px 20px;
+            margin-top: 10px;
+        }
+        
+        .ycqcz .result p {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        
+        .ycqcz .result p span {
+            color: #00b5ee;
+        }
+        
+        .ycqcz .result-tip {
+            font-size: 12px;
+            color: #999;
+        }
+        .ycqcz fieldset.jbxx>div:last-child{
+            border-bottom:none;
+        }
+    </style>
+    <ion-content>
+        <!-- 提示 -->
+        <!-- <div class="tip" ng-hide="hideTip">
+            <p class="color-6">计算结果仅供参考，建议您注意孕期营养和休息，预产期提前或推迟一至两周都属正常现象。</p>
+            <i class="icon ion-close-round" ng-click="closeTip()"></i>
+        </div> -->
+        <ul class="tabs-u">
+            <li class="tab" ng-class="{true:'cur',false:''}[tab==0]" ng-click="switchForm(0)">末次月经
+            </li>
+            <li class="tab" ng-class="{true:'cur',false:''}[tab==1]"  ng-click="switchForm(1)">怀孕时间</li>
+        </ul>
+        <form id="mcyjForm" class="jkda-item-edit">
+            <fieldset class="jbxx">
+                <div ng-if="tab==0">
+                    <label for="yueJingTimeEnd">末次月经时间</label>
+                    <input type="text" id="yueJingTimeEnd" name="yueJingTimeEnd" ng-click="datePiker('yueJingTimeEnd')" maxlength="12" data-year="" data-month="" data-date="" placeholder="请选择末次月经时间" ng-model="subData.yueJingTimeEnd"  readonly="readonly" ng-blur="valiForm()"   />
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div ng-if="tab==1">
+                    <label for="huaiYunTianShu">怀孕天数</label>
+                    <div class="input-div">
+	                    <input type="text" id="huaiYunTianShu" name="huaiYunTianShu" oninput="if(value.length > 3)value=value.slice(0,3)"  pattern="[0-9]*" placeholder="请输入怀孕天数" ng-model="subData.huaiYunTianShu" ng-blur="valiForm()" ng-change="valiForm()"/>
+	                     <span class="danwei"> <label >天</label></span>
+	                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="yueJingZhouQi">月经周期</label>
+                    <div class="input-div">
+                        <input type="text" id="yueJingZhouQi" name="yueJingZhouQi" maxlength="12" placeholder="请选择月经周期" ng-model="subData.yueJingZhouQi" data-zq="{{subData.yueJingZhouQi}}"  readonly="readonly" ng-blur="valiForm()"  required/>
+                        <span class="danwei"> <label for="yjzq">天</label></span>
+                        <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                    </div>
+                </div>
+
+            </fieldset>
+            <!-- <div class="button-p">
+                <input type="button" ng-click="jxyqxx()" value="计算" ng-disabled="!formValied" >
+            </div> -->
+        </form>
+        <div class="result">
+            <p>
+                您的预产期：<span>{{yqxx.yuChanQi}}</span>
+            </p>
+            <p>
+                您已经怀孕：<span>{{yqxx.huaiyunzhou}}</span>
+            </p>
+            <p>
+                距离宝宝出生还有：<span>{{yqxx.shengYuTian}}</span>
+            </p>
+
+            <p class="result-tip">计算结果仅供参考，建议您注意孕期营养和休息，预产期提前或推迟一至两周都属正常现象。</p>
+        </div>
+
+    </ion-content>
+    <div class="bar bar-footer bar-gray">
+        <input type="submit" value="确定" id="submit" ng-click="saveYunQiTime()" ng-disabled="(!formValied)||ischusheng">
+    </div>
+</ion-view>

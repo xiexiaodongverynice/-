@@ -1,0 +1,102 @@
+<ion-view hide-nav-bar="isIos" view-title="膳食详情">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <a nav-direction="back">
+            <go-home-android></go-home-android>
+        </a>
+    </ion-nav-buttons>
+
+    <style>
+        #zyys-xq {
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        #zyys-xq pre {
+            line-height: 1.8;
+
+        }
+
+        #zyys-xq h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+        #zyys-xq h4 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        pre {
+            font-size: 14px;
+
+        }
+
+        #zyys-xq section {
+            width: 90%;
+            margin: 1rem 0 0 5%;
+            margin-bottom: 16px;
+        }
+    </style>
+
+    <ion-content id="zyys-xq">
+        <div style="border-bottom: 1px solid #dedede;">
+            <div style="margin:2rem 0 0 2rem;">
+                <h3>
+                    {{detailList.shanShiMing}}
+                </h3>
+                <p style="color:#999;font-size: 12px;">发布时间：{{detailList.createDate}}
+                    内容支持：{{detailList.contentSupport}}</p>
+            </div>
+        </div>
+
+        <!-- <img src = "createDate."> -->
+        <section style="width:90%;margin: 1rem 0 0 5%;">
+            <div ng-repeat="item in tuPianAry" style="margin:1rem 0 0 0;">
+                <img ng-if="item" src="{{imgBaseUrl}}{{item}}" style="width:100%;" alt="暂无相关图片">
+            </div>
+        </section>
+
+        <section>
+            <h4>中医体质</h4>
+            <hr>
+            <p ng-bind-html="detailList.shiyingTizhiDisplay" compile-html></p>
+        </section>
+        <section>
+            <h4>主治功效</h4>
+            <hr>
+            <p>{{detailList.zhongyiGongxiaoDisplay}}</p>
+        </section>
+        <section>
+            <h4>适应症</h4>
+            <hr>
+            <p ng-bind-html="detailList.shiyingZhengDisplay" compile-html></p>
+        </section>
+        <section>
+            <h4>季节时令</h4>
+            <hr>
+            <p>{{detailList.jijieShiling}}</p>
+        </section>
+
+        <section>
+            <h4>食材</h4>
+            <hr>
+            <pre style="color:#666;">{{detailList.shicai}}</pre>
+        </section>
+        <section ng-if="detailList.pengtiaoFangfa">
+            <h4>烹饪方法</h4>
+            <hr>
+            <pre>{{detailList.pengtiaoFangfa}}</pre>
+        </section>
+    </ion-content>
+</ion-view>

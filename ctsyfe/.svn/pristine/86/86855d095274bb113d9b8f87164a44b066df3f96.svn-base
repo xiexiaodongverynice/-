@@ -1,0 +1,66 @@
+angular.module('starter.zhenLiaoJLControllers', ['ionic'])
+
+/* 诊疗记录查询 */
+.controller('zlJiLuListC', function ($scope, $state, XywyService, Popup, $window, $ionicLoading, JsUtil, $timeout, UserInfoService) {
+    $scope.isIos = false;
+    if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+        $scope.isIos = true;
+        sessionStorage.setItem('isIos', $scope.isIos);
+    }
+    $scope.isyimiao = false
+    //返回上一页
+    $scope.goBack = function () {
+        $window.history.back();
+    };
+    
+    
+  //用户微信头像
+    var txNc = UserInfoService.getTxNc();
+    $scope.weiXinTX = txNc.tx;
+
+
+    // 查询诊疗记录列表
+    var param = {};
+    param.openid = sessionStorage.getItem("openId");
+    XywyService.query('/queryZljl', {
+            params: param
+        })
+        .then(function (res) {
+            $scope.memberMsg = res.data;
+            //设置初始伸缩标志位
+            $scope.ssflag = [];
+            var cyid = localStorage.getItem('cyid'); //家庭成员id
+            for (var j = 0; j < res.data.length; j++) {
+                //  有已经点击的成员，设置为展开，没有已经点击的成员，第一个设置为展开
+                if ((JsUtil.isNotEmpty(cyid) && cyid === $scope.memberMsg[j].id) || (JsUtil.isEmpty(cyid) && j == 0)) {
+                    $scope.ssflag[j] = "show";
+                    showIndex = j;
+                    $scope.getmedicallist($scope.memberMsg[j].id);
+                    $scope.getjianchajianyanlist($scope.memberMsg[j].id);
+                    $scope.getyimiaodata($scope.memberMsg[j].id, $scope.memberMsg[j].chuShengRiQi)
+                } else {
+                    $scope.ssflag[j] = "hide";
+                }
+                if (JsUtil.isEmpty(res.data[j].imgUrl)) {
+                    $scope.memberMsg[j].imgUrl = null;
+                }
+               
+            }
+
+
+        }, Popup.alert);
+
+
+    // 循环完毕页面定位(滚动)到展开项
+    $scope.$on('repeatFinishCallback', function () {
+        if (showIndex > 3) {
+            var id = "cy" + showIndex;
+            var dom = document.getElementById(id);
+            var top = dom.offsetTop;
+            $('#dalist').animate({
+                scrollTop: top - 50
+            });
+        }
+    });
+   
+})

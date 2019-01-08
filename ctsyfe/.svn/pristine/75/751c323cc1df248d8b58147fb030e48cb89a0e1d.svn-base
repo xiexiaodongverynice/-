@@ -1,0 +1,266 @@
+<ion-view hide-nav-bar="isIos" view-title="慢病气象健康" class="mbqxjk">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="back()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+       .manbingweather_header{
+                position: relative;
+                text-align: center;
+                width: 100%;
+                height: 50px;
+               
+       }
+       .header_changes{
+            border: 1px solid #2db4ee;
+            border-radius: 5px;
+            font-size: 15px;
+            display: inline-flex;
+            width: 60%;
+            flex-direction: row;
+            margin-top: 10px;
+       }
+       .manbinglist{
+           flex: 1;
+           background: #00B5EE;
+           color: #FFFFFF;
+           padding: 5px;
+       }
+       .weatherlist{
+           flex: 1;
+           color: #00B5EE;
+           padding: 5px;
+       }
+       .titleBox {
+        position: relative;
+        width: 100%;
+        background-color: #fff;
+        border-bottom: 1px solid #dedede;
+        border-top: 10px solid #F5F5F5
+    }
+
+    .titleBox>ul {
+        overflow: hidden;
+        width: 90%;
+        border: 1px solid #18b4ed;
+        border-radius: 10px;
+        box-sizing: border-box;
+        margin: 10px auto;
+    }
+
+  
+    /*ul>.show_yp_list:first-child{*/
+    /*border-top: 1px solid #dedede;*/
+    /*}*/
+    .mbqxjk .show_yp_list {
+        margin-right:24px;
+    }
+
+
+    .show_yp_info {
+        width: 85%;
+        margin-left: 5px;
+        font: 15px Microsoft Yahei;
+        padding: 10px 0;
+        display: inline-block;
+    }
+
+
+    .tuBiao {
+        float: right;
+        margin-right: 30px;
+        font-size: 18px;
+        padding: 15px 0;
+    }
+    /*查询没有没有返回值时的提示框样式*/
+    .popup-body span {
+        text-align: -webkit-center;
+        width: 100%;
+        margin: 7px auto;
+        display: inline-block;
+    }
+
+    .popup-head {
+        background-color: #18b4ed;
+    }
+
+    .popup-head h3 {
+        color: #fff;
+        font-size: 16px;
+    }
+    .bar.item-input-inset .item-input-wrapper input {
+        padding-left: 0px;
+        width: 94%;
+        height: 28px;
+        background: 0 0;
+        line-height:normal;
+    }
+
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    }
+    .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    }
+    .tabClick{
+        display: block;
+    }
+    .chooseCurrent{
+        color: #18B4ED;
+    }
+    .bar.item-input-inset .item-input-wrapper input {
+        padding-left: 0px;
+        width: 94%;
+        height: 28px;
+        background: 0 0;
+        line-height:normal;
+    }
+    .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+
+
+
+            .chooseCurrent {
+                color: #18B4ED;
+            }
+
+            .notChoose {
+                color: #333
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 106px;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                padding: 12px 16px;
+            }
+
+            .tabClick {
+                display: block;
+            }
+
+            .dropdown-content li {
+                font-size: 14px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+            }
+
+            #sortButton {
+                padding-right: 10px;
+            }
+
+            #sortButton span {
+                margin-left: 15px;
+            }
+            .tisi{
+                font-size: 12px;
+                background: #fffbeb;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+            }
+            .cut-line{
+            width: 100%
+            }
+        .alltop{
+            position: relative;
+            width: 100%;
+            height: 100px;
+            z-index: 20;
+        }
+        .left-lb .show_span_info {
+            width: auto;
+            margin-right: 25px;
+        }
+
+        .right-lb li {
+            height: 51px;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        li .zz {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+        .weatherfactor_header{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-top: 10px solid #F5F5F5
+        }
+</style>
+    <div class="alltop" ng-style="{top:(isIos)? '0px': '40px'}">
+        <div class="manbingweather_header">
+            <div class="header_changes" >
+                <span ng-class="{true:'manbinglist',false:'weatherlist'}[isshowmanbingorweather=='manbing']"
+                    ng-click="getchanges('manbing')">慢性疾病</span>
+                <span ng-class="{true:'manbinglist',false:'weatherlist'}[isshowmanbingorweather=='weather']"
+                    ng-click="getchanges('weather')">气象因子</span>
+            </div>
+        </div>
+        <nav class="titleBox" ng-if="isshowmanbingorweather=='manbing'">
+            <div style="background-image: none;top:2px; overflow:visible;" class="bar item-input-inset">
+                <div class="item-input-wrapper" ng-click="goserch()" style="background: #fff;border: 1px solid #F5F5F5">
+                    <button ng-click="searchDrug()" type="button" name=""
+                        class="button button-clear ion-android-search"
+                        style="color: #ccc; font-size: 25px; height: 28px;padding-top: 2px; "></button>
+                    <input ng-model="data.keyword" ng-change="searchDrug()" type="search"
+                        ng-class="{true: 'inputIos',false: ''}[isIos]"
+                        placeholder="请输入您想要的疾病名称"> 
+                        <i ng-click="clean()" style="font-size: 20px; padding-right: 8px;height:28px;line-height:28px;color:#ccc" class="icon iconfont icon-yuyin"></i>
+                        <!-- <i ng-click="clean()" ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']"
+                        style="font-size: 16px; padding-right: 8px;height:28px;line-height:28px"></i> -->
+                </div>
+            </div>
+        </nav>
+    </div>
+    <ion-content style="background: #FFFFFF" ng-style="{top:(isIos)? '108px': '143px'}" ng-show="isshowmanbingorweather=='manbing'">
+        <ul style=" border-top: 10px solid #F5F5F5" ng-if="isshowmanbingorweather=='manbing'">
+            <div ng-repeat='jbItem in jbList' >
+            <div style="background: #f5f5f5;font-size: 1.3em;padding-left: 22px;line-height: 30px;height: 30px;margin-top:-1px" ng-if="jbItem.pinYin!=jbList[$index-1].pinYin ">{{jbItem.pinYin}}</div>
+            <li class="show_yp_list" ng-click="gomanbingdetail(jbItem.diseaseId,jbItem.diseaseName)"><span class="show_yp_info">{{jbItem.diseaseName}}</span>
+                <!-- <i class="ion-chevron-right tuBiao"></i> -->
+            </li>
+            </div>
+        </ul>
+    </ion-content>
+    <ion-content style="background: #FFFFFF" ng-style="{top:(isIos)? '58px': '93px'}" ng-show="isshowmanbingorweather=='weather'">
+        <div class="weatherfactor_header">
+            <div class="liebiao left-lb">
+                <ul class="list no-float">
+                    <li class="show_li_list" ng-repeat="item in weatherfactor" ng-click="getjibingbywwather(item.elementName)" ng-class="[{'chose':item.elementName===data.elementName}]">
+                        <span ng-if="item.elementName===data.elementName" id="curBw" style="position:relative;" value="{{$index}}"></span>
+                        <span class="show_span_info" on-finish-render-filters="Complete">{{item.elementName}}</span>
+                        <!-- <i class="icon ion-chevron-right i_tuBiao"></i> -->
+                    </li>
+                </ul>
+            </div>
+            <div class="liebiao right-lb">
+                <ul class="list no-float">
+                    <li class="show_li_list" ng-click="chooseZz(zz.diseaseName,zz.diseaseId)" ng-repeat="zz in jibingbywwather">
+                        <span class="show_span_info zz">{{zz.diseaseName}}</span>
+                        <!-- <i class="icon ion-chevron-right i_tuBiao i-zz"></i> -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </ion-content>
+    <right-list cru-gn="'MBL'" ng-if="isshowmanbingorweather=='manbing'"></right-list>
+    <div ng-show="ishsowzimu&&zimu"  id="dazimudiv" style="position: fixed;z-index: 2;background: #bcbcbc;width: 80px;height: 80px;text-align: center;vertical-align: middle;padding-top: 30px;font-size: 2em;margin-left: 40%;margin-top: 50%;border-radius: 50%;opacity: 0.8;color:white;">{{zimu}}</div>
+</ion-view>

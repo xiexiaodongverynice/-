@@ -1,0 +1,57 @@
+<ion-view view-title="问报告">
+    <ion-nav-buttons>
+        <div>
+            <a href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-content>
+        <div ng-if="data.haveResult" class="detail" style="padding-bottom: 20px">
+            <h3>{{titles['mc'][baogao.xmlb]}}：{{baogao.xmmc}}</h3>
+            <dl>
+                <dt ng-repeat-start="(key, value) in baogao" ng-if="titles[key][baogao.xmlb]">
+                    <label class="checklabel" for="{{key}}">
+                        <h4>{{titles[key][baogao.xmlb]}}</h4>
+                        <i ng-class="direction[$index] ? 'ion-chevron-right' : 'ion-chevron-down'"></i>
+                    </label>
+                </dt>
+                <input class="hide" ng-model="direction[$index]" ng-init="direction[$index] = (key!=='children')" type="checkbox" id="{{key}}" ng-if="titles[key][baogao.xmlb]">
+                <dd ng-repeat-end ng-if="titles[key][baogao.xmlb]">
+                    <p ng-if="key!=='children'">{{value||"暂无内容"}}</p>
+                    <div class="" ng-if="key==='children'">
+                        <section ng-if="baogao.xmlb==1" class="item-section" ng-repeat="item in value">
+                            <label class="checklabel" for="cjjl{{item.id}}">{{item.cjjl||'暂无内容'}}</label>
+                            <input class="hide" ng-model="xmlbArr[item.id]" ng-init="xmlbArr[item.id] = (item.id !== choose)" type="checkbox" id="cjjl{{item.id}}">
+                            <dl class="detail second-content">
+                                <dt class="" ng-repeat-start="(key, value) in detail[baogao.xmlb]">{{value}}</dt>
+                                <dd ng-repeat-end>{{item[key]||"暂无内容"}}</dd>
+                                <label for="cjjl{{item.id}}" class="ion-arrow-up-b text-center block"></label>
+                            </dl>
+                        </section>
+                        <section ng-if="baogao.xmlb==2" class="item-section" ng-repeat="item in value">
+                            <label class="checklabel" for="zbmc{{item.id}}">{{item.zbmc||'暂无内容'}}</label>
+                            <input class="hide" ng-model="xmlbArr[item.id]" ng-init="xmlbArr[item.id] = (item.id !== choose)" type="checkbox" id="zbmc{{item.id}}">
+                            <dl class="detail second-content">
+                                <dt class="" ng-repeat-start="(key, value) in detail[baogao.xmlb]">{{value}}</dt>
+                                <dd ng-repeat-end>{{item[key]||"暂无内容"}}</dd>
+                                <label for="zbmc{{item.id}}" class="ion-arrow-up-b text-center block"></label>
+                            </dl>
+                        </section>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </ion-content>
+    <ion-footer-bar style="height:auto;width: 100%" >
+    <div class="bar bar-footer bar-balanced" style="    height: 78px;
+    background: #67afe2;">
+        <dl>
+            <dt style="color:#8E7070;color: #d64242;
+    text-indent: 10px;font-family: 微软雅黑;"></dt>
+            <dd style="padding: 6px;font-size:15px;color:white;font-family: 微软雅黑;">内容来源于医学知识库,仅供参考,建议您到当地医院咨询详细信息。</dd>
+        </dl>
+    </div>
+    </ion-footer-bar>
+</ion-view>

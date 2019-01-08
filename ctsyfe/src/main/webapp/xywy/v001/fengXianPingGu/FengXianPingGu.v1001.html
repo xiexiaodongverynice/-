@@ -1,0 +1,112 @@
+<ion-view hide-nav-bar="isIos" view-title="风险评估">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="back()"></button>
+        </div>
+    </ion-nav-buttons>
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos&&isFromShouye==='false'">
+        <go-shouye></go-shouye>
+    </div>
+    <style>
+        #fxpg-main {
+            width: 100%;
+            padding-top: 7px;
+        }
+        
+        #fxpg-main .fxpg-div {
+            height: auto;
+            position: relative;
+        }
+        
+        #fxpg-main .div-wod {
+            position: relative;
+            align-items: center;
+            display: flex;
+            padding: 0 10px;
+        }
+        
+        #fxpg-main .img-sty {
+            width: 6.25rem;
+            margin: 20px 10px 20px 0;
+        }
+        
+        #fxpg-main .p-sty {
+            font-size: 1.75rem;
+            line-height: 1.5;
+            color: #999;
+            margin-bottom: 0rem;
+            margin-right: 20px;
+            width: 100%;
+        }
+        
+        #fxpg-main .p-title {
+            font-size: 2rem;
+            color: #333;
+            display: block;
+        }
+        
+        #fxpg-main .cut-line {
+            margin: 0 10px;
+            background-color: #ebebeb;
+            height: 1px;
+            border: none;
+        }
+        
+        #fxpg-main .ion-ios-arrow-right {
+            font-size: 22px;
+            color: #999;
+            padding: 0;
+            margin-right: 0;
+        }
+    </style>
+    <ion-content>
+        <div id="fxpg-main">
+
+            <div class="fxpg-div" ng-click="yajiankang()">
+                <div class="div-wod">
+                    <img class="img-sty" alt="" src="./img/yajiankang01.png">
+                    <p class="p-sty"><span class="p-title">亚健康</span> {{jbyjk}}
+                    </p>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+
+            </div>
+            <hr class="cut-line" />
+
+            <div class="fxpg-div" ng-click="xinlijiankang()">
+                <div class="div-wod">
+                    <img class="img-sty" alt="" src="./img/xljkpg01.png">
+                    <p class="p-sty"><span class="p-title">心理健康</span> {{jbxljk}}
+                    </p>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+
+            </div>
+            <hr class="cut-line" />
+            <div class="fxpg-div" ng-click="naocuzhong()">
+                <div class="div-wod">
+                    <img class="img-sty" alt="" src="./img/naocuzhong01.png">
+                    <p class="p-sty">
+                        <span class="p-title">脑卒中</span> {{jbncz}}
+                    </p>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+
+            </div>
+            <hr class="cut-line" />
+            <div class="fxpg-div" ng-click="tangniaobing()">
+                <div class="div-wod">
+                    <img class="img-sty" alt="" src="./img/tangniaobing01.png">
+                    <p class="p-sty">
+                        <span class="p-title">糖尿病</span> {{jbtnb}}
+                    </p>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+
+            </div>
+            <hr class="cut-line" />
+
+        </div>
+    </ion-content>
+</ion-view>

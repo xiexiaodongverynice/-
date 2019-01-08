@@ -1,0 +1,115 @@
+<ion-view hide-nav-bar="isIos" view-title="{{biaoti}}" class="color-6">
+<style>
+.titleBox {
+	position: absolute;
+	width: 100%;
+	background-color: #fff;
+	z-index: 10;
+	border-bottom: 1px solid #dedede;
+}
+
+.titleBox>ul {
+	overflow: hidden;
+	width: 90%;
+	border: 1px solid #18b4ed;
+	border-radius: 10px;
+	box-sizing: border-box;
+	margin: 10px auto;
+}
+
+.tabTitle {
+	width: 50%;
+	float: left;
+	text-align: center;
+	/*border: 1px solid #dedede;*/
+	height: 38px;
+	color: #18B4ED;
+	font: 16px Microsoft Yahei;
+	line-height: 36px;
+}
+/*ul>.show_yp_list:first-child{*/
+/*border-top: 1px solid #dedede;*/
+/*}*/
+.show_yp_list {
+	overflow: hidden;
+    border-bottom: 1px solid #dedede;
+    margin-left:15px;
+	margin-right:15px;
+}
+
+.tagTab {
+	background: #FFFFFF;
+	color: aqua;
+}
+
+.show_yp_info {
+	width: 85%;
+	margin-left: 5px;
+	font: 16px Microsoft Yahei;
+	padding: 10px 0;
+	display: inline-block;
+}
+
+.titlecolor {
+	/*color: #18bebe;*/
+	/*border-left: 20px solid transparent;*/
+	/*border-right: 20px solid transparent;*/
+	/*border-bottom: 41px solid #FFF;*/
+	color: #fff;
+	background-color: #18b4ed;
+}
+
+.tuBiao {
+	float: right;
+	margin-right: 30px;
+	font-size: 18px;
+	padding: 15px 0;
+}
+/*查询没有没有返回值时的提示框样式*/
+.popup-body span {
+	text-align: -webkit-center;
+	width: 100%;
+	margin: 7px auto;
+	display: inline-block;
+}
+
+.popup-head {
+	background-color: #18b4ed;
+}
+
+.popup-head h3 {
+	color: #fff;
+	font-size: 16px;
+}
+.bar.item-input-inset .item-input-wrapper input {
+	padding-left: 0px;
+    width: 94%;
+    height: 28px;
+    background: 0 0;
+    line-height:normal;
+}
+</style>
+<ion-nav-buttons side="left">
+<div style="text-align: center;">
+	<button class="button button-clear icon ion-chevron-left"
+		ng-click="goBack()"></button>
+</div>
+</ion-nav-buttons>
+<ion-content>
+<span class="xywy-center xywy-title">{{title}}</span>
+<hr class="hr-5" />
+<ul>
+	<div ng-repeat='ypItem in ypList' >
+	<li class="show_yp_list" ng-click="goyaopindetail('{{ypItem.id}}')">
+	<!-- <span ng-if="ypItem.spmc!=''" class="show_yp_info">{{ypItem.tymc}} <span class="yp_sub">({{ypItem.spmc}})</span></span> -->
+    <!-- <span ng-if="ypItem.spmc==''" class="show_yp_info">{{ypItem.tymc}} <span class="yp_sub">({{ypItem.cjsx}})</span></span> -->
+    <span ng-if="ypItem.tymc" class="show_yp_info">{{ypItem.tymc}} <span class="yp_sub">({{ypItem.cjsx||ypItem.spmc}})</span></span>
+    <span ng-if="ypItem.jbmc" class="show_yp_info">{{ypItem.jbmc}}</span>
+    <span ng-if="ypItem.zzmc" class="show_yp_info">{{ypItem.zzmc}}</span>
+    <span ng-if="ypItem.jymc" class="show_yp_info">{{ypItem.flmc}} {{ypItem.jymc}} {{ypItem.jlzb}}</span>
+		<!-- <i class="ion-chevron-right tuBiao"></i> -->
+	</li>
+	</div>
+</ul>
+	</ion-content> 
+</ion-view>

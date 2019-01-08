@@ -1,0 +1,205 @@
+<ion-view hide-nav-bar="isIos" view-title="病历报告" class="zljl-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+    <style>
+        #jllist {
+             background-color: #F9F9F9;
+             padding-top: 10px;
+        }
+
+        .zljl-list .jllist_member {
+            width: auto;
+            margin: 10px 10px 20px 10px;
+            overflow: hidden;
+            min-height: 80px;
+            border-radius: 8px;
+           
+        }
+
+        .zljl-list .jlItemtop {
+            position: relative;
+            background-color: #FFF;
+            height: 80px;
+            overflow: hidden;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 7px;
+        }
+
+        .zljl-list .jllist_headimg {
+            width: 60px;
+            height: 60px;
+            margin: 10px;
+            border-radius: 50%;
+        }
+
+        .zljl-list .jlItemtop p {
+            font-size: 14px;
+            color: #333;
+            margin: 0;
+            line-height: 20px;
+        }
+
+        .zljl-list .jlItemtop p i {
+            font-size: 20px;
+        }
+
+        .zljl-list .jllist_shensuo {
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            right: 10px;
+        }
+
+        .zljl-list .jllist_shensuo p {
+            display: flex;
+        }
+
+        .zljl-list .dsp-block {
+            display: block;
+        }
+
+        .zljl-list .age {
+            margin-left: 10px;
+        }
+        .zljl-list .zljlItem{
+        	margin-top: 10px;
+		  	background: #FFF;
+		  	font-size: 16px;
+		 	color: #333;
+		 	border-radius: 6px;
+		 	padding: 10px;
+        }
+        
+        .zljl-list .zljlTitle{
+        	font-weight:bold;
+        }
+        .zljl-list .zljlContent{
+        	margin: 10px 0;
+        }
+        .zljl-list .titlespan{
+       	    background-color: #0bb5ee;
+		    width: 5px;
+		    height: 20px;
+		    display: inline-block;
+	        margin: 0px 5px -3px 0px;
+        }
+        
+        /* 诊疗记录时间查询条件 */
+        .zljl-tq{
+        	height:55px;
+        	width:auto;
+        	padding: 10px; 
+       	    background-color: #fff;       	
+        }
+        .zljl-list .zl-sjcx{
+       	    background-color: #F2F2F2;
+    		height: 35px;
+   		    border-radius: 5px;
+   		    color: #999;
+        }
+        .zljl-list input[type="text"] {
+        	width: 27%;
+			color: #999;
+			font-size: 15px;
+			text-align: center;
+			background: #f2f2f2;
+			margin: 0 23px;
+    		display: inline-block;
+        }
+        .zljl-list .wsj{
+       	    margin-top: 60px;
+		    text-align: center;
+		    color: #999;
+        }
+        .zljl-list .wsj img{
+        	width:100px;
+        }
+        .zljl-list .wsj p{
+        	padding-top:15px;
+        }
+        .zljl-titleBox {
+			position: absolute;
+			width: 100%;
+			background-color: #fff;
+			z-index: 10;
+			/* border-bottom: 1px solid #dedede; */
+		}
+    </style>   
+
+    
+   
+    <nav class="zljl-titleBox" ng-style="{top:(isIos)? '0': '44px'}" >
+    	<!-- 选择查询时间 -->
+    	<div class="zljl-tq">
+    		<div class="zl-sjcx">
+    			<input type="text" id="startDate" placeholder="开始日期" ng-click="datePiker('startDate')" data-year="" data-month="" data-date="" readonly="readonly" date-change="doSearch()">
+    			~<input type="text" id="endDate" placeholder="结束日期" ng-click="datePiker('endDate')" data-year="" data-month="" data-date="" readonly="readonly" date-change="doSearch()">
+    			<i class="icon iconfont icon-riqi" style="font-size: 22px;top: 5px;position: relative;padding: 0 10px"></i>
+    		</div>
+    	</div>
+    	</nav>
+    	
+    	 <ion-content id="jllist" ng-style="{top:(isIos)? '55px': '89px'}">
+    	<ion-refresher on-refresh="micRefresh()" pulling-text="正在刷新中..." refreshing-icon="ion-loading-c"> </ion-refresher>
+        <!-- 单个用户档案 -->
+        <div class="jllist_member" ng-repeat="member in memberMsg track by $index" id="cy{{$index}}" repeat-finish>
+            <!-- 白色div -->
+            <!-- 初始情况下，第一行展开 -->
+            <div class="jlItemtop" ng-click="changeShowState($index)">
+                <img class="jllist_headimg" ng-if="$index==0" 
+                    ng-src="{{(member.IMGURL?member.IMGURL:weiXinTX)}}">
+                <img class="jllist_headimg" ng-if="$index>0"  ng-src="{{(member.IMGURL?member.IMGURL:'img/DA_touxiang.svg')}}">
+                <p>
+                    <span style="font-size: 18px;">{{member.NAME}}</span>
+                    <span style="margin-left: 15px;">{{member.XINBIE}}</span>
+                    <span class="">{{member.age}}岁</span>
+                    <span style="display: block;margin-top: 5px;" >报告生成时间：{{member.gxtime}}</span>
+                </p>
+                <div class="jllist_shensuo">
+                     <p ng-if="ssflag[$index]=='hide'" style=""><i style="margin: 0 7px;color:#333;" class="icon ion-ios-arrow-down"></i></p>
+                    <p ng-if="ssflag[$index]=='show'" style=""><i style="margin: 0 4px;color:#333;" class="icon ion-ios-arrow-up"></i></p>
+                </div>
+            </div>
+            <!-- 展开项内容维度病史、检查、目的等 -->
+            <ul ng-if="ssflag[$index]=='show' ">              
+                <li ng-if="member.ZSBS">
+                    <div class="zljlItem">
+                    	<h class="zljlTitle"><div class="titlespan"></div>主诉、病史(S)</h>
+                   		<p class = "zljlContent" ng-bind-html="member.ZSBS" compile-html></p>
+                    </div>                   
+                </li>
+                <li ng-if="member.CTFZJC">
+                    <div class="zljlItem">
+                    	<span class="zljlTitle"><div class="titlespan"></div>查体、辅助检查(O)</span>
+                    	<p class = "zljlContent" ng-bind-html="member.CTFZJC" compile-html></p>
+                    </div>                  	
+                </li>
+                <li ng-if="member.ZD">
+                    <div class="zljlItem">
+                    	<span class="zljlTitle"><div class="titlespan"></div>诊断、评价(A)</span>                
+                    	<p class = "zljlContent" ng-bind-html="member.ZD" compile-html></p>
+                    </div>                   
+                </li>               
+                <li ng-if="member.CLJH">
+                    <div class="zljlItem">
+                    	<span class="zljlTitle"><div class="titlespan"></div>处理计划(P)</span>
+                    	<p class = "zljlContent" ng-bind-html="member.CLJH" compile-html></p>
+                    </div>                   
+                </li>
+            </ul>
+	</div>
+	
+	<div ng-if="memberMsg.length==0" class="wsj">
+            <img src="img/wushuju.png" alt="无任何历史记录">
+            <p>无任何历史记录</p>
+    </div>
+	<ion-infinite-scroll ng-if="!ishowall" immediate-check="false"
+	on-infinite="loadMicMore()" distance="1%"> </ion-infinite-scroll>
+	</ion-content>
+</ion-view>

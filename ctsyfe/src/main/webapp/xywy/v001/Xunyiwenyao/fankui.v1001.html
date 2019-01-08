@@ -1,0 +1,174 @@
+<ion-view hide-nav-bar="isIos" view-title="反馈">
+    <style type="text/css">
+        .guanyuiconfooter {
+            background-size: 0;
+        }
+        
+        .guanyuneirong {
+            padding: 20px;
+        }
+        
+        .guanyufootdiv {
+            height: auto;
+            background: #b2b2b2;
+            opacity: 0.5;
+            text-align: center;
+            position: absolute;
+            display: block;
+        }
+        
+        .guanyuh4 {
+            text-align: center;
+        }
+        
+        .img-Icon {
+            width: 20%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            margin: 2% 0 2% 2%;
+            float: left;
+            height: 67.5px;
+        }
+        
+        .popup-body span {
+            text-align: -webkit-center;
+            width: 100%;
+            margin: 7px auto;
+            display: inline-block;
+        }
+        
+        .popup-head {
+            background-color: #18b4ed;
+        }
+        
+        .popup-head h3 {
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .tucaoaddimg {
+            text-align: center;
+            width: 20%;
+            float: left;
+            background: #ddd;
+            margin: 2% 0 2% 2%;
+            height: 67.5px;
+            line-height: 67.5px;
+            overflow: hidden;
+            /* padding: 10.5px 10.5px 7px 10.5px; */
+        }
+        
+        .margindiv {
+            margin-top: 47px;
+        }
+        /**上一页下一页样式*/
+        
+        .shangyiye {
+            font-size: 5em;
+            text-align: center;
+            color: white;
+        }
+        /**预览图片div*/
+        
+        .tcyulanimg {
+            text-align: center;
+            align-items: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 90%;
+            margin-top: -10px;
+        }
+        /**预览删除**/
+        
+        .yulandelete {
+            font-size: 2em;
+            color: white;
+            padding: 5px;
+            position: fixed;
+            right: 10px;
+        }
+        /**预览返回**/
+        
+        .yulanback {
+            font-size: 2em;
+            color: white;
+            padding: 5px;
+            margin: 10px;
+        }
+        
+        ion-item label {
+            padding: 8px;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center;height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()">
+            </button>
+        </div>
+    </ion-nav-buttons>
+    <ion-content style="background: #eff0f4;">
+        <!-- <img class="imgstyle" src="img/guanyu.jpg"> -->
+        <form name='myform' style="margin-top: 5px;">
+            <h5 style="margin-left: 15px;">请选择具体问题（可多选）</h5>
+
+            <ion-list>
+                <ion-item class="item" style="padding: 4px" ng-repeat="item in fankuiyijianlist track by $index">
+                    <!-- <ion-checkbox style="border: none" ng-value="item.id" ng-model="item.checked" ng-click="changeOrderType(item.checked,item.id)">
+                        <ion-label>{{item.changjianwenti}}</ion-label>
+                </ion-checkbox> -->
+                    <li class="item item-checkbox item-checkbox-left" style="border: none">
+                        <label class="checkbox checkbox-balanced">  
+                            <input type="checkbox" style="border: none"  ng-value="item.id" ng-model="item.checked" ng-click="changeOrderType(item.checked,item.id)" />  
+                        </label> {{item.changjianwenti}}
+                    </li>
+                </ion-item>
+            </ion-list>
+            <h5 style="margin-left: 15px;">问题反馈及建议</h5>
+            <div style="width: 100%;background-color: white;">
+                <textarea type="text" ng-change="textarCHange(textare)" ng-model='textare' placeholder="其它问题或已选问题详细描述及建议，请在此提交" style="width: 100%;height: 100px;padding: 8px 10px;resize: none;" id="textare"></textarea>
+                <label class="item item-input" style="color: red;    border-top: 0px;" ng-show="myform.textare.$dirty && myform.textare.$invalid || textare.length < 10">
+            <span style="font-size: 0.8em;width: 95%;text-align: right;">不能少于10个字</span>
+        </label>
+                <label class="item item-input" style="color: red;border-top: 0px;" ng-show="myform.textare.$dirty && myform.textare.$invalid || textare.length > 500">
+           <span style="font-size: 0.8em;width: 95%;text-align: right;">不能超过500个字</span>
+        </label>
+                <div style="overflow:hidden;background: white;">
+                    <!-- <div> -->
+                    <!-- <img ng-if="listimg.length>0" ng-repeat="item in listimg" alt="" src="item" > -->
+                    <img class="img-Icon" ng-if="listimg.length>0" ng-repeat="item in listimg" alt="" ng-src="{{item}}" ng-click="showimg($index)">
+                    <!-- </div> -->
+
+                    <div class="img-cover tucaoaddimg" ngf-pattern="'image/*'" ngf-multiple="true" ngf-select="upload($files)" ng-show="list.length<10">
+
+                        <span class="icon ion-android-add" style="font-size: 25px;text-align: center;color: #a2a2a2;display:inline-block;overflow:hidden;"></span>
+
+                        <!-- <span style="margin-left: -40px;">添加图片</span> -->
+                    </div>
+                </div>
+                <label class="item item-input" style="color: red;border-top: 0px;" ng-show="listimg.length>9">
+           <span style="font-size: 0.8em;width: 95%;text-align: right;">最多上传10张图片</span>
+        </label>
+                <!-- <div class="tc fl file-img" style="background-image: url('{{avator}}')"></div> -->
+
+            </div>
+
+            <h5></h5>
+            <label class="item col-md-12 item-input" style="position: initial;" ng-model="phonenum">
+            <span class="icon-lxfs" style="font-size: 1.5em;color:#18b4ed;display: table;padding: 7px 0 7px 0;max-width: 200px;"></span>
+            <!-- ng-blur='userid.length == 0 ? showPhone = true : ""' required  ng-pattern="/^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/"  -->
+            <input id="inputnum" type="number" placeholder="请在此处输入您的手机号" style="font-size: 13px;line-height: 30px;"   ng-model="phnoenum" ng-change="phoneyz(phnoenum)">
+        </label>
+            <p class="fa fa-check input_result text-success" ng-if="myform.userid.$valid"></p>
+            <label class="item item-input" style="color: red;border-top: 0px;" ng-show="phonetishi">
+            <span style="font-size: 0.8em;width: 95%;text-align: right;">请输入正确的手机号</span>
+        </label>
+            <div>
+                <input type='submit' ng-disabled="(ischecked && (myform.textare.$dirty && myform.textare.$invalid || textare.length < 10 ||isClick))||phonetishi ||(!ischecked && (textare.length > 0 && textare.length < 10 ||textare.length > 500))" ng-click="tijiaoclick()"
+                    class="button button-block button-energized button-space" style="background-color: #18b4ed;margin-top: 20px;width: 50%; border-radius: 20px ;height: 40px;min-height: 40px;line-height: 38px;" value='提交' />
+            </div>
+        </form>
+        <div style="text-align: center;width: 100%;margin-top: 70px;" ng-show="sessts">提交成功，谢谢您的反馈。</div>
+    </ion-content>
+</ion-view>

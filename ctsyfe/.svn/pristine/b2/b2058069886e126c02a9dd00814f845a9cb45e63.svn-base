@@ -1,0 +1,283 @@
+<ion-view hide-nav-bar="isIos" view-title="{{typedetail.viewTitle}}" class="detail">
+    <style>
+        .detail-i {
+            font-size: 1.13em;
+        }
+
+        .detail .mainpadding {
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .detail .mainpadding h3 {
+
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 2px;
+
+        }
+
+        .detail #maskLayer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 11;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .4);
+            visibility: visible;
+            /* opacity: 0; */
+            -webkit-transition: .1s opacity linear;
+            transition: .1s opacity linear;
+        }
+
+        .detail .mainpadding i {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .detail div.icon-yuyin1:before {
+            content: '';
+            width: 0;
+        }
+
+        .detail .mainpadding p {
+            line-height: 1.8;
+        }
+
+        .detail .checklabel h4 {
+            font-size: 16px !important;
+        }
+
+        .detail h4 {
+            margin-top: 0;
+        }
+
+        .detail .padding-bottom {
+            padding-bottom: 0 !important;
+        }
+
+        .detail .title_spmc {
+            display: block;
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .detail .audio-ctrl {
+            position: fixed;
+            left: 0;
+            z-index: 998;
+            width: 100%;
+            height: 40px;
+
+            line-height: 40px;
+            color: #333;
+            background: #f2f2f2;
+            padding: 0 0 0 15px;
+
+        }
+
+        .detail .audio-ctrl.ios {
+            top: 0;
+        }
+
+        .detail .audio-ctrl.andrio {
+            top: 44px;
+        }
+
+        .detail .audio-ctrl div {
+            display: inline-block;
+        }
+
+        .detail .audio-ctrl span {
+            display: inline-block;
+            height: 40px;
+        }
+
+        .detail .audio-ctrl div i {
+            display: inline-block;
+
+        }
+
+        .detail .audio-ctrl .ctrl-buts {
+        position:absolute;
+        right: 0;
+        }
+
+        .detail .audio-ctrl .ctrl-buts i {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        .detail i.disabled {
+            color: #999;
+        }
+
+        .audio-menu-body {
+            position: fixed;
+            left: 0px;
+            width: 100%;
+            max-height: 100%;
+            overflow-y: scroll;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            background: #fff;
+            z-index: 999;
+            padding: 10px 0 10px 15px;
+        }
+
+        .audio-menu-body.ios {
+            top: 40px;
+        }
+
+        .audio-menu-body.andrio {
+            top: 84px;
+        }
+        .audio-menu-body ul {
+            margin-bottom: 50px;
+        }
+        
+        .audio-menu-body li.playing{
+            color:#00b5ee;
+        }
+       
+        .audio-menu-body li {
+            line-height: 1;
+            padding: 10px 0;
+        }
+        .switchimg{
+            width: 50px;
+            display: block;
+            margin-top: 10px;
+            margin-left: 85%;
+        }
+       
+        .swith_list_left{
+            width: 20%;
+            font-weight: normal;
+        
+        }
+        .swith_list_right{
+            width: 80%;
+           margin-left: 20%;
+           margin-top: -5.5%;
+           font-weight: normal;
+            
+        }  
+    </style>
+    <!-- 播放列表 -->
+    <audio-ctrl-bar items="{{typedetail.items}}" is-show="audioCtrlShow" ng-if="typedetail.items.length>0"></audio-ctrl-bar>
+    <ion-nav-buttons>
+        <div>
+            <a href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a ng-click="ctrl.backshouye()">
+                <button class="button button-clear icon ion-ios-home-outline">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content class="detailContent">
+
+        <div ng-if="typedetail.haveResult" style="padding-bottom: 20px" ng-switch on="Intheswitch">
+            <div class="mainpadding">
+                <h3 class="inline" ng-bind="typedetail.title" style="width: 85%;">
+                </h3>
+                <i class="icon iconfont icon-yuyin1 voiceI" id="outSwitch" ng-class="{true:'',false:'gray'}[audioCtrlShow==1]"
+                    ng-click="switchAudioBar($event)"></i>
+                <img class="switchimg" ng-src="{{changesyuyan}}" ng-click="changeswitch()">
+            </div>
+            <dl ng-switch-when="CN">
+                <!-- <dt ng-repeat-start="item in typedetail.items">
+                    <label class="checklabel">
+                        <h4 ng-bind="item.title"></h4>
+                    </label>
+                </dt>
+    
+                <dd ng-repeat-end>
+                    <audio-content is-click-play=false>
+                        <div class="ptext" ng-if="!item.content.constructor.isArray" ng-bind-html="item.content||'无相关信息'"
+                            compile-html></div>
+                      
+                        <div ng-if="item.content.constructor.isArray" ng-repeat="p in yaopindetails track by $index">
+                            <p class="ptext" style="margin-bottom: 2px;" ng-if="!p.tucn"
+                                ng-bind-html="p.zwmc" compile-html></p>
+                            <img class="ptext" style="margin-bottom: 2px;" ng-if="p.tucn" ng-src="{{imgBaseUrl}}{{p.tucn}}" />
+                        </div>
+                    </audio-content>
+                </dd> -->
+                        <dt ng-repeat="item in yaopindetails"  class="swith_list">
+                            
+                                <div class="swith_list_left">{{item.bm}}</div>
+                                <div class="swith_list_right">
+                                    <img ng-if="item.tucn" ng-src="{{imgBaseUrl}}{{item.tucn}}" />
+                                    <pre ng-if="!item.tucn">{{item.zwmc}}</pre>
+                                </div>
+                                <!-- <li class="en-r">
+                                    <img ng-if="item.tuen" ng-src="{{imgBaseUrl}}{{item.tuen}}" />
+                                    <pre ng-if="!item.tuen">{{item.ywmc}}</pre>
+                                </li> -->
+
+    
+                        </dt>
+            </dl>
+            <dl ng-switch-when="EN">
+                <!-- <dt ng-repeat-start="item in typedetail.items">
+                   
+                    <label class="checklabel">
+                        <h4 ng-bind="item.title"></h4>
+                       
+                    </label>
+                </dt>
+               
+                <dd ng-repeat-end>
+                    <audio-content is-click-play=false>
+                        <div class="ptext" ng-if="!item.content.constructor.isArray" ng-bind-html="item.content||'无相关信息'"
+                        compile-html></div>
+                       
+                        <div ng-if="item.content.constructor.isArray" ng-repeat="p in yaopindetails track by $index">
+                            <p class="ptext" style="margin-bottom: 2px;" ng-if="!p.tucn"
+                                ng-bind-html="p.zwmc" compile-html></p>
+                            <img ng-if="p.tucn" ng-src="{{imgBaseUrl}}{{p.tucn}}" />
+                        </div>
+                    </audio-content>
+                </dd> -->
+                <dt ng-repeat="item in yaopindetails"  class="swith_list">
+                            
+                        <div class="swith_list_left">{{item.bm}}</div>
+                        <div class="swith_list_right">
+                            <img ng-if="item.tuen" ng-src="{{imgBaseUrl}}{{item.tuen}}" />
+                            <pre ng-if="!item.tuen">{{item.ywmc}}</pre>
+                        </div>
+                        <!-- <li class="en-r">
+                            <img ng-if="item.tuen" ng-src="{{imgBaseUrl}}{{item.tuen}}" />
+                            <pre ng-if="!item.tuen">{{item.ywmc}}</pre>
+                        </li> -->
+
+
+                </dt>
+            </dl>
+        </div>
+        <!-- 无数据提示 -->
+        <div ng-if="typedetail.haveResult===false" class="null-div">
+            <img src="img/pg-null.png" />
+            <p class="nullTip">没有找到相关信息</p>
+        </div>
+    </ion-content>
+</ion-view>

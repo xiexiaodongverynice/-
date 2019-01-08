@@ -1,0 +1,55 @@
+<ion-view hide-nav-bar="isIos" view-title="{{data.buwei}}症状" class="color-6">
+    <style type="text/css">
+    </style>
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content>
+        <div class="bar item-input-inset" style="height: auto;display:none">
+            <div class="item-input-wrapper">
+                <input ng-model="data.keyword" type="search" placeholder="请输入关键字搜索症状">
+                <i ng-click="clean()" ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']"
+                    style="font-size: 16px;"></i>
+                <button ng-click="search()" type="button" class="button button-clear ion-android-search" style="color:initial;font-size: 20px;height: 32px;"></button>
+            </div>
+        </div>
+        <div ng-if="!data.searchSuc" class="liebiao">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-click="chooseZz(zz)" ng-repeat="zz in zzlist">
+                    <span class="show_span_info">{{zz}}</span>
+                    <i class="icon ion-chevron-right i_tuBiao"></i>
+                </li>
+            </ul>
+        </div>
+        <h5 ng-if="data.searchSuc" style="border-bottom: 1px solid #ddd;padding-bottom: 5px;padding-left: 10px;color:#a2a2a2">找到以下相关症状</h5>
+        <!-- <span ng-if="data.searchSuc" style="color:#18B4ED" class="xywy-center">找到以下相关症状</span> -->
+        <div ng-if="data.searchSuc" class="liebiao">
+            <ul class="list no-float">
+                <li class="item flexdiv padding" ng-click="chooseZz(zz)" ng-repeat="zz in searchzz">
+                    <span>{{zz.MC}}</span>
+                    <span>{{zz.BW}}</span>
+                </li>
+            </ul>
+        </div>
+        <!-- <a ng-click="fankui()" class="show text-center guahao sticknote" style="top: 90%;">找不到合适的症状？立即反馈<i class="ion-android-mail"></i>给我们</a> -->
+        <!--         <a ng-href="mailto:someone@xinbohit.com?subject=症状词反馈&body={{data.notfound}}"
+         >找不到合适的症状？立即反馈<i class="ion-android-mail"></i>给我们</a> -->
+    </ion-content>
+</ion-view>

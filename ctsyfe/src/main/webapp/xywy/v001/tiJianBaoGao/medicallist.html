@@ -1,0 +1,213 @@
+<ion-view hide-nav-bar="isIos" view-title="{{title}}">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <style>
+        .card {
+            box-shadow: 0 0px 0px rgba(0, 0, 0, .3);
+        }
+
+        .backgroundsize {
+            background-size: 100% 0px;
+        }
+
+        .qz_tb {
+            float: right;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .show_qz_info {
+            width: 80%;
+            /*margin-left: 25px;*/
+            /* font: 1rem Microsoft Yahei; */
+            padding: 0.15rem 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .show_qz_list {
+            margin: 1rem;
+            height: 10rem;
+            border-radius: 4px;
+            background: #F0FBFF
+        }
+
+        .qz_name {
+            /* width:70%; */
+            float: left;
+            padding-top: 1.5rem;
+            margin-left: 7rem;
+            height: 10rem;
+            padding-left: 1rem;
+            background: white;
+
+        }
+
+        .img {
+            position: absolute;
+            top: 2rem;
+            left: 5px;
+            width: 45px;
+            height: 55px;
+        }
+
+        .medicallist_p {
+            font-size: 16px;
+            padding: 1rem;
+            color: white;
+            background-color: #00b5ee;
+        }
+
+        .medical {
+            background-color: #18b4ed;
+            z-index: 100;
+            position: fixed;
+            border-radius: 6rem;
+            float: right;
+            bottom: 4rem;
+            margin-left: 80%;
+            width: 4rem;
+            height: 4rem;
+            text-align: center;
+            line-height: 4rem;
+        }
+
+        .medicallist_div {
+            position: relative;
+            width: 100%
+        }
+
+        .medicallist_image {
+            width: 30%;
+            position: relative
+        }
+
+        .medicallist_tubiao {
+            position: absolute;
+            top: 1.5rem;
+            right: 1rem;
+            font-size: 28px;
+            color: #ff9500;
+        }
+
+        .medicallist-but {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            margin-bottom: 0;
+            text-align: center;
+            z-index: 99999;
+        }
+
+        .medicallist-button {
+            height: 44px;
+            width: 100%;
+            font-size: 2rem;
+            color: #FFF;
+            border: none;
+            outline: none;
+            background-color: #00B6ED;
+        }
+
+        .medicallist_ul {
+            width: 100%;
+            overflow: auto;
+            top: 1rem;
+            position: absolute;
+            z-index: 10;
+            bottom: 4rem;
+        }
+
+        .medicallist_nodata {
+            margin-top: 20%;
+        }
+
+        .medicallist_nodata_img {
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+
+        .medicallist_nodata_p {
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #C7C8C7
+        }
+
+        .medicallist_ion {
+            position: fixed;
+            background-color: #f3f4f5
+        }
+
+        .medicallist_ions {
+            background-color: white;
+            position: fixed;
+        }
+    </style>
+    <!-- 书写内容标记 -->
+    <!-- <div ng-click="gomedical()" class="medical">
+        <i class="icon ion-compose" style="color: white;font-size: 3.6rem;"></i>
+    </div> -->
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content ng-class="{true:'medicallist_ions',false:'medicallist_ion'}[isnodata]">
+        <ion-refresher pulling-text="正在刷新中..." on-refresh="baogaoRefresh()"></ion-refresher>
+        <div class="liebiao" style="position: relative;height: 100%;">
+            <ul class="medicallist_ul" id="liebiao">
+                <div class="medicallist_nodata" ng-if="isnodata">
+                    <div class="medicallist_nodata_img">
+                        <img src="img/tjbglook.png">
+                    </div>
+                    <div class="medicallist_nodata_p">
+                        <p>您可以试试点击添加报告，</p>
+                        <p>我们会对您提交的报告进行自动解读。</p>
+                    </div>
+                </div>
+                <li class="show_li_list show_qz_list" ng-repeat="qz in medicallist track by $index">
+                    <div class="medicallist_div" ng-click="godetails(qz.pid,qz.status)">
+                        <div class="medicallist_image">
+                            <img id="img" class="img" src="img/tjbglook.png">
+                            <!-- <img  ng-if="qz.status==1||qz.status==2||qz.status==3" id="img" class="img" src="img/tjbgimg.png"> -->
+                        </div>
+                        <div class="qz_name">
+                            <span class="show_qz_info">提交时间：{{qz.createTime}}</span>
+                            <span class="show_qz_info" ng-if="qz.status==5">解读状态：<span style="color: #00D641">已完成</span></span>
+                            <span class="show_qz_info" ng-if="qz.status==4">解读状态：<span style="color: #EB4F4E;">待确认</span></span>
+                            <span class="show_qz_info" ng-if="qz.status==1||qz.status==2||qz.status==3">解读状态：<span
+                                    style="color: #EB4F4E;">处理中</span></span>
+                            <span class="show_qz_info" ng-if="qz.status==5">报告结果：
+                                <span ng-if="qz.yichangNum!=0"> <span style="color: #EB4F4E;">{{qz.yichangNum}}</span>&nbsp;项异常</span>
+                                <span style="color: #00D641" ng-if="qz.yichangNum==0">正常</span>
+                            </span>
+                        </div>
+                        <div class="medicallist_tubiao" ng-click="delettjpg($event,qz.pid)">
+                            <i class="icon ion-trash-a"></i>
+                        </div>
+                    </div>
+
+                </li>
+
+
+            </ul>
+            <div class="medicallist-but">
+                <button class="medicallist-button" ng-click="gomedical()">添加报告</button>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

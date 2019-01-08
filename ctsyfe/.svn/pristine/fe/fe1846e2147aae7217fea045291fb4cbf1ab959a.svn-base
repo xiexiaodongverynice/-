@@ -1,0 +1,88 @@
+<ion-view hide-nav-bar="isIos" view-title="全国医院排名" class="color-6 bwzz">
+    <style type="text/css">
+    </style>
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+
+    <style>
+        .left-lb .show_span_info {
+            width: auto;
+            margin-right: 15px;
+
+        }
+
+        .right-lb .show_span_info {
+            position: relative;
+            width: 80%;
+        }
+
+        .right-lb .pm-num {
+            position: absolute;
+            width: 20px;
+            text-align: right;
+            left: -25px;
+        }
+
+        .bwzz .right-lb li {
+            height: 51px;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        /* 底部提示条 */
+        .tip-bar {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            color: #666;
+            font-size: 12px;
+            background: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            margin: 0;
+            padding: 0 2%;
+        }
+    </style>
+    <p class="tip-bar">排名信息来源于北京大学临床学科评估发布
+    </p>
+    <ion-content style="bottom: 30px;">
+        <div class="liebiao left-lb">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-repeat="item in kslist" ng-click="loadyy(item.xxdxkdis)" ng-class="[{'chose':item.xxdxkdis===ksmc}]">
+                    <span ng-if="item.xxdxkdis===ksmc" id="curBw" style="position:relative;" value="{{$index}}"></span>
+                    <span class="show_span_info" on-finish-render-filters="Complete">{{item.xxdxkdis}}</span>
+                    <!-- <i class="icon ion-chevron-right i_tuBiao"></i> -->
+                </li>
+            </ul>
+        </div>
+        <div class="liebiao right-lb">
+            <ol class="list no-float">
+                <li class="show_li_list" ng-click="chooseZz(zz)" ng-repeat="zz in yylist">
+                    <span class="show_span_info zz"> <span class="pm-num">{{$index+1}}</span>{{zz}}</span>
+                    <!-- <i class="icon ion-chevron-right i_tuBiao"></i> -->
+
+                </li>
+            </ol>
+        </div>
+    </ion-content>
+</ion-view>

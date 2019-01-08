@@ -1,0 +1,741 @@
+<div style="display: flex;padding:10px 5px;" ng-class="messageData.user&&'user'">
+    <div style="width: 3em;" ng-if="messageData.type!='resultbmcx'">
+        <img class="block" ng-src="{{(messageData.user?imgurl:'img/doctor.png')}}" alt="头像" style="width: 3em; height:3em; border-radius:3em">
+    </div>
+    <div class="dialog-triangle" ng-if="messageData.type!='resultbmcx'"></div>
+    <div ng-switch on="messageData.type" ng-style="messageData.user&&{'width':getWidth+'%','min-width': '3em','max-width': '67%'}" ng-class="[{'width75':(messageData.type!='text'&& messageData.type!='audio'&& messageData.type!='simple')},{'width100':messageData.type=='resultbmcx'},{'limit-height':!!data.limitHeight},'dialogcontent',{'dialogListPad': messageData.type== 'listdetail' || messageData.type== 'multiple'},{'dialogPad': (messageData.type== 'result' || messageData.type== 'simple')&&!(messageData.haveMore||(messageData.lastnum!=0))},{'dialogcontent':messageData.type == 'text'}]">
+        <label class="show-all" ng-if="!!data.showAll">
+            <input type="checkbox" class="hide" ng-change="scroll()" ng-true-value="false" ng-false-value="true" ng-model="data.limitHeight">{{data.limitHeight?'显示全部':'收起部分'}}</label>
+        <!-- TODO 语音播放-->
+        <!-- 简单文本消息 -->
+        <div ng-switch-when="text" style="padding-top: 1px;">
+            <div ng-if="!messageData.user" style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p ng-if="!messageData.user" class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)" ng-bind="messageData.message"></p>
+            </div>
+            <span ng-if="messageData.user" style="white-space: pre-wrap;" ng-bind="messageData.message"></span>
+        </div>
+        <!-- 带帮助链接的文本消息 -->
+        <div ng-switch-when="textHelp" style="padding-top: 1px;">
+            <div ng-if="!messageData.user" style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p ng-if="!messageData.user" class="voiceP" ng-class="{true:'mt1',false:''}[isIos]"><span ng-click="clickPlay(messageData.message)">{{messageData.message}}</span><br>查看<a ng-click="clickHelp()">《快速入门指南》</a></p>
+
+            </div>
+            <span ng-if="messageData.user" style="white-space: pre-wrap;" ng-bind="messageData.message"></span>
+        </div>
+        <!-- 语音消息 -->
+        <div ng-switch-when="audio">
+            <i class="ion-volume-medium left-icon" ng-click="clickPlay()"></i>
+        </div>
+        <!-- 伴随症状 -->
+        <!-- <div ng-switch-when="textbs" style="padding-top: 1px;">
+            <div ng-if="!messageData.user" style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p ng-if="!messageData.user" class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)"
+                    ng-bind="messageData.message"></p>
+            </div>
+            <span ng-if="messageData.user" style="white-space: pre-wrap;" ng-bind="messageData.message"></span>
+        </div> -->
+        <!-- 伴随症状 -->
+        <div ng-switch-when="textbs">
+            <div>
+                <p>您的主诉信息: {{messageData.userjl}}</p>
+                <hr style="margin: 0 0 10px 0">
+                <audio-content>
+                    <p style="white-space: pre-wrap;width: 100%;float: right;">{{messageData.message}}</p>
+                </audio-content>
+            </div>
+            <div class="choose-item" style="flex-direction: column;align-items: center;margin:3px 0; padding-left:0;">
+                <label ng-class="[{'chose':messageData.clicked},'button button-small button-ddd']" ng-disabled="messageData.clicked" style="padding: 0 10px">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="bszznothing()"> 无其它伴随症状
+                </label>
+
+            </div>
+        </div>
+        <!-- 结果列表消息 -->
+        <div ng-switch-when="result">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)" ng-if="messageData.message" ng-bind="messageData.message"></p>
+            </div>
+            <hr ng-if="!messageData.sameMsg">
+            <div style="display: flex;">
+                <i ng-if="!messageData.sameMsg" class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-click="clickPlay(messageData.radioMsg)" ng-class="{true:'mt1',false:''}[isIos]" ng-bind="messageData.radioMsg" ng-if="!messageData.sameMsg"></p>
+            </div>
+            <hr>
+            <!-- 列表大于10条信息应用滚动条 -->
+            <ion-scroll ng-if="messageData.list.length>=10" class="list-area" overflow-scroll="false">
+                <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.list track by $index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        <label ng-disabled="chooseAnswer[$index]" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectOption($index,item)">{{(messageData.lastnum+$index+1<10 ? '&nbsp;&nbsp;':'')+(messageData.lastnum+$index+1)+'.'}}
+                        <span >{{item.xxdxkdis}}</span>
+    
+                    </label>
+                        <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind-html="item.xxms||'暂无信息'" compile-html></p>
+                    </li>
+                    <!-- <li ng-if="messageData.haveMore" style="width:100%;align-items: center;">
+                	<hr>
+                    <label ng-disabled="messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 100%;text-align: center;background: white;border: 0px;color: blue;">
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[0]" ng-change="selectOption(messageData.list.length,{'xxdxkdis':'下一页'})">下一页
+                    </label>
+                </li> -->
+                </ol>
+            </ion-scroll>
+            <!-- 列表小于10条不用滚动条 -->
+            <div ng-if="messageData.list.length<10">
+                <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.list track by $index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        <label ng-disabled="chooseAnswer[$index]" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectOption($index,item)">{{(messageData.lastnum+$index+1<10 ? '&nbsp;&nbsp;':'')+(messageData.lastnum+$index+1)+'.'}}
+                        <span >{{item.xxdxkdis}}</span>
+                    </label>
+                        <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind-html="item.xxms||'暂无信息'" compile-html></p>
+                    </li>
+
+                </ol>
+            </div>
+            <div style="height: 25px;margin-top: -1px;" ng-if="messageData.haveMore||(messageData.lastnum!=0)">
+                <hr>
+                <!-- ng-disabled="messageData.clicked" -->
+                <label ng-if="messageData.lastnum!=0" ng-disabled="chooseAnswer[messageData.list.length]||chooseAnswer[messageData.list.length+1]||messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 48%;background: white;border: 0px;color: #2db4ee;margin-top: -6px;">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[messageData.list.length+1]" ng-change="selectOption(messageData.list.length,{'xxdxkdis':'上一页'})">上一页
+                </label>
+                <label ng-if="messageData.haveMore" ng-disabled="chooseAnswer[messageData.list.length]||chooseAnswer[messageData.list.length+1]||messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 48%;text-align: right;background: white;border: 0px;color: #2db4ee;margin-top: -6px;"
+                    ng-style="{width:(messageData.lastnum==0)? '100%':'48%'}">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[messageData.list.length]" ng-change="selectOption(messageData.list.length,{'xxdxkdis':'下一页'})">下一页
+                </label>
+            </div>
+        </div>
+
+		<!-- 合并分类，项目,指标等结果 -->
+		<!-- 结果列表消息 -->
+        <div ng-switch-when="hbresult">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)" ng-if="messageData.message" ng-bind="messageData.message"></p>
+            </div>
+            <hr />
+            <!-- 列表大于0条信息应用滚动条 -->
+            <ion-scroll ng-if="messageData.resData.listLenth>10" class="list-area" overflow-scroll="false">
+                <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.resData.daanlist track by $index" ng-init="flIndex=$index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        <!-- 分类只有一个，则分类隐藏 -->
+                        <span ng-if="messageData.resData.daanlist.length>1" style="color:#333;">{{$index+1}}.{{item.flmc}}</span>
+                        
+                    	<ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;margin:3px 0px;">
+		                    <li ng-init="xmIndex=$index" ng-repeat="xmitem in item.xmList track by $index">
+		                        	<span style="color:#333;"><i ng-if="item.xmList.length > 1">({{xmIndex+1}}) </i>{{xmitem.xmmc}}</span>
+		                        	<ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;margin-bottom: 6px;">
+			                        	<li ng-repeat="zbitem in xmitem.zbList track by $index">
+			                        		<label  ng-class="[{'chose':$index===choosIndex3&&xmIndex===choosIndex2&&flIndex===choosIndex1},'button button-small button-ddd']">
+			                        		
+				                        		<input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectHBTiaoJian(item.flmc, xmitem.xmmc, zbitem,flIndex, xmIndex, $index)">
+				                        		<i ng-show="xmitem.zbList.length > 1">{{$index+1}}.</i>{{zbitem}}
+			                        		</label>
+			                        	</li> 
+		                        	</ol>
+		                    </li>
+	                    </ol>
+                        <!-- <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind-html="item.xxms||'暂无信息'" compile-html></p> -->
+                    </li>
+
+                </ol>
+            </ion-scroll>
+             <!-- 列表小于10条不用滚动条 -->
+            <div ng-if="messageData.resData.listLenth<10">
+            	<ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.resData.daanlist track by $index" ng-init="flIndex=$index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        
+                        <span style="color:#333;">{{$index+1}}.{{item.flmc}}</span>
+                        
+                    	<ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;margin:3px 0px;">
+		                    <li ng-init="xmIndex=$index" ng-repeat="xmitem in item.xmList track by $index">
+		                        	<span style="color:#333;"><i ng-if="item.xmList.length > 1">({{xmIndex+1}}) </i>{{xmitem.xmmc}}</span>
+		                        	<ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;margin-bottom: 6px;">
+			                        	<li ng-repeat="zbitem in xmitem.zbList track by $index">
+			                        		<label  ng-class="[{'chose':$index===choosIndex3&&xmIndex===choosIndex2&&flIndex===choosIndex1},'button button-small button-ddd']">
+			                        		
+				                        		<input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectHBTiaoJian(item.flmc, xmitem.xmmc, zbitem,flIndex, xmIndex, $index)">
+				                        		<i ng-show="xmitem.zbList.length > 1">{{$index+1}}.</i>{{zbitem}}
+			                        		</label>
+			                        	</li> 
+		                        	</ol>
+		                    </li>
+	                    </ol>
+                        <!-- <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind-html="item.xxms||'暂无信息'" compile-html></p> -->
+                    </li>
+
+                </ol>
+            </div>
+            
+        </div>
+		
+
+        <!-- 药品种类列表消息 -->
+        <div ng-switch-when="yaoPinZLLB" class="ypzllb">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)" ng-if="messageData.message" ng-bind="messageData.message"></p>
+            </div>
+            <hr>
+            <!-- 应用滚动条 -->
+            <ion-scroll class="list-area" overflow-scroll="false">
+                <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.list track by $index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        <label ng-disabled="chooseAnswer[$index]" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectOption($index,item)">
+						<span class="color-3">{{(messageData.lastnum+$index+1)+'.'}}</span>
+                        <span class="color-3">{{item.xxdxkdis}}</span>
+                        <p ng-if="item.bmorcj">{{item.bmorcj}}</p>
+						<p ng-if="item.syz">{{item.syz}}</p>
+                        <span ng-if="item.ypspmc||item.isotc == '1'||item.ybyw == '1'||item.jbyw == '1'" class="sub">
+                            <span style="color: #18B4ED;margin-left: 5px;" ng-if="item.isotc == '1'">OTC</span>
+                            <span style="color: green;margin-left: 5px;" ng-if="item.ybyw == '1'">保</span>
+                            <span style="color:rgb(255, 160, 21); margin-left: 5px;" ng-if="item.jbyw == '1'">基</span>
+                        </span>
+    
+                    </label>
+                    </li>
+
+                </ol>
+            </ion-scroll>
+        </div>
+
+        <!-- 药品列表消息 -->
+        <div ng-switch-when="yaoPinLB" class="yblb">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)" ng-if="messageData.message" ng-bind="messageData.message"></p>
+            </div>
+
+            <hr>
+            <!-- 列表大于10条信息应用滚动条 -->
+            <ion-scroll ng-if="messageData.list.length>=10" class="list-area" overflow-scroll="false">
+                <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.list track by $index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        <label ng-disabled="chooseAnswer[$index]" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectOption($index,item)">{{(messageData.lastnum+$index+1<10 ? '&nbsp;&nbsp;':'')+(messageData.lastnum+$index+1)+'.'}}
+                        <span ng-if="isNaN(item.ypspmc)||typeof(item.ypspmc) == 'undefined'||item.ypspmc==''||item.ypspmc==null">{{item.xxdxkdis}}</span>
+                        <span ng-if="item.yptymc">{{item.yptymc}}</span>
+                        <span ng-if="item.ypspmc">({{item.ypspmc}})</span>
+    
+                    </label>
+
+                    </li>
+
+                </ol>
+            </ion-scroll>
+            <!-- 列表小于10条不用滚动条 -->
+            <div ng-if="messageData.list.length<10">
+                <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                    <li ng-repeat="item in messageData.list track by $index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                        <label ng-disabled="chooseAnswer[$index]" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="selectOption($index,item)">{{(messageData.lastnum+$index+1<10 ? '&nbsp;&nbsp;':'')+(messageData.lastnum+$index+1)+'.'}}
+                        <span ng-if="isNaN(item.ypspmc)||typeof(item.ypspmc) == 'undefined'||item.ypspmc==''||item.ypspmc==null">{{item.xxdxkdis}}</span>
+                        <span ng-if="item.yptymc">{{item.yptymc}}</span>
+                        <span ng-if="item.ypspmc">({{item.ypspmc}})</span>
+                    </label>
+
+                    </li>
+
+                </ol>
+            </div>
+
+        </div>
+        <!-- 单选消息 -->
+        <div ng-switch-when="simple">
+            <p ng-if="messageData.userjl">您的主诉信息: {{messageData.userjl}}</p>
+            <hr ng-if="messageData.userjl" style="margin: 0 0 10px 0">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.radioMsg)" ng-bind="messageData.message"></p>
+            </div>
+            <!--<span class="icon ion-volume-medium" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay()" ng-bind="messageData.message"></span>-->
+            <hr>
+            <div class="choose-item" style="flex-direction: column;align-items: flex-start;">
+                <label ng-disabled="messageData.clicked" ng-repeat="item in messageData.list" ng-class="[{'chose':chooseAnswer[$index]},'button button-small button-ddd']" style="margin-top: 2px;margin-bottom: 3px;font-size:13px">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="clickAction(item.zdyresult||item.xxdxkdis);submit(item.zdyresult||item.xxdxkdis)"> {{($index+1<10 ? '&nbsp;&nbsp;':'')+($index+1)+'.'+item.xxdxkdis+item.agefw+item.number}}
+                </label>
+            </div>
+        </div>
+        <!-- 单选消息处理单位问题 -->
+         <div ng-switch-when="simpleDW">
+            <p ng-if="messageData.userjl">您的主诉信息: {{messageData.userjl}}</p>
+            <hr ng-if="messageData.userjl" style="margin: 0 0 10px 0">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.radioMsg)" ng-bind="messageData.message"></p>
+            </div>
+            <!--<span class="icon ion-volume-medium" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay()" ng-bind="messageData.message"></span>-->
+            <hr>
+            <div class="choose-item" style="flex-direction: column;align-items: flex-start;">
+                <label ng-disabled="messageData.clicked" ng-repeat="item in messageData.list" ng-class="[{'chose':chooseAnswer[$index]},'button button-small button-ddd']" style="margin-top: 2px;margin-bottom: 3px;font-size:13px">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="clickAction(item.zdyresult||item.xxdxkdis);submit(item.zdyresult||item.xxdxkdis)"> {{($index+1<10 ? '&nbsp;&nbsp;':'')+($index+1)+'.'+item.danweiShow+item.agefw+item.number}}
+                </label>
+            </div>
+        </div>
+        <!-- 多选消息 -->
+        <div ng-switch-when="multiple">
+            <p>您的主诉信息: {{messageData.userjl}}</p>
+            <hr style="margin: 0 0 10px 0">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.radioMsg)" ng-bind="messageData.message"></p>
+            </div>
+            <hr>
+            <div>
+                <div class="choose-item" style="flex-direction: column;align-items: flex-start;margin-top: -4px;">
+                    <label ng-if=" messageData.list.length==1" ng-disabled="messageData.clicked" ng-repeat="item in messageData.list" ng-class="[{'chose':chooseAnswer[$index]},'button button-small button-ddd']" ng-click="wzzAction()">
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]">{{item.xxdxkdis+item.number}}
+                    </label>
+                    <label ng-if=" messageData.list.length>1" ng-disabled="messageData.clicked" ng-repeat="item in messageData.list" ng-class="[{'chose':chooseAnswer[$index]},'button button-small button-ddd']">
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]">{{($index+1<10 ? '&nbsp;&nbsp;':'')+($index+1)+'.'+item.xxdxkdis+item.number}}
+                    </label>
+                    <!-- <label ng-if="messageData.isshowhyp" ng-disabled="messageData.clicked" ng-class="[{'chose':wzzChooosed}, 'button button-small button-ddd']" ng-click="wqtzzAction()" style="background: #17B9EC;color: white;">
+                        无其它症状
+                    </label> -->
+                    <label ng-if="messageData.isshowhyp" ng-click="wqtzzAction()" ng-class="[{'chose':wzzChooosed},'button button-small button-ddd']" ng-disabled="messageData.clicked">
+                            <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" > {{(messageData.list.length+1<10 ? '&nbsp;&nbsp;':'')+(messageData.list.length+1)+'.无其它症状'}}
+                        </label>
+                    <label ng-if="messageData.subType == 'zzmultiple' " ng-click="wzzYsdbsAction()" ng-class="[{'chose':wzzChooosed},'button button-small button-ddd']" ng-disabled="messageData.clicked">
+                            <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" > {{(messageData.list.length+1<10 ? '&nbsp;&nbsp;':'')+(messageData.list.length+1)+'.以上都不是'}}
+                        </label>
+
+                </div>
+                <hr>
+            </div>
+            <!--改用button按钮时  div加 padding: 5px 0 12px; -->
+            <div class="choose-item padding-top" style="background: white;position: relative;height: 35px;" ng-class="{true:'',false:'class1'}[data.limitHeight]">
+                <!-- <button ng-disabled="messageData.clicked" ng-click="cancelAction()" class="button button-city hide">取消</button>
+                <button ng-disabled="messageData.clicked" ng-click="confirmAction()" class="button button-energized button-city">确认</button> -->
+                <!-- <label ng-disabled="chooseAnswer[messageData.list.length]||messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 48%;text-align: right;background: white;border: 0px;color: #2db4ee;margin-top: -15px;width:100%">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[messageData.list.length]" ng-change="confirmAction()">下一步
+                </label> -->
+
+                <!-- <label ng-if="messageData.isshowhyp" ng-disabled="messageData.clicked" ng-class="[{'chose':wzzChooosed}, 'button button-small button-ddd']" ng-click="confirmAction()" style="background: #2db4ee;color: white;margin-top: -10px;margin-bottom: 5px;margin-left: -15px;padding: 1px 5px;border: 0px;">
+		换一批
+                 </label> -->
+                <label ng-if=" messageData.list.length>1" ng-disabled="messageData.clicked" ng-class="[{'chose':wzzChooosed}, 'button button-small button-ddd']" ng-click="wzzAction()" style="background: #2db4ee;color: white;margin-top: -10px;margin-bottom: 5px;padding: 1px 11px;border: 0px;"
+                    ng-style="isshowhyp(false)">
+                        提交
+                </label>
+                <label ng-if=" messageData.list.length==1" ng-disabled="messageData.clicked" ng-class="[{'chose':wzzChooosed}, 'button button-small button-ddd']" ng-click="wzzYsdbsAction()" style="background: #2db4ee;color: white;margin-top: -10px;margin-bottom: 5px;padding: 1px 11px;border: 0px;"
+                    ng-style="isshowhyp(false)">
+                        跳过
+                </label>
+            </div>
+        </div>
+        <!-- 单项结果详细 -->
+        <div ng-switch-when="detail">
+            <h4 ng-bind="messageData.resData.title" class="inline"></h4>
+            <h5 ng-bind="messageData.resData.subTitle" class="inline"></h5>
+            <hr style="margin: 0 0 10px 0">
+            <span ng-if="messageData.resData.condition" ng-bind="messageData.conditionText+messageData.resData.condition" class="inline"></span>
+            <div ng-if="messageData.resData.conclusion" ng-bind="messageData.resData.conclusion" class="content" style="white-space: pre-wrap;"></div>
+            <div class="content">
+                <div style="display: flex;" ng-click="clickPlay(messageData.radioMsg)">
+                    <i class="icon ion-volume-medium"></i>
+                    <span class="f" ng-bind="messageData.message"></span>
+                </div>
+                <hr>
+                <!--<br>-->
+                <div ng-click="messageData.detailAction(messageData.siglId)" style="display:none;text-decoration: none;float: right;color:#2db4ee;margin-bottom: -8px;">查看详情</div>
+            </div>
+            <div style="display: flex;flex-wrap: wrap;justify-content: space-between" class=" ">
+                <span class="button-small button-ddd" ng-repeat="item in messageData.list" ng-bind="item.xxdxkdis"></span>
+            </div>
+        </div>
+        <!-- 单项结果详细 (显示多个)-->
+        <div ng-switch-when="duodetail">
+            <h4 ng-bind="messageData.resData.title" class="inline"></h4>
+            <h5 ng-bind="messageData.resData.subTitle" class="inline"></h5>
+
+            <span ng-repeat="data in messageData.list" style="color:#18B4ED;" ng-if="data.title == 'otc'&& data.content == '1' ">
+            		OTC
+           </span>
+            <span ng-repeat="data in messageData.list" style="color:green;" ng-if="data.title == 'ybyw'&& data.content == '1' ">
+                保
+            </span>
+            <span ng-repeat="data in messageData.list" style="color:rgb(255, 160, 21);" ng-if="data.title == 'jbyw'&& data.content == '1' ">
+                基
+            </span>
+            <!-- <hr style="margin: 0 0 10px 0">
+            <span ng-if="messageData.resData.condition" ng-bind="messageData.conditionText+messageData.resData.condition" class="inline"></span>
+            <div ng-if="messageData.resData.conclusion" ng-bind="messageData.resData.conclusion" class="content" style="white-space: pre-wrap;"></div> -->
+            <div class="content">
+                <div ng-repeat="item in messageData.list" ng-if="item.title != 'otc'&&item.title != 'ybyw'&&item.title != 'jbyw'">
+                    <label ng-click="isshowall(item,$event,$index)">
+                        <h5 class="inline h5-tit">{{item.title}}</h5>
+                        <!-- ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='不良反应'||item.title=='治疗建议'||item.title=='查询结果'||item.title=='疾病描述')]" -->
+                        <span style="padding-left:10px;float: right;margin-top: 10px;" ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[item.title!='']"
+                            changei></span>
+                    </label>
+                    <hr style="margin: 0 0 10px 0">
+                    <!-- ng-class="{true:'',false:'hide'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='治疗建议'||item.title=='查询结果')]" audio-content需要隐藏时添加                       ng-class="{true:'showf',false:'f'}[(item.title=='健康指导'||item.title=='症状描述')]"需要显示前6行时添加到p中-->
+                    <!-- ng-class="{true:'',false:'hide'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='不良反应'||item.title=='治疗建议'||item.title=='查询结果'||item.title=='疾病描述')]" -->
+                    <audio-content showaudio>
+                        <p class="showf" style="white-space: pre-wrap;width:100%;float:right;margin-top: -2px;margin-bottom: 0;" showallp ng-bind-html="item.content" compile-html></p>
+                    </audio-content>
+                </div>
+                <div>
+                    <hr ng-if="showHr">
+                    <!--<br>-->
+                    <div ng-click="messageData.detailAction(messageData.siglId)" style="display:none;text-decoration: none;float: right;color:#2db4ee;">查看详情</div>
+                </div>
+            </div>
+            <div style="display: flex;flex-wrap: wrap;justify-content: space-between" class="">
+                <!--  <span class="button-small button-ddd" ng-repeat="item in messageData.list" ng-bind="item.xxdxkdis"></span> -->
+            </div>
+        </div>
+        <!-- 问医流程中的症状知识库-->
+        <div ng-switch-when="wenyizzzsk">
+            <h4 ng-bind="messageData.resData.title" class="inline"></h4>
+            <h5 ng-bind="messageData.resData.subTitle" class="inline"></h5>
+            <div class="content">
+                <div ng-repeat="item in messageData.list">
+                    <label ng-click="isshowall(item,$event,$index)">
+                        <h5 class="inline h5-tit">{{item.title}}</h5>
+                        <span style="padding-left:10px;float: right;margin-top: 10px;" class="ion-chevron-right" changei></span>
+                    </label>
+                    <hr style="margin: 0 0 10px 0">
+                    <!-- ng-class="{true:'',false:'hide'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='治疗建议'||item.title=='查询结果')]" audio-content需要隐藏时添加                       ng-class="{true:'showf',false:'f'}[(item.title=='健康指导'||item.title=='症状描述')]"需要显示前6行时添加到p中-->
+                    <audio-content class="hide" showaudio>
+                        <p class="showf" style="white-space: pre-wrap;width:100%;float:right;margin-top: -2px;margin-bottom: 0;" showallp>{{item.content}}</p>
+                    </audio-content>
+                </div>
+                <div>
+                    <hr ng-if="showHr">
+                    <!--<br>-->
+                    <div ng-click="messageData.detailAction(messageData.siglId)" style="display:none;text-decoration: none;float: right;color:#2db4ee;">查看详情</div>
+                </div>
+            </div>
+            <div style="display: flex;flex-wrap: wrap;justify-content: space-between" class="">
+                <!--  <span class="button-small button-ddd" ng-repeat="item in messageData.list" ng-bind="item.xxdxkdis"></span> -->
+            </div>
+        </div>
+        <!-- 单项结果详细 -->
+        <div ng-switch-when="listdetail">
+            <div ng-repeat="item in messageData.list" style="">
+                <h5 class="inline" style="font-weight: 700">{{item.title}}</h5>
+                <hr style="margin: 0 0 10px 0">
+                <audio-content>
+                    <p style="white-space: pre-wrap;width: 100%;float: right;margin-top: -2px;" ng-bind-html="item.content" compile-html></p>
+                </audio-content>
+
+            </div>
+            <div ng-show="messageData.tjkslist" style="padding-bottom:10px;">
+                <h5 class="inline" style="font-weight: 700">推荐科室</h5>
+                <hr style="margin: 0 0 4px 0">
+                <!-- <span class="icon ion-volume-medium f" ng-click="clickPlay('推荐科室')" style="white-space: pre-wrap;">推荐科室:</span> -->
+                <ol class="choose-item" style="flex-direction: column;align-items: flex-start;padding-left:18px">
+                    <li ng-repeat="item in messageData.tjkslist track by $index">
+                        <label ng-disabled="messageData.clicked" class="tjks">
+                            {{(messageData.tjkslist.length>1 ? ($index+1)+'.':'')+item.xxdxkdis}}
+                        </label>
+                        <!-- <label ng-click="selectOption($index,item)" class="tuijian button button-small button-ddd" ng-show="item.noHospital == false">
+                            推荐
+                        </label> -->
+                        <label ng-click="hosRegister($index,item)" class="tuijian button button-small button-ddd" ng-show="item.isShowRegister == true">
+                            挂号
+                        </label>
+                        <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind="item.xxms||'暂无信息'"></p>
+                    </li>
+                </ol>
+            </div>
+            <hr style="display: none">
+        </div>
+        <!-- 输入框 -->
+        <div ng-switch-when="selectinput">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.radioMsg)" ng-bind="messageData.message"></p>
+            </div>
+            <!--<span class="icon ion-volume-medium" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay()" ng-bind="messageData.message"></span>-->
+            <hr>
+            <div class="choose-item" style="flex-direction: column;align-items: flex-start;">
+                <div class="item item-input-inset" style="border-style:none;padding:0px;width:80%">
+                    <label class="item-input-wrapper" style="margin:0;width:60%;" ng-style="errorStyle">
+                        <input type="number" step="0.01" placeholder="检验数值" ng-disabled="messageData.clicked" ng-model="inputContent" class="jyValue">
+                    </label>
+                    <button class="button button-small button-calm" ng-disabled="messageData.clicked" style="flex-grow:1" ng-click="submitAction(inputContent)">
+                        提交
+                    </button>
+                </div>
+                <label ng-disabled="messageData.clicked" ng-repeat="item in messageData.list" ng-class="[{'chose':chooseAnswer[$index]},'button button-small button-ddd']" style="margin-top: 2px;margin-bottom: 3px;font-size:13px">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]" ng-change="clickAction(item.zdyresult||item.xxdxkdis);submit(item.zdyresult||item.xxdxkdis)"> {{($index+1<10 ? '&nbsp;&nbsp;':'')+($index+1)+'.'+item.xxdxkdis+item.agefw}}
+                </label>
+            </div>
+        </div>
+        <!-- 问症状症状知识 -->
+        <!-- <div ng-switch-when="resultzsk">
+            <span class="icon ion-volume-medium f" style="white-space: pre-wrap;" ng-click="clickPlay(messageData.radioMsg)" ng-if="messageData.message"
+                ng-bind="messageData.message"></span>
+            <span class="icon ion-volume-medium f" ng-if="!messageData.sameMsg" style="white-space: pre-wrap;">{{messageData.radioMsg}}</span>
+            <hr>
+            <ol class="choose-item" style="align-items: flex-start;justify-content: flex-start;">
+                <li ng-repeat="item in messageData.list track by $index">
+                    <label ng-disabled="messageData.clicked" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[0]" ng-change="zzselectOption($index,item)"> {{item.xxdxkdis}}
+                    </label>
+                    <p class="f" style="margin:5px 10px ;font-size: 0.8rem" ng-if="item.xxms" ng-bind="item.xxms"></p>
+                </li>
+            </ol>
+            <hr>
+            <div class="choose-item padding-top" style="justify-content: space-around;">
+                <button ng-disabled="messageData.clicked" ng-click="jixu()" class="button button-energized button-city" style="width: 45%;margin: 0px;">询问疾病</button>
+                <button ng-disabled="messageData.clicked" ng-click="cancelAction()" class="button button-city" style="width: 45%;margin: 0px;">重新输入</button>
+            </div>
+        </div> -->
+        <div ng-switch-when=resultzsk>
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.radioMsg)" ng-bind="messageData.message"></p>
+            </div>
+            <hr>
+            <div>
+                <div class="choose-item" style="flex-direction: column;align-items: flex-start;margin-top: -4px;">
+                    <label ng-repeat="item in messageData.list" ng-class="[{'chose':chooseAnswer[$index]},'button button-small button-ddd']" ng-click="messageData.detailAction(item.id)">
+                        <!-- <input class="hide" type="checkbox" ng-model="chooseAnswer[$index]"> -->{{($index+1<10 ? '&nbsp;&nbsp;':'')+($index+1)+'.'+item.xxdxkdis}}
+                    </label>
+                </div>
+                <hr>
+            </div>
+            <!--改用button按钮时  div加 padding: 5px 0 12px; -->
+            <div class="choose-item padding-top" style="justify-content: space-around;background: white;" ng-class="{true:'',false:'class1'}[data.limitHeight]">
+                <label ng-disabled="chooseAnswer[messageData.list.length]||messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 48%;text-align: right;background: white;border: 0px;color: #2db4ee;margin-top: -15px;width:100%">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[messageData.list.length]" ng-click="jixu()">继续
+                </label>
+            </div>
+        </div>
+        <!-- 疑似疾病结果 -->
+        <div ng-switch-when="ysjbresult">
+            <!--  
+            <span class="icon ion-volume-medium f" style="white-space: pre-wrap;" ng-click="clickPlay()" ng-if="messageData.message"
+                ng-bind="messageData.message"></span>
+            <span class="icon ion-volume-medium f" ng-if="!messageData.sameMsg" ng-click="clickPlay()" style="white-space: pre-wrap;-webkit-line-clamp: initial">{{messageData.radioMsg}}</span>
+            -->
+            <p>您的主诉信息: {{messageData.userjl}}</p>
+            <div style="white-space: pre-wrap;" ng-if="messageData.message && messageData.liucheng!='问症寻医'" ng-bind="messageData.message"></div>
+            <div ng-if="!messageData.sameMsg && messageData.liucheng!='问症寻医'" class="msg-tit">{{messageData.radioMsg}}</div>
+            <hr ng-if="messageData.liucheng!='问症寻医'" style="margin: 0 0 5px 0">
+            <ol ng-if="messageData.liucheng!='问症寻医'" class="choose-item" style="flex-direction: column;align-items: flex-start;">
+                <li ng-repeat="item in messageData.list track by $index">
+                    <label ng-if="item.type==='提示语'" ng-disabled="messageData.clicked" class="tjks">
+                            {{item.xxdxkdis}}
+                       </label>
+                    <!--  <label ng-if="item.type==='疾病'" ng-disabled="messageData.clicked" ng-class="[{'chose':$index===choosIndex},'button button-small button-ddd']">
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[0]" ng-change="selectOption($index,item)">{{($index+1<10 ? '&nbsp;&nbsp;':'')+(messageData.list.length>1 ? ($index+1)+'.':'')+item.xxdxkdis}}
+                    </label> -->
+                    <!-- <label ng-if="item.type==='疾病'&&(item.ct||item.jc||item.jy)" ng-disabled="messageData.clicked" >
+                        <h5 class="inline h5-tit jb-tit">{{(messageData.list.length>1 ? ($index+1)+'.':'')+item.xxdxkdis}}</h5>
+                        <span style="padding-left:10px;float: right;margin-top: 10px;" ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[chosejb[$index]==true]"
+                            changei></span>
+                        <input class="hide" type="checkbox" ng-model="chosejb[$index]" ng-change="showjbxq($index,item)">
+                    </label> -->
+                    <div ng-if="item.type==='疾病'&&(item.ct||item.jc||item.jy)" style="width: 100%;margin-bottom: 10px;" ng-click="showjbxq($index,item)">
+                        <span class="inline" style="max-width: 80%;" ng-bind-html="(messageData.list.length>1 ? ($index+1)+'.':'')+item.xxdxkdis+item.number" compile-html></span>
+                        <span style="padding-left:10px;float: right;" ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[chosejb[$index]==true]" changei></span>
+                    </div>
+                    <p ng-if="item.type==='疾病'&&!(item.ct||item.jc||item.jy)" ng-disabled="messageData.clicked" ng-bind-html="(messageData.list.length>1 ? ($index+1)+'.':'')+item.xxdxkdis+item.number" compile-html>
+                        <!--  <h5 class="inline h5-tit jb-tit" >{{(messageData.list.length>1 ? ($index+1)+'.':'')+item.xxdxkdis}}</h5> -->
+                    </p>
+
+                    <div ng-if="chosejb[$index]&&(item.ct||item.jc||item.jy)" class="jb-jc">
+                        <span style="display: block">请到医院做以下检查进一步确诊。</span>
+                        <span style="display: block" ng-if="item.ct">查体：{{item.ct}}</span>
+                        <span style="display: block" ng-if="item.jc">检查：{{item.jc}}</span>
+                        <span style="display: block" ng-if="item.jy">检验：{{item.jy}}</span>
+                    </div>
+                    <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind="item.xxms||'暂无信息'"></p>
+                </li>
+            </ol>
+
+            <div ng-show="messageData.resData">
+                <!--  
+                <span class="icon ion-volume-medium f" ng-click="clickPlay('推荐科室')" style="white-space: pre-wrap;-webkit-line-clamp: initial;">推荐科室:</span>
+                -->
+                <div class="msg-tit">{{messageData.tjksmessage}}</div>
+                <hr style="margin: 0 0 5px 0">
+                <ol class="choose-item" style="flex-direction: column;align-items: flex-start;">
+                    <li ng-repeat="item in ksList track by $index">
+                        <label ng-disabled="messageData.clicked" class="tjks">
+                            {{(ksList.length>1 ? ($index+1)+'.':'')+item.xxdxkdis+item.number}}
+                        </label>
+                        <!-- <label ng-click="selectOption($index,item)" class="tuijian button button-small button-ddd" ng-show="item.noHospital==false">
+                            推荐
+                        </label> -->
+                        <label ng-click="hosRegister($index,item)" class="tuijian button button-small button-ddd" ng-show="item.isShowRegister == true" style="display: none;">
+                            挂号
+                        </label>
+                        <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind="item.xxms||'暂无信息'"></p>
+                    </li>
+                </ol>
+            </div>
+            <hr style="display: none">
+            <div class="choose-item padding-top" style="justify-content: space-around;display: none">
+                <button ng-disabled="messageData.clicked" ng-click="ysjbguahao(messageData.resData)" class="button button-energized button-city" style="width: 45%;margin: 0px;">挂号科室</button>
+                <button ng-disabled="messageData.clicked" ng-click="cancelAction()" class="button button-city" style="visibility:hidden;width: 45%;margin: 0px;">重新输入</button>
+            </div>
+        </div>
+        <!-- 推荐科室结果列表 -->
+        <div ng-switch-when="tjksresult">
+            <p ng-if="messageData.userjl">您的主诉信息: {{messageData.userjl}}</p>
+            <div style="display: flex;font-weight: 700;  padding-top:5px;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.message)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.message)" ng-if="messageData.message" ng-bind="messageData.message"></p>
+            </div>
+            <hr>
+            <ol class="choose-item" style="flex-direction: column;padding-left:18px;align-items: flex-start;">
+                <li ng-repeat="item in tjksList track by $index" ng-if="item.xxdxkdis!=='下一页'||messageData.haveMore" style="margin-top: -3px; margin-bottom: 4px">
+                    <label ng-disabled="chooseAnswer[$index]" class="tjks">
+                         {{(tjksList.length>1 ? (messageData.lastnum+$index+1)+'.':'')+item.xxdxkdis+item.number}}
+                    </label>
+                    <!-- <label ng-click="selectOption($index,item)" class="tuijian button button-small button-ddd" ng-show="item.noHospital == false">
+                        推荐
+                    </label> -->
+                    <label ng-click="hosRegister($index,item)" class="tuijian button button-small button-ddd" ng-show="item.isShowRegister == true" style="display: none;">
+                            挂号
+                        </label>
+                    <p class="f" style="margin:5px 10px ;" ng-if="item.xxms" ng-bind="item.xxms||'暂无信息'"></p>
+                </li>
+                <!-- <li ng-if="messageData.haveMore" style="width:100%;align-items: center;">
+                	<hr>
+                    <label ng-disabled="messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 100%;text-align: center;background: white;border: 0px;color: blue;">
+                        <input class="hide" type="checkbox" ng-model="chooseAnswer[0]" ng-change="selectOption(messageData.list.length,{'xxdxkdis':'下一页'})">下一页
+                    </label>
+                </li> -->
+            </ol>
+            <div style="height: 25px;margin-top: -1px;" ng-if="messageData.haveMore||(messageData.lastnum!=0)">
+                <hr>
+                <!-- ng-disabled="messageData.clicked" -->
+                <label ng-if="messageData.lastnum!=0" ng-disabled="chooseAnswer[messageData.list.length]||chooseAnswer[messageData.list.length+1]||messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 48%;background: white;border: 0px;color: #2db4ee;margin-top: -6px;">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[messageData.list.length+1]" ng-change="selectOption(messageData.list.length,{'xxdxkdis':'上一页'})">上一页
+                </label>
+                <label ng-if="messageData.haveMore" ng-disabled="chooseAnswer[messageData.list.length]||chooseAnswer[messageData.list.length+1]||messageData.clicked" ng-class="[{'chose': messageData.list.length===choosIndex},'button button-small button-ddd']" style="width: 48%;text-align: right;background: white;border: 0px;color: #2db4ee;margin-top: -6px;"
+                    ng-style="{width:(messageData.lastnum==0)? '100%':'48%'}">
+                    <input class="hide" type="checkbox" ng-model="chooseAnswer[messageData.list.length]" ng-change="selectOption(messageData.list.length,{'xxdxkdis':'下一页'})">下一页
+                </label>
+            </div>
+        </div>
+        <!-- 疾病编码查询 -->
+        <div ng-switch-when="resultbmcx" class="listMsg">
+            <ul class="th">
+                <li ng-if=" messageData.resData.bmList[0].qf=='JB'">疾病名称</li>
+                <li ng-if=" messageData.resData.bmList[0].qf!='JB'">手术操作名称</li>
+                <li>主要编码</li>
+                <li>附加编码</li>
+            </ul>
+            <div ng-repeat="item in messageData.resData.bmList track by $index">
+                <ul ng-click="switchBtn($event,$index)" ng-class="{true:'cur',false:''}[$index==0]">
+                    <li>{{item.mc}}</li>
+                    <li class="selectable">{{item.zybm}}</li>
+                    <li class="selectable">{{item.fjbm}}</li>
+                </ul>
+                <div ng-class="{true:'btn-pn',false:'hide'}[$index==0]">
+                    <span class="button-blue" ng-if="item.jbid" ng-click="jbxqClick(item.jbid)">疾病详情</span>
+                    <span class="button-blue" data="cx{{messageData.processNo}}" ng-click="lmxqClick($event,item)">类目详情</span>
+                    <span class="button-org" ng-click="copyLine(item)">复制内容</span>
+                </div>
+            </div>
+
+
+        </div>
+         <!-- 血压、BMI输入数值特殊处理 -->
+       	<div ng-switch-when="twoinput">
+            <div style="display: flex;">
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(messageData.radioMsg)"></i>
+                <p class="voiceP" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay(messageData.radioMsg)" ng-bind="messageData.message"></p>
+            </div>
+            <!--<span class="icon ion-volume-medium" ng-class="{true:'mt1',false:''}[isIos]" ng-click="clickPlay()" ng-bind="messageData.message"></span>-->
+            <hr>
+            <div style="flex-direction: column;align-items: flex-start;">
+                <ol class="choose-item" style="flex-direction: column;align-items: flex-start;padding-left: 0px;">
+                
+                    <li style="margin-top: -3px; margin-bottom: 4px">
+                    <div class="item item-input-inset" style="border-style:none;padding:0px;">
+                    <span style="font-size: 13px;">{{messageData.subType=="血压"?"收缩压(高压)：":"身高："}}</span>
+                    <label class="item-input-wrapper" style="margin:0;width:40%;" ng-style="errorStyle">
+                        <input type="number" step="0.01" placeholder="" ng-disabled="messageData.clicked" ng-model="inputone" class="jyValue">
+                    </label>
+                    <span style="padding-left: 5px;font-size: 13px;">{{messageData.subType=="血压"?" mmHg":" cm"}}</span>
+                    </div>
+                    </li>
+                    <br>
+                    <li style="margin-top: -3px; margin-bottom: 4px">
+                    <div class="item item-input-inset" style="border-style:none;padding:0px;">
+                    <span style="font-size: 13px;">{{messageData.subType=="血压"?"舒张压(低压)：":"体重："}}</span>
+                     <label class="item-input-wrapper" style="margin:0;width:40%;" ng-style="errorStyle">
+                        <input type="number" step="0.01" placeholder="" ng-disabled="messageData.clicked" ng-model="inputtwo" class="jyValue">
+                    </label>
+                    <span style="padding-left: 5px;font-size: 13px;">{{messageData.subType=="血压"?" mmHg":" kg"}}</span>
+                    </div>
+                    </li>
+                    <li style="text-align: end;padding-top: 10px;">
+                    <button class="button button-small button-calm" ng-disabled="messageData.clicked" style="flex-grow:1;width: 45px;" ng-click="xueyabmiAction(inputone,inputtwo,messageData.subType)">
+                        提交
+                    </button>
+                	</li>
+                </ol>
+            </div>
+        </div>
+        
+                
+                <!-- 药品多项结果详细 (显示多个药品详情)-->
+        <div ng-switch-when="duoxqdetail">
+            
+            <div class="content" ng-repeat="yplist in messageData.resData.list">
+	            <h4 ng-bind="yplist.title" class="inline"></h4>
+			            <h5 ng-bind="yplist.subTitle" class="inline"></h5>
+			            <span style="color:#18B4ED;" ng-if="yplist.otc == '1' ">
+			            		OTC
+			           </span>
+			            <span  style="color:green;" ng-if="yplist.ybyw == '1' ">
+			                保
+			            </span>
+			            <span style="color:rgb(255, 160, 21);" ng-if="yplist.jbyw == '1' ">
+			                基
+		            	</span>
+                <div ng-repeat="item in yplist.xqlist track by $index" ng-if="item.title != 'otc'&&item.title != 'ybyw'&&item.title != 'jbyw'">
+                    <label ng-click="isshowallduoyp(item,$event,$index)">
+                        <h5 class="inline h5-tit">{{item.title}}</h5>
+                        <!-- ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='不良反应'||item.title=='治疗建议'||item.title=='查询结果'||item.title=='疾病描述')]" -->
+                        <span style="padding-left:10px;float: right;margin-top: 10px;" ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[item.title!='']"
+                            changei></span>
+                    </label>
+                    <hr style="margin: 0 0 10px 0">
+                    <!-- ng-class="{true:'',false:'hide'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='治疗建议'||item.title=='查询结果')]" audio-content需要隐藏时添加                       ng-class="{true:'showf',false:'f'}[(item.title=='健康指导'||item.title=='症状描述')]"需要显示前6行时添加到p中-->
+                    <!-- ng-class="{true:'',false:'hide'}[(item.title=='健康指导'||item.title=='症状描述'||item.title=='用法用量'||item.title=='禁忌症'||item.title=='适应症'||item.title=='不良反应'||item.title=='治疗建议'||item.title=='查询结果'||item.title=='疾病描述')]" -->
+                    <audio-content showaudio>
+                        <p class="showf" style="white-space: pre-wrap;width:100%;float:right;margin-top: -2px;margin-bottom: 0;" showallp ng-bind-html="item.content" compile-html></p>
+                    </audio-content>
+                </div>
+                <div>
+                    <hr ng-if="showHr">
+                </div>
+            </div>
+            <div style="display: flex;flex-wrap: wrap;justify-content: space-between" class="">
+                <!--  <span class="button-small button-ddd" ng-repeat="item in messageData.list" ng-bind="item.xxdxkdis"></span> -->
+            </div>
+        </div>
+        <!-- 反馈意见 -->
+        <!-- <div class="choose-item" ng-if="!messageData.user" ng-disabled="fk">
+            <button ng-disabled="fk" style="margin:0" ng-click="fankui(true)">结果无误</button>
+            <button ng-disabled="fk" style="margin:0" ng-click="fankui(false)">结果有误</button>
+        </div> -->
+    </div>
+</div>
+<div style="display: flex;padding:5px 5px;height:150px;" ng-if="(messageData.isShowDianZan)&&deabloom" ng-class="messageData.user&&'user'">
+    <div style="margin-left:4em">
+        <i class="icon iconfont icon-dianzan" style="font-size: 30px;color:#D4D4D4" ng-click="godianzan()"></i>
+        <i class="icon iconfont icon-dianzan-copy" style="font-size: 30px;margin-left: 10px;color: #D4D4D4" ng-click="gofankui()"></i>
+    </div>
+
+</div>

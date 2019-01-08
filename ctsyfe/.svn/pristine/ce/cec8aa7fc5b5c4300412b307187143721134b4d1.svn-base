@@ -1,0 +1,282 @@
+<ion-view hide-nav-bar="isIos" view-title="{{title}}" class="dangan-edit jkda-item-edit" ng-view>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        /*字段组标题  */
+
+        .dangan-edit legend {
+            height: 33px;
+            line-height: 33px;
+            font-size: 14px;
+            color: #999;
+            background: #f3f4f5;
+            border: none;
+            padding-left: 20px;
+        }
+
+        /* 头像 */
+
+        .dangan-edit fieldset.jbxx>div.touxiang {
+            height: auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* 基本信息最后一行去掉边框 */
+
+        .dangan-edit fieldset.jbxx>div:last-child {
+            border-bottom: none;
+        }
+
+        .dangan-edit .touxiang p {
+            margin: 0;
+            line-height: 20px;
+        }
+
+        .dangan-edit .touxiang img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .dangan-edit .icon-touxiang {
+            display: block;
+            color: #86b6f8;
+            font-size: 50px;
+        }
+
+        /* 性别单框样式 */
+
+        .dangan-edit fieldset .item {
+            float: right;
+            top: 1px;
+            height: 45px;
+            line-height: 45px;
+            border: none;
+            background: #FFF;
+        }
+
+        .dangan-edit .item-radio i:after {
+            content: '\e608';
+            color: #999;
+            position: absolute;
+            top: 0;
+            right: 40px;
+            font-size: 20px;
+            z-index: 3;
+        }
+
+        .dangan-edit .item-radio input:checked+.radio-content .item-content {
+            background: #FFF;
+        }
+
+        .dangan-edit .item-radio input:checked+.radio-content i:after {
+            content: '\e606';
+            color: #00bfff;
+        }
+
+        .dangan-edit .radio-icon,
+        .dangan-edit .item-content {
+            padding-top: 0;
+            padding-bottom: 0;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .dangan-edit .item-radio .item-content {
+            padding-left: 45px;
+            padding-right: 21px;
+        }
+
+        .dangan-edit .fs-title {
+            font-size: 16px;
+            margin: 10px 20px;
+        }
+
+        .dangan-edit hr {
+            margin: 0 20px;
+        }
+
+        .dangan-edit .other-info {
+            margin: 10px 20px;
+        }
+
+        .dangan-edit .other-info input {
+            width: 100%;
+            background: #f3f4f5;
+            padding: 5px;
+            border-radius: 2px;
+        }
+
+        /*文本框单位
+        .dangan-edit .input-div .danwei label {
+            margin-right: 15px;
+        }*/
+    </style>
+    <ion-content id="DAEContent">
+        <form id="dangAn">
+            <fieldset class="jbxx">
+                <legend>基本信息</legend>
+
+                <div class="touxiang">
+                    <input type="file" ngf-select="upload($files)" accept="image/*" id="cameraInput" name="cameraInput"
+                        class="hide" />
+                    <img ng-click="tackImgClick()" ng-src="{{(subData.imgUrl?subData.imgUrl:imgurl)}}" alt="">
+                    <p ng-click="tackImgClick()">自定义头像</p>
+                    <!-- <p ngf-pattern="image/*'" ngf-multiple="false" ngf-select="upload($files)">自定义头像</p> -->
+                    <!-- <p ng-click="take_a_photo()">自定义头像</p> -->
+                </div>
+                <div>
+                    <label for="niCheng"><span class="required-mk">*</span>昵称</label>
+                    <input type="text" id="niCheng" name="niCheng" maxlength="12" placeholder="请输入昵称" ng-model="subData.xingMing"
+                        ng-change="valiForm()" required />
+
+                </div>
+                <div class="sex-row" ng-if="self=='1'">
+                    <label><span class="required-mk">*</span>性别</label>
+                    <label class="item item-radio">
+                        <input type="radio" name="xingBie" value="2" ng-model="subData.xingBie" required>
+                        <div class="radio-content">
+                            <div class="item-content">
+                                女
+                            </div>
+                            <i class="icon iconfont"></i>
+                        </div>
+                    </label>
+                    <label class="item item-radio">
+                        <input type="radio" name="xingBie" value="1" ng-model="subData.xingBie" required>
+                        <div class="radio-content">
+                            <div class="item-content">
+                                男
+                            </div>
+                            <i class="icon iconfont"></i>
+                        </div>
+                    </label>
+                </div>
+                <div ng-if="self=='0'">
+                    <label for="guanXi"><span class="required-mk">*</span>与我的关系</label>
+                    <input type="text" id="guanXi" name="guanXi" ng-model="subData.guanxivalue" placeholder="请选择与我的关系"
+                        readonly="readonly" data-gx="{{subData.guanXi}}" ng-blur="valiForm()" unselectable="on" onfocus="this.blur()"
+                        required />
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div>
+                    <label for="birthday"><span class="required-mk">*</span>出生日期</label>
+                    <input type="text" id="birthday" name="birthday" placeholder="请选择出生年月日" readonly="readonly"
+                        ng-model="subData.chuShengRiQi" data-year="" data-month="" data-date="" ng-click="datePiker('birthday')"
+                        ng-blur="valiForm()" unselectable="on" onfocus="this.blur()" required />
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div>
+                    <label for="height"><span class="required-mk">*</span>身高</label>
+                    <div class="input-div">
+                        <input type="text" id="height" name="height" placeholder="请选择身高" ng-model="subData.shenGao"
+                            readonly="readonly" ng-click="heightClick()" ng-blur="valiForm()" unselectable="on" onfocus="this.blur()"
+                            required />
+                        <span class="danwei"><label for="height">cm</label></span>
+                        <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                    </div>
+                </div>
+                <div ng-if="self=='1'">
+                    <label for="address"><span class="required-mk">*</span>所在地区</label>
+                    <input type="text" id="address" name="address" placeholder="请选择地区" readonly="readonly" ng-model="subData.city"
+                        data-province-code="{{subData.sheng}}" data-city-code="{{subData.shi}}" data-district-code="{{subData.qu}}"
+                        ng-click="addressClick($event)" ng-blur="valiForm()" unselectable="on" onfocus="this.blur()"
+                        required />
+                    <input type="hidden" name="contact_province_code" data-id="0001" id="contact_province_code" value=""
+                        data-province-name="">
+                    <input type="hidden" name="contact_city_code" id="contact_city_code" value="" data-city-name="">
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div ng-if="self=='1'">
+                    <label for="mobile"><span class="required-mk">*</span>手机号</label>
+                    <input type="tel" id="mobile" name="mobile" ng-focus="mobileClick($event)" placeholder="请输入手机号"
+                        ng-model="subData.shouJiHao" ng-change="checkMobile()" ng-blur="mobileDoTip()" required />
+
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>病史信息</legend>
+                <p class="fs-title">家族史(多选)</p>
+                <ul>
+                    <li ng-repeat="item in zidian.jzslist track by $index">
+                        <label class="button button-small button-ddd" ng-class="{true:'chose',false:''}[item.chose]">
+                            <input class="hide ng-pristine ng-untouched ng-valid ng-empty" type="checkbox" ng-model="jiaZuShi[$index]"
+                                ng-change="selectOption('jzs',$index,item)" readonly="readonly">
+                            {{item.CODE_NAME}}
+                        </label>
+                    </li>
+                </ul>
+                <div style="margin: 10px 20px;" class="other-info">
+                    <input type="text" placeholder="其它家族史" ng-model="subData.jiaZuShiQita">
+                </div>
+                <hr>
+                <p class="fs-title">个人病史(多选)</p>
+                <ul>
+                    <li ng-repeat="item in zidian.grbslist track by $index">
+                        <label class="button button-small button-ddd" ng-class="{true:'chose',false:''}[item.chose]">
+                            <input class="hide ng-pristine ng-untouched ng-valid ng-empty" type="checkbox" ng-model="geRenBingShi[$index]"
+                                ng-change="selectOption('grs',$index,item)" readonly="readonly">
+                            {{item.CODE_NAME}}
+                        </label>
+                    </li>
+
+                </ul>
+                <div style="margin: 10px 20px;" class="other-info">
+                    <input type="text" placeholder="其它个人病史" ng-model="subData.geRenBingShiQita">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>过敏史</legend>
+                <p class="fs-title">药物过敏(多选)</p>
+                <ul>
+                    <li ng-repeat="item in zidian.yaowulist track by $index">
+                        <label class="button button-small button-ddd" ng-class="{true:'chose',false:''}[item.chose]">
+                            <input class="hide ng-pristine ng-untouched ng-valid ng-empty" type="checkbox" ng-model="yaoWuGms[$index]"
+                                ng-change="selectOption('ywgms',$index,item)">
+                            {{item.CODE_NAME}}
+                        </label>
+                    </li>
+                </ul>
+                <div style="margin: 10px 20px;" class="other-info">
+                    <input type="text" placeholder="其它药物过敏" ng-model="subData.yaoWuGmsQita">
+                </div>
+                <hr>
+                <p class="fs-title">食物过敏(多选)</p>
+                <ul>
+                    <li ng-repeat="item in zidian.shiwulist track by $index">
+                        <label class="button button-small button-ddd" ng-class="{true:'chose',false:''}[item.chose]">
+                            <input class="hide ng-pristine ng-untouched ng-valid ng-empty" type="checkbox" ng-model="shiWuGms[$index]"
+                                ng-change="selectOption('swgms',$index,item)">
+                            {{item.CODE_NAME}}
+                        </label>
+                    </li>
+                </ul>
+                <div style="margin: 10px 20px;" class="other-info">
+                    <input type="text" placeholder="其它食物过敏" ng-model="subData.shiWuGmsQita">
+                </div>
+                <hr>
+                <p class="fs-title">环境过敏(多选)</p>
+                <ul>
+                    <li ng-repeat="item in zidian.huanjinglist track by $index">
+                        <label class="button button-small button-ddd" ng-class="{true:'chose',false:''}[item.chose]">
+                            <input class="hide ng-pristine ng-untouched ng-valid ng-empty" type="checkbox" ng-model="huanJingGms[$index]"
+                                ng-change="selectOption('hjgms',$index,item)">
+                            {{item.CODE_NAME}}
+                        </label>
+                    </li>
+                </ul>
+                <div style="margin: 10px 20px;" class="other-info">
+                    <input type="text" placeholder="其它环境过敏" ng-model="subData.huanJingGmsQita">
+                </div>
+            </fieldset>
+        </form>
+    </ion-content>
+    <div class="bar bar-footer bar-gray">
+        <input type="submit" value="保存" form="dangAn" id="submit" disabled=true>
+    </div>
+</ion-view>

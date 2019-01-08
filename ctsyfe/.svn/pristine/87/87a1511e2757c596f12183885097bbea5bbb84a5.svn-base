@@ -1,0 +1,794 @@
+angular.module('starter.ypznControllers', ['ionic'])
+
+    .controller('ypznMainC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading) {
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $scope.back();
+        };
+        // 跳转首页
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        }
+
+        // 跳转家庭用药
+        $scope.goJtyy = function () {
+            $state.go("jtyy");
+        }
+        // 跳转药品库
+        $scope.goYpk = function () {
+            $state.go("goYpk");
+        }
+
+    })
+    // 家庭用药
+    .controller('jtyyC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, $ionicPopup) {
+
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+        // 跳转首页
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        };
+        var leftUrl = ["/queryJibingList", "/querySystemList"], rightUrl = ["/queryBszzList", "/queryYjflEjfl"] ,type=['jb','xt'];
+        $scope.data = {};
+        $scope.yjflList = [];
+        $scope.righList = [];
+        $scope.leftList = [[], []];
+        $scope.currentChoose = [];
+
+        $scope.currtab = 0;
+        $scope.switchTabs = function (index) {
+            $scope.currtab = index;
+            if ($scope.leftList[$scope.currtab].length == 0) {
+                queryYjfl();
+            }
+        };
+
+        // 查询左侧一级分类
+        function queryYjfl() {
+            XywyService.query(leftUrl[$scope.currtab], "")
+                .then(function (response) {
+                    if ($scope.currtab == 0) {
+                        $scope.leftList[$scope.currtab] = response.data.jbList;
+                    } else {
+                        $scope.leftList[$scope.currtab] = response.data.xtList;
+                    }
+                    if ($scope.leftList[$scope.currtab]) {
+                        if (typeof $scope.currentChoose[$scope.currtab] == 'undefined') {
+                            $scope.currentChoose[$scope.currtab] = {};
+                        }
+                        $scope.currentChoose[$scope.currtab].xt = $scope.leftList[$scope.currtab][0];
+                        $scope.loadyjfl($scope.currentChoose[$scope.currtab].xt);
+                    }
+
+                });
+        }
+
+        queryYjfl();
+
+        // 一级分类点击事件
+        $scope.loadyjfl = function (xt) {
+            $scope.currentChoose[$scope.currtab].xt = xt;
+            $scope.currentChoose[$scope.currtab].yjfl = "";
+            var config;
+
+            var para = {};
+            if ($scope.currtab == 0) {
+                para.jbmc = xt
+            } else {
+                para.xt = xt
+            }
+            config = {
+                params: para,
+            }
+            XywyService.query(rightUrl[$scope.currtab], config)
+                .then(function (response) {
+                    if ($scope.currtab == 0) {
+                        $scope.righList[$scope.currtab] = response.data.zzList;
+                    } else {
+                        $scope.righList[$scope.currtab] = response.data.yjflList;
+                    }
+
+                });
+        }
+        // 右侧分类点击
+        $scope.loadEjfl = function (yjfl, ejfl) {
+            if ($scope.currentChoose[$scope.currtab].yjfl == yjfl) {
+                $scope.currentChoose[$scope.currtab].yjfl = "";
+                $scope.currentChoose[$scope.currtab].ejfl = "";
+            } else {
+                $scope.currentChoose[$scope.currtab].yjfl = yjfl;
+            }
+            if (!ejfl) {
+                var para = angular.toJson($scope.currentChoose[$scope.currtab]);
+                $state.go("yplb", { tj: para, type: type[$scope.currtab], title: $scope.currentChoose[$scope.currtab].yjfl });
+            }
+        }
+
+        $scope.goDrugDetail = function (ejfl) {
+            $scope.currentChoose[$scope.currtab].ejfl = ejfl;
+            var para = angular.toJson($scope.currentChoose[$scope.currtab]);
+
+            $state.go("yplb", { tj: para, type: type[$scope.currtab], title: $scope.currentChoose[$scope.currtab].ejfl });
+        }
+    })
+    // 药品库
+    .controller('ypkC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, $ionicPopup) {
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+        // 跳转首页
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        }
+    })
+    // 药品库
+    .controller('yplbC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, $ionicPopup) {
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+
+        // 跳转首页
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        };
+        var type = $stateParams['type'],tj=JSON.parse($stateParams['tj']),url = {}, para;
+        url.xt = "/queryXtyp";
+        url.jb = "/queryJzyp";
+        // 查询药品列表
+        var queryYpList = function () {
+            para = {}
+            if (type == "xt") {
+                para.xt =tj.xt;
+                para.yjfl =tj.yjfl;
+                para.ejfl =tj.ejfl;
+            }else{
+                para.jbmc =tj.xt;
+                para.bszz =tj.yjfl;
+            }
+            XywyService.query(url[type], {"params":para})
+                .then(function (response) {
+                    console.log(response);
+                    $scope.micList=response.data.ypList;
+                    
+                });
+        };
+
+        queryYpList();
+    })
+    .controller('ypznMainSearchC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, $ionicPopup) {
+        XywyService.getRem(750);
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        }
+
+        $scope.historyList = [];
+        $scope.hostSearchList = [];
+        $scope.loadtab = true;
+        //输入框绑定的ng-model
+        $scope.data = {
+            keyword: ""
+        }
+
+        $scope.id = sessionStorage.getItem("openId");
+
+        function queryHisRecord() {
+            setTimeout("$('#keyword').focus()", 100);
+            var config;
+            var para = {
+                openId: $scope.id
+            }
+            config = {
+                params: para,
+            }
+            XywyService.query('/queryHistoryRecord', config)
+                .then(function (response) {
+                    $scope.historyList = response.data.record;
+                    $scope.hostSearchList = response.data.hotSearch;
+                });
+        }
+        queryHisRecord();
+
+        $scope.show_yp_list = function (ypmc) {
+            $scope.data.keyword = ypmc;
+            $scope.searchDrugName();
+        }
+
+        $scope.searchDrugName = function () {
+            //保存搜索结果
+            if ($scope.data.keyword) {
+                $scope.loadtab = false;
+                var config;
+                var para = {
+                    input: $scope.data.keyword,
+                    type: "mohu",
+                    size: 20
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        $scope.micList = response.data.data;
+                    });
+            } else {
+                $scope.loadtab = true;
+            }
+        }
+        if ($stateParams.ypmc) {
+            $scope.data.keyword = $stateParams.ypmc
+            $scope.searchDrugName()
+        }
+
+        $scope.saveHistory = function (tymc) {
+            var config;
+            var para = {
+                input: tymc,
+                openId: $scope.id,
+            }
+            config = {
+                params: para,
+            }
+            XywyService.query('/saveSearchHistoryRecord', config)
+                .then(function (response) {
+                    queryHisRecord();
+                });
+        }
+
+        $scope.go_yp_detail = function (id, tymc, spmc) {
+            if (spmc) {
+                $scope.saveHistory(spmc);
+            } else {
+                $scope.saveHistory(tymc);
+            }
+
+            if (id) {
+                $state.go('wenyaodetail', { id: id, showItem: $scope.micType, estype: "yp", viewTitle: tymc });
+            } else {
+                $state.go("ypchaxunliebiao", { data: tymc, type: "tymc", title: tymc });
+            }
+        }
+
+        $scope.deleteRecord = function () {
+            var myPopup = $ionicPopup.show({
+                template: '您确定要清空全部历史搜索记录吗？',
+                title: '提示',
+                scope: $scope,
+                buttons: [
+                    {
+                        text: '取消',
+                    },
+                    {
+                        text: '<b>确定</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            var config;
+                            var para = {
+                                openId: $scope.id
+                            }
+                            config = {
+                                params: para,
+                            }
+                            XywyService.query('/deleteSearchHistoryRecord', config)
+                                .then(function () {
+                                    $scope.historyList = [];
+                                });
+                            myPopup.close();
+                        }
+                    },
+                ]
+            });
+
+        }
+
+        $scope.clean = function () {
+            $scope.data.keyword = "";
+            $scope.loadtab = true;
+        }
+
+    })
+
+    .controller('ypchaxunliebiaoC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading) {
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            if ($scope.showType == '1' && $scope.saveTypeZero) {
+                queryDurnList();
+            } else {
+                $window.history.back();
+            }
+        };
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        }
+
+        $scope.micList = {};
+        $scope.parameter;
+        $scope.type = $stateParams.type;
+        console.log($stateParams);
+        $scope.data = {
+            keyword: ""
+        }
+        $scope.pageNum = 1;
+        $scope.pageCount;
+        $scope.showType;
+        $scope.saveTypeZero; //存第一次分组的数据，便于判断返回上一页的流程
+        $scope.htmlTitle = $stateParams.title;
+
+        queryDurnList = function () {
+            if ($scope.type == "tymc") {
+                $scope.parameter = $stateParams.data;
+                if ($scope.data.keyword) {
+                    $scope.parameter = $scope.data.keyword;
+                }
+                var config;
+                var para = {
+                    input: $scope.parameter,
+                    type: "must"
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        $scope.micList = response.data.data;
+                        $scope.showType = response.data.type;
+                        if ($scope.showType == '0') {
+                            $scope.saveTypeZero = '1';
+                        }
+                        $scope.pageCount = response.data.count;
+                    });
+            } else if ($scope.type == "ypmc") {
+                $scope.parameter = $stateParams.data;
+                if ($scope.data.keyword) {
+                    $scope.parameter = $scope.data.keyword;
+                }
+                var config;
+                var para = {
+                    input: $scope.parameter,
+                    type: "mohu"
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        $scope.micList = response.data.data;
+                        $scope.showType = response.data.type;
+                        if ($scope.showType == '0') {
+                            $scope.saveTypeZero = '1';
+                        }
+                        $scope.pageCount = response.data.count;
+                    });
+            } else if ($scope.type == "xtfl") {
+                $scope.parameter = angular.fromJson($stateParams.xt);
+                var config;
+                var para = {
+                    xt: $scope.parameter.xt,
+                    yjfl: $scope.parameter.yjfl,
+                    ejfl: $scope.parameter.ejfl,
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        $scope.micList = response.data.data;
+                        $scope.showType = response.data.type;
+                        if ($scope.showType == '0') {
+                            $scope.saveTypeZero = '1';
+                        }
+                        $scope.pageCount = response.data.count;
+                    });
+            } else if ($scope.type == "jtyy") {
+                $scope.parameter = angular.fromJson($stateParams.zz);
+                var config;
+                var para = {
+                    zhuZz: $scope.parameter.zhuZz,
+                    bszz: $scope.parameter.bszz
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        $scope.micList = response.data.data;
+                        $scope.showType = response.data.type;
+                        if ($scope.showType == '0') {
+                            $scope.saveTypeZero = '1';
+                        }
+                        $scope.pageCount = response.data.count;
+                    });
+            }
+        }
+        queryDurnList();
+        //跳转到详情页面
+        $scope.go_yp_detail = function (id, name) {
+            if (id) {
+                $state.go('wenyaodetail', { id: id, showItem: $scope.micType, estype: "yp", viewTitle: name });
+            } else {
+                $scope.parameter = $stateParams.data;
+                var config;
+                var para = {
+                    input: name,
+                    type: "must"
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        $scope.micList = response.data.data;
+                        $scope.showType = response.data.type;
+                        $scope.pageCount = response.data.count;
+                    });
+            }
+
+        };
+
+        $scope.clean = function () {
+            $scope.data.keyword = "";
+        }
+        //输入框查询事件
+        $scope.searchDrugName = function () {
+            queryDurnList();
+        }
+
+        $scope.task_hasMoreItem = true;
+        //上拉加载更多数据
+        $scope.loadMicMore = function () {
+            $scope.pageNum += 1;
+            if ($scope.pageNum <= $scope.pageCount) {
+                //隐藏无数据提示
+                $scope.task_hasMoreItem = true;
+                var config;
+                var para = {
+                    xt: $scope.parameter.xt,
+                    yjfl: $scope.parameter.yjfl,
+                    ejfl: $scope.parameter.ejfl,
+                    pageNum: $scope.pageNum,
+                    input: $scope.data.keyword,
+                }
+                config = {
+                    params: para,
+                }
+                XywyService.query('/searchMainList', config)
+                    .then(function (response) {
+                        angular.forEach(response.data.data, function (child) {
+                            $scope.micList.push(child);
+                        });
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    });
+            } else {
+                //显现提示
+                $scope.task_hasMoreItem = false;
+                $scope.reusltNullTip = "已加载全部！";
+
+                //隐藏上拉加载
+                $scope.isShow = true;
+                //禁止上拉滑动
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+        };
+    })
+
+    .controller('XiTongYongYaoFilterC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading) {
+        XywyService.getRem(750);
+
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        }
+
+
+        $scope.data = {};
+        $scope.yjflList = [];
+        $scope.ejflList = [];
+        $scope.xtList = [];
+        $scope.currentChoose = {};
+
+        function queryYjfl() {
+            XywyService.query('/querySystemList', "")
+                .then(function (response) {
+                    $scope.xtList = response.data.xt;
+                    if ($scope.xtList) {
+                        $scope.currentChoose.xt = $scope.xtList[0].xt;
+                        $scope.loadyjfl($scope.currentChoose.xt);
+                    }
+                });
+        }
+        queryYjfl();
+
+        $scope.loadyjfl = function (xt) {
+            $scope.currentChoose.xt = xt;
+            $scope.currentChoose.yjfl = "";
+            var config;
+            var para = {
+                xt: xt
+            }
+            config = {
+                params: para,
+            }
+            XywyService.query('/queryYjflEjfl', config)
+                .then(function (response) {
+                    $scope.ejflList = response.data;
+                });
+        }
+
+        $scope.loadEjfl = function (yjfl, ejfl) {
+            if ($scope.currentChoose.yjfl == yjfl) {
+                $scope.currentChoose.yjfl = "";
+                $scope.currentChoose.ejfl = "";
+            } else {
+                $scope.currentChoose.yjfl = yjfl;
+            }
+            if (!ejfl) {
+                var para = angular.toJson($scope.currentChoose);
+                $state.go("ypchaxunliebiao", { xt: para, type: "xtfl", title: $scope.currentChoose.yjfl });
+            }
+        }
+
+        $scope.goDrugDetail = function (ejfl) {
+            $scope.currentChoose.ejfl = ejfl;
+            var para = angular.toJson($scope.currentChoose);
+            $state.go("ypchaxunliebiao", { xt: para, type: "xtfl", title: $scope.currentChoose.ejfl });
+        }
+
+        //跳转到详情页面
+        $scope.go_yp_detail = function (id, tymc) {
+            $state.go('wenyaodetail', { id: id, showItem: $scope.micType, estype: "yp", viewTitle: tymc });
+        };
+    })
+
+    .controller('jtyyFilterC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading) {
+        XywyService.getRem(750);
+
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+
+        $scope.back = function () {
+            sessionStorage.removeItem('jtyyzz');
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: openid, token: token, yxzsurl: yxzsurl });
+            } else { $state.go("shouye", { openid: openid, token: token }); }
+        }
+
+        $scope.pageCount;
+        $scope.pageNum;
+        $scope.data = {
+            keyword: ""
+        }
+        $scope.searchKey = {};
+        $scope.shaixuanlist;
+        $scope.currentChoose = {
+            zzz: "",
+            bszz: ""
+        }
+        $scope.queryShaiXuanList = function () {
+            $scope.pageNum = 1;
+            var para = {
+                pageNum: $scope.pageNum,
+                keyword: $scope.data.keyword,
+                szm: $scope.zimu
+            }
+            var config = {
+                params: para
+            }
+            XywyService.query("/queryShaiXuanList", config).then(function (response) {
+                $scope.shaixuanlist = response.data.data;
+                $scope.pageCount = response.data.count;
+            });
+        }
+        $scope.queryShaiXuanList();
+        //输入框查询事件
+        $scope.searchZz = function () {
+            cleanZimuColor();
+            $scope.zimu = "";
+            $scope.queryShaiXuanList();
+        }
+
+        $scope.cleanZz = function () {
+            $scope.data.keyword = "";
+            $scope.queryShaiXuanList();
+        }
+        $scope.task_hasMoreItem = true;
+        //上拉加载更多数据
+        $scope.loadMicMorezz = function () {
+            $scope.pageNum += 1;
+            if ($scope.pageNum <= $scope.pageCount) {
+                //隐藏无数据提示
+                var para = {
+                    pageNum: $scope.pageNum,
+                    keyword: $scope.data.keyword,
+                    szm: $scope.zimu
+                }
+                var config = {
+                    params: para
+                }
+
+                XywyService.query("/queryShaiXuanList", config).then(function (response) {
+                    angular.forEach(response.data.data, function (child) {
+                        $scope.shaixuanlist.push(child);
+                    });
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            } else {
+                //显现提示
+                $scope.task_hasMoreItem = false;
+                $scope.reusltNullTip = "已加载全部！";
+
+                //隐藏上拉加载
+                $scope.isShow = true;
+                //禁止上拉滑动
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+        };
+
+        $scope.iBiaoqian = {};
+        $scope.isShowBszz = function (index, zz, bszz) {
+            $scope.searchKey.zhuZz = zz;
+            $scope.currentChoose.zzz = zz;
+            if (bszz) {
+                var element = document.getElementById("id" + index);
+                if (element) {
+                    if (element.style.display == "block") {
+                        element.style.display = "none";
+                    } else {
+                        element.style.display = "block";
+                    }
+                    if ($scope.iBiaoqian[index]) {
+                        $scope.iBiaoqian[index] = false;
+                    } else {
+                        $scope.iBiaoqian[index] = true;
+                    }
+                }
+            } else {
+                var zz = {
+                    zhuZz: $scope.searchKey.zhuZz
+                }
+                var para = angular.toJson(zz);
+                $state.go("ypchaxunliebiao", { zz: para, type: "jtyy", title: $scope.searchKey.zhuZz });
+            }
+
+        }
+        $scope.chooseBszz = function (bszz, zzz) {
+            var zz = {
+                zhuZz: zzz,
+                bszz: bszz
+            }
+            $scope.currentChoose.bszz = bszz;
+            var para = angular.toJson(zz);
+            $state.go("ypchaxunliebiao", { zz: para, type: "jtyy", title: zzz + "(" + bszz + ")" });
+
+        }
+
+        //字母查询
+        $scope.$on('zimu', function (event, zimu) {
+            $scope.data.keyword = "";
+            $scope.zimu = zimu.zimu;
+            $scope.zimuheight = zimu.zimuheight;
+            //        	页数置为1
+            $scope.pageNum = 1;
+            //        	执行字母查询
+            $scope.szmPx = $scope.zimu;
+            $scope.queryShaiXuanList();
+            //        	2s后隐藏字母\
+            $scope.ishsowzimu = true;
+
+            $timeout(function () {
+                $scope.ishsowzimu = false;
+            }, 2000);
+        });
+
+        function cleanZimuColor() {
+            if ($(".city_anchor").children(".target").length > 0) {
+                $(".city_anchor").children(".target").each(function () { $(this).removeClass("target") });
+            }
+        }
+    })

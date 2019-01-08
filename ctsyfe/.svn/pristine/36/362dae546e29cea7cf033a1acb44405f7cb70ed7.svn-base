@@ -1,0 +1,122 @@
+<ion-view hide-nav-bar="isIos" view-title="{{yaopindetails.yaopinmingcheng}}">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        .ypxq_title{
+            width: 100%;
+            background: #FFFFFF;
+            height: 50px;
+        }
+        .ypxq_title span{
+            display: inline;
+            font-size: 16px;
+            color: black;
+            line-height: 50px;
+            margin-left: 15px;
+            font-weight: bold;
+            
+        }
+        .ypxq_title i{
+            display: inline;
+            line-height: 50px;
+            float: right;
+            margin-right: 10px;
+        }
+        .ypxq_item{
+            width: 100%;
+            background: #FFFFFF;
+            margin-top: 15px;
+            height: 100px;
+            position: relative;
+        }
+        .item_top{
+            border-left: 8px solid #00B5EE;
+            margin-top: px;
+            width: 100%;
+            /* height: 20px; */
+            position: absolute;
+            top: 20px;
+            left: 15px;
+            
+        }
+        .item_top span{
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .item_bottom{
+            position: absolute;
+            bottom: 20px;
+            left: 15px;
+        }
+    </style>
+    <ion-content>
+        <div  style="position: relative; background: #F5F5F5;width: 100%;height: 100%;overflow-y: scroll;overflow-x: hidden;">
+            <div class="ypxq_title">
+                <span>{{yaopindetails.yaopinmingcheng}}</span>
+                <i class="icon iconfont icon-yuyin1 voiceI" ng-click="clickPlay(yaopindetails.yaopinmingcheng)"></i>
+            </div>
+            <div class="ypxq_item">
+                <div class="item_top">
+                    <span>医保编码</span>
+                </div>
+                <div class="item_bottom">
+                    <span>{{yaopindetails.yibaoyaopinbianhao}}</span>
+                </div>
+              
+            </div>
+            <div class="ypxq_item">
+                    <div class="item_top">
+                        <span>剂型</span>
+                    </div>
+                    <div class="item_bottom">
+                        <span>{{yaopindetails.jixing}}</span>
+                    </div>
+                  
+            </div>
+            <div class="ypxq_item">
+                    <div class="item_top">
+                        <span>药品类别</span>
+                    </div>
+                    <div class="item_bottom">
+                        <span>{{yaopindetails.yaopinleibie}}</span>
+                    </div>
+                  
+            </div>
+            <div class="ypxq_item">
+                    <div class="item_top">
+                        <span>医保类别</span>
+                    </div>
+                    <div class="item_bottom">
+                        <span>{{yaopindetails.yibaoleibie}}</span>
+                    </div>
+                  
+            </div>
+            <div class="ypxq_item">
+                    <div class="item_top">
+                        <span>备注</span>
+                    </div>
+                    <div class="item_bottom">
+                        <span>{{yaopindetails.beizhu}}</span>
+                    </div>
+                  
+            </div>
+            <div class="ypxq_item">
+                    <div class="item_top">
+                        <span>医保地区</span>
+                    </div>
+                    <div class="item_bottom">
+                        <span>{{yaopindetails.diqu}}</span>
+                    </div>
+                  
+            </div>
+        </div>
+        
+    </ion-content>
+   
+</ion-view>

@@ -1,0 +1,41 @@
+<ion-view hide-nav-bar="isIos" view-title="体重历史记录" class="jkda-item-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css"></style>
+    <ion-content>
+        <div class="top">
+            <input type="text" id="startDate" placeholder="请选择起始日期" ng-click="datePiker('startDate')" data-year="" data-month="" data-date="" readonly="readonly">
+            <i class="icon ion-minus color-9"></i>
+            <input type="text" id="endDate" placeholder="请选择结束日期" ng-click="datePiker('endDate')" data-year="" data-month="" data-date="" readonly="readonly">
+            <input type="button" class="button" ng-click="doSearch()" value="查询">
+        </div>
+        <div class="xt-list color-3 s-14">
+            <ul ng-if="tiZhongList.length>0">
+                <!-- <li class="title" ng-repeat-start="item in tiZhongList track by $index" ng-if="$index==0||item.riqiday!=tiZhongList[$index-1].riqiday">
+                    <caption>{{item.riqiday}}</caption>
+                </li> -->
+                <li ng-repeat="item in tiZhongList track by $index" ng-class="{'color-red-2':item.jieguo=='肥胖','color-green':item.jieguo=='正常','color-red':item.jieguo=='超重','color-yellow':item.jieguo=='偏瘦'}">
+                    <!-- <span>{{item.riqi}}</span> -->
+                    <span>{{item.riqiday}}</span>
+                    <span>{{item.riqihours}}</span>
+                    <span><a class="color-sp">{{item.tizhong}}</a> kg</span>
+                    <span>BMI: <a class="color-sp">{{item.zhishu}}</a></span>
+                    <span class="color-sp">{{item.jieguo}}</span>
+                    <span ng-click="deljilu($index,item)"><i class="icon iconfont icon-delet_SFontCN"></i></span>
+                </li>
+
+            </ul>
+            <div ng-if="tiZhongList.length==0" class="wsj">
+                <img src="img/wushuju.png" alt="无任何历史记录">
+                <p>无任何历史记录</p>
+            </div>
+        </div>
+        <div ng-hide="ishowall" style="text-align: center; margin-top: 15px;">
+            <span style="font-size: 14px; color: #8F8E94">{{reusltNullTip}}</span>
+        </div>
+        <ion-infinite-scroll ng-if="!ishowall" immediate-check="false" on-infinite="loadMicMore()" distance="1%"> </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

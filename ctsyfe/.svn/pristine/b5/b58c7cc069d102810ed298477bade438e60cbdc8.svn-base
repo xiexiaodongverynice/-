@@ -1,0 +1,77 @@
+<ion-view hide-nav-bar="isIos" view-title="儿童免疫">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+	.jg_detail {
+	    margin-bottom: 0.5rem;
+	    padding-left: 1rem;
+    	padding-top: 1.25rem;
+    	padding-bottom: 1.66rem;
+	}
+	.question-answer{
+	    margin: 1rem;
+	    margin-bottom: 2rem;
+	}
+	.erjititle{
+		font-size: 14px;
+		font-weight: bolder;
+		color:#666666;
+	}
+	.pg_detail{
+	margin: 1rem 0.834rem;
+	}
+	.question-answer h3 {
+    font-size: 16px;
+    height: auto;
+    line-height: 3rem;
+    padding: 0.834rem 0;
+    border-bottom: 1px solid #d4d4d4;
+	}
+	.activated{
+		color:#999999;
+		font-size: 18px;
+	}
+    </style>
+
+    <ion-content>
+    <div class="header-top">
+            <img class="imgstyle" src="img/ertongmianyi.jpg" />
+
+        </div>
+        <div class="question-answer">
+     		<div class="pg_detail" ng-repeat="lab in ertongmianyi track by $index">
+                 <h3 class="pg_min_title" ng-click="isshowall($event)">
+                    {{lab.title}}
+                     <span class="icon activated" ng-class="{ true:'activated ion-chevron-down',false:'activated ion-chevron-right' }[$index==0]" style="color: #999999;" ng-click="isshowall($event,'ionimg')"></span>
+                 </h3>
+                 <ul ng-class="{false:'hide',true:''}[$index==0]">
+                     <li class="jg_detail">
+                     <div ng-if="lab.jzdx">
+                      <span class="erjititle">接种对象：</span>{{lab.jzdx}}
+                      
+                     </div>
+                     <div ng-if="lab.cishu">
+                     <span class="erjititle">接种剂次：</span>
+                     {{lab.cishu}}
+                     </div>
+                     
+                     <div  ng-if="lab.tujing">
+                     <span class="erjititle">接种途径：</span>
+                     {{lab.tujing}}
+                     </div>                     
+                     <div ng-if="lab.beizhu">
+                     <span class="erjititle">备注：</span>
+                     {{lab.beizhu}}
+                     </div>  
+                     <div ng-if="lab.text" style="white-space: pre-line;">
+                     {{lab.text}}
+                     </div>                   
+                     </li>
+                 </ul>
+             </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,99 @@
+<ion-view hide-nav-bar="isIos" view-title="{{title}}" class="color-6 ypzn ypSearch" style="background: #f3f4f5">
+    <style>
+        .foot_wrap {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            z-index: 99;
+            /* min-height: 44px; */
+        }
+       
+        .foot {
+            padding: 9px 10px;
+            text-align: center;
+            height: 48px;
+        }
+        
+        .footText {
+            height: 100% !important;
+            outline: none;
+            border: none;
+            border-radius: 40px;
+            margin: 2px 0;
+            background: #eff0f4;
+            padding: 6px 6px;
+            position: relative;
+            line-height: 20px;
+            width: 80%;
+            overflow-y: hidden;
+            font-size: 18px;
+        }
+        .yuyinimgsize{
+        font-size: 35px;
+    	width: 60px;
+    	height: 60px;
+	    color: #FFF;
+	    border-color: #2db4ee;
+	    -webkit-text-stroke: 1px #fafafa;
+	    background: #2db4ee;
+	    box-shadow: 0 0 2px #2db4ee;
+	    margin: 10px;
+    	}
+    
+        .ypSearch .show_yp_info {
+            position: relative;
+            font-size: 16px;
+            padding-right: 20px;
+        }
+
+        .ypSearch .show_yp_info i {
+            position: absolute;
+            right: 0;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center;">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div class="bar item-input-inset">
+            <div class="item-input-wrapper">
+                <i class="icon ion-search placeholder-icon" ng-click="searchDrugName()"></i>
+                <input ng-model="data.keyword" type="search" ng-focus="inputFocu()" ng-change="jibinglist()" id="keyword" name="keyword"
+                    ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="{{inputHold}}">
+                <i ng-click="clean()" ng-class="[data.keyword ? 'visible-im' : '','ion-close-circled']"></i>
+                <i ng-click="clean()" class="icon iconfont icon-yuyin"></i>
+            </div>
+        </div>
+    </nav>
+    <ion-content delegate-handle="dashboard" ng-style="{top:(isIos)? '60px': '104px'}" style="padding-top: 0px;background-color:#f5f5f5">
+        <div style="background-color:#fff">
+            <ul>
+                <li class="show_yp_list" ng-repeat='jbItem in jbList' ng-click="ypClick(jbItem)">
+                    <span class="show_yp_info">
+                        {{jbItem.jbmc}}
+                        <i ng-if="jbItem.ISZSK=='1'" class="icon ion-ios-arrow-right"></i>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div ng-show="isshowimg" style="float: left; position: absolute; top: 30%; left: 20%; text-align: center;">
+            <img src="img/yyquxiao.jpg" style="width: 65%; height: 50%; opacity: 0.7"><br>
+            <span style="margin-top: -30px; color: white; position: relative; float: left; width: 100%;" ng-bind="data.voiceTip"></span>
+        </div>
+    </ion-content>
+    <footer ng-if="loadtab" class="foot_wrap" id="foot_wrap">
+        <!-- 按住说话图标 -->
+        <div style="display: flex; justify-content: space-around;" class="inputpanel">
+            <div class="flexcolumn" ng-class="{true: 'zBot', false: 'zTop'}[zIndex]">
+                <span style="color: #999999;" ng-bind="data.voiceTip"></span>
+                <div>
+                    <i ng-touchstart="startRecord($event)" ng-touchmove="moveaction($event)" ng-touchend="finishRecord($event)"
+                        ng-touchcancel="finishRecord($event)" class="flexcircle icon iconfont icon-yuyin yuyinimgsize"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+</ion-view>

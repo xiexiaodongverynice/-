@@ -1,0 +1,281 @@
+<ion-view hide-nav-bar="isIos" view-title="{{title}}" class="jkda-item-edit">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+            <div>
+                <a nav-direction="back">
+                    <go-home-android></go-home-android>
+                </a>
+            </div>
+    </ion-nav-buttons> -->
+    <style type="text/css">
+        .jkda-item-edit {
+            height: 100%
+        }
+
+        .jianyan_input {
+            position: absolute;
+            text-align: right;
+            height: 45px;
+            right: 15px;
+            font-size: 14px;
+            color: #999;
+            top: 0;
+            padding: 0;
+
+        }
+
+        .jiayan_div {
+            position: relative;
+            height: 46px;
+            line-height: 46px;
+            border-bottom: 1px solid #d4d4d4;
+            margin: 0 20px;
+        }
+
+        .jiayan_divs {
+            position: relative;
+            /* height: 46px; */
+            line-height: 46px;
+            border-bottom: 1px solid #d4d4d4;
+            margin: 0 20px;
+        }
+
+        .jiayan_divselect {
+            position: relative;
+            line-height: 46px;
+            border-bottom: 1px solid #d4d4d4;
+            margin: 0 20px;
+        }
+
+        .jianyan_label {
+            font-size: 16px;
+            color: #333;
+
+
+        }
+
+        .jianyan_input_inline {
+            width: 45px;
+            float: right;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 5px;
+            margin-right: 10px;
+            color: #999;
+        }
+
+        .jianyan_input_span {
+            margin-right: 10px;
+            float: right;
+        }
+
+        .jianyan_input_inlines {
+            width: 45px;
+            float: right;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 5px;
+            color: #999;
+        }
+
+        .xiala {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border-top: 10px solid #DEDEDE;
+            overflow: scroll;
+
+        }
+
+        .xiala_Android {
+            position: absolute;
+            height: 94%;
+            width: 100%;
+            top: 44px;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border-top: 10px solid #DEDEDE;
+            overflow: scroll;
+        }
+
+        .xiala_div {
+            height: 80px;
+            /* line-height: 50px; */
+            font-size: 16px;
+            color: black;
+            border-bottom: 1px solid #DEDEDE;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .div_radio {
+            position: absolute;
+            right: 40%;
+            top: 30%;
+        }
+
+        .jianyan_select {
+            float: right;
+            width: 150px;
+            margin-top: 10px;
+        }
+
+        .xiala_b {
+            position: relative;
+            padding: 10px 15px;
+            top: 4px;
+            border-bottom: 1px solid #DEDEDE;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .xiala_b span {
+            float: right;
+            margin-left: 10px
+        }
+
+        .jiayan_div_select {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            width: 180px;
+            background: white;
+            border-radius: 4px;
+            height: 30px;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .radio {
+            position: absolute;
+            right: 40%;
+            top: 20%;
+        }
+
+        .jianyan_inputx {
+            position: absolute;
+            text-align: center;
+            height: 45px;
+            left: 90px;
+            font-size: 14px;
+            color: #999;
+            top: 12px;
+            padding: 0;
+            border-radius: 20px;
+        }
+
+        .newdiv {
+            margin-top: -1px;
+            background: #f3f4f5;
+            display: flex;
+            flex: 1 0;
+            align-items: center;
+            border-radius: 4px;
+            padding-right: 8px;
+            /* padding-left: 8px; */
+            height: 28px;
+        }
+
+        .newxmfl {
+            display: inline-block;
+            float: right;
+        }
+    </style>
+     <div ng-if="ishowxiala" ng-class="{true:'xiala',false:'xiala_Android'}[isIos]">
+        <div class="xiala_b">
+            <div class="newdiv">
+                <button ng-click="searchDrugName()" type="button" name="" class="button button-clear ion-android-search"
+                    style="color: #ccc; font-size: 20px; height: 28px; padding-top: 1px;min-width: 20px"></button>
+                <input ng-model="allname" ng-change="getallname(allname)" id="allname" name="allname" type="text"
+                    maxlength="60" style="width: 94%;height: 28px;background: 0 0;" placeholder="请输入项目名称">
+            </div>
+
+
+            <!-- <label  class="jianyan_label" style="margin-left:10px" for="tjxm">项目名称</label>
+                <input class="jianyan_inputx" style=" border: 1px solid #d4d4d4" type="text" id="allname" name="allname"  placeholder="请输入项目名称" ng-model="allname" maxlength="60" ng-change="getallname(allname)" required /> -->
+            <span ng-click="close()"><i class="icon iconfont icon-guanbi1" style="font-size:24px"></i> </span>
+        </div>
+        <div class="xiala_div" ng-repeat="item in detailList" ng-click="xunazhedata(item)">
+            <div style="margin-top: 20px">
+                <span>{{item.jyxm}}</span>
+            </div>
+            <div style="margin-top: 20px">
+                <span style="font-size: 14px;color: #999">{{item.bbmc}}</span>
+                <span style="color: #999">--</span>
+                <span style="font-size: 14px;color: #999">{{item.xmmc}}</span>
+            </div>
+            <!-- <p><span>正常值</span>{{item.zczmax}}-{{item.zczmin}}<span>检查结果</span>{{item.inspectResult}}</p> -->
+        </div>
+
+
+    </div>
+    <ion-content style="height: 100%;">
+        <form id="jianyanForm" style="height: 100%;">
+            <fieldse style="width: 100%">
+                <div class="jiayan_div jbxx">
+                    <label class="jianyan_label" for="tjxm">项目名称</label>
+                    <input class="jianyan_input" type="text" id="tjxm" name="tjxm" placeholder="请输入项目名称" ng-model="tjxmname"
+                        maxlength="60" ng-focus="gettanchu()" required />
+                </div>
+                <!-- <div class="jiayan_div jbxx"  ng-if="isshowfenlei"  >
+	                <label  class="jianyan_label" for="tjxm">标本分类</label>
+                    <input type="text" class="jianyan_input" id="select1" name="select1" ng-model="select1" placeholder="请选择标本分类"  data-gx="{{select1}}" ng-focus="getdengji()" ng-readonly="true" required/>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                 </div>
+                 <div class="jiayan_div jbxx" id="xmflDiv" style="display: none">
+	               <label  class="jianyan_label" for="tjxm">项目分类</label>
+                   <input type="text" class="jianyan_input" id="select2" name="select2" ng-model="select2" placeholder="请选择项目分类"  data-gx="{{select2}}" ng-focus="getxiangmu()" ng-readonly="true" required/>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                 </div> -->
+                <div class="jiayan_div jbxx" ng-if="ishavexmfl">
+                    <label class="jianyan_label" for="tjxm">项目分类</label>
+                    <div class="newxmfl">
+                        <span>{{select1}}</span>--<span>{{select2}}</span>
+                    </div>
+                </div>
+                <div class="jiayan_divs">
+                    <label class="jianyan_label" for="zcfw">正常值</label>
+                    <input type="radio" class="radio" ng-value=true ng-model="state" ng-checked="!isdingxing" ng-click="gaibian('1')"
+                        name="selectState">
+                    <input class="jianyan_input_inlines" style=" border: 1px solid #d4d4d4" type="number" step="0.001"
+                        id="zcfw1" name="zcfw1" ng-model="zcfwmax" ng-readonly="isdingxing" ng-change="valuedata()" />
+                    <span class="danwei jianyan_input_span">-</span>
+                    <input class="jianyan_input_inline" style="border: 1px solid #d4d4d4" type="number" step="0.001" id="zcfw"
+                        name="zcfw" ng-model="zcfwmin" ng-readonly="isdingxing" ng-change="valuedata()" />
+                    <div style="position: relative;">
+                        <input type="radio" class="div_radio" ng-value=false ng-model="state" ng-checked="isdingxing"
+                            ng-click="gaibian('2')" name="selectState">
+                        <span style="margin-left: 65%">阴性</span>
+                    </div>
+
+                    <!-- <select  class="jianyan_select" ng-if="isdingxing" ng-model="selectedSite"  ng-options="x for x in sites" ng-change="valuedata(selectedSite)">
+                        <option value="" selected="selected">请选择</option>
+                        
+                    </select> -->
+
+                </div>
+                <div class="jiayan_div jbxx">
+                    <label class="jianyan_label" for="tjjg">检查结果</label>
+                    <input ng-if="!isdingxing" class="jianyan_input" type="number" id="tjjg" name="tjjg" ng-model="tjjg"
+                        step="0.001" placeholder="请输入检查结果(数字)" ng-change="valuedata()" required />
+                    <input ng-if="isdingxing" class="jianyan_input" type="text" id="tjjgdy" name="tjjgdy" ng-model="tjjgdy"
+                        placeholder="请输入检查结果" ng-change="valuedata()" required />
+                </div>
+                </fieldset>
+
+        </form>
+
+    </ion-content>
+    <div class="bar bar-footer bar-gray">
+        <input type="submit" value="保存" form="jianyanForm" id="submit" disabled="true" ng-click="submitForm()">
+    </div>
+
+</ion-view>

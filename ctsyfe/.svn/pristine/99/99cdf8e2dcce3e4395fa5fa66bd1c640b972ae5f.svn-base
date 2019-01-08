@@ -1,0 +1,46 @@
+angular.module('starter.WDSCControllers', ['ionic'])
+
+    // 我的收藏主页
+    .controller('wdscMainC', function (wxApi, $ionicViewSwitcher, $scope, $http, $state, $stateParams, $timeout, XywyService, Popup, Outlet, $ionicScrollDelegate, audioControl, $window, $rootScope, geoLocation, $ionicModal, $ionicLoading, GoZzJbYp) {
+        //判断手机类型
+        $scope.isIos = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+        }
+        //返回上一页
+        $scope.goBack = function () {
+            $window.history.back();
+        };
+        //首页
+        $scope.back = function () {
+            var openid = sessionStorage.getItem("openId");
+            $ionicViewSwitcher.nextDirection('back');
+            var token = sessionStorage.getItem("token");
+            if (sessionStorage.getItem('hosorgCode')) {
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", {
+                    hosorgCode: hosorgCode,
+                    openid: openid,
+                    token: token,
+                    yxzsurl: yxzsurl
+                });
+            } else {
+                $state.go("shouye", {
+                    openid: openid,
+                    token: token
+                });
+            }
+        };
+
+        /**
+         * 跳转收藏内容
+         */
+        $scope.ssys = function () {
+            $state.go('ssys', { type: "ss" });
+        };
+        
+
+
+    })
+

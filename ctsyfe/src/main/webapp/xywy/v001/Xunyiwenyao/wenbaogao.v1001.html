@@ -1,0 +1,41 @@
+<ion-view view-title="问报告">
+    <ion-nav-buttons>
+        <div>
+            <a href="javascript:history.go(-1)">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-content scroll="false">
+        <div class="searchdiv">
+            <div>
+                <input type="search" placeholder="请输入检查或检验名称" required ng-model="data.keyword">
+                <i ng-click="clean()" class="ion-close-circled"></i>
+                <button class="ion-android-search" ng-click="getResult()"></button>
+            </div>
+                <button ng-click="goyuyin()" class="ion-android-microphone" style="font-size: 30px;color: #d0cdc7;background-color: transparent;border: none;margin-right: 10px;" ></button>
+        </div>
+        <div class="resultdiv">
+            <p class="xywy-center" ng-show="begin">为您找到{{data.count}}条相关信息：</p>
+            <ion-scroll class="yaopin-scroll" delegate-handle="small">
+                <ul>
+                    <li ng-repeat="yaopin in yaopines">
+                        <section>
+                            <h4 class="inline popup-title" ng-click="goDetail(yaopin.xmlb,yaopin.id)">{{yaopin.xmmc}}</h4>
+                            <label ng-class="[direction[$index] ? 'ion-chevron-down' : 'ion-chevron-up','inline menu-tip']" for="baogao-{{yaopin.id}}"></label>
+                            <input type="checkbox" class="hide" ng-init="direction[$index]=true" ng-model="direction[$index]" id="baogao-{{yaopin.id}}">
+                            <ul class="item-list">
+                                <li ng-repeat="(key, value) in yaopin.children" ng-click="selectDetail(yaopin.xmlb,yaopin.id,value.id)" ng-class="[{'outstanding':value.hit},'padding-top']" data-ng-bind-html="value.cjjl||value.zbmc"></li>
+                            </ul>
+                            <!-- <span ng-repeat="(key, value) in yaopin.other">{{key}}：{{value}}</span> -->
+                        </section>
+                    </li>
+                </ul>
+                <ion-infinite-scroll ng-if="false&&data.more" on-infinite="loadMore()" distance="0%" icon="ion-loading-c">
+                </ion-infinite-scroll>
+            </ion-scroll>
+            <i ng-show="begin" class="ion-arrow-up-a scroll-top scroll-wenyao" ng-click="scrollTop()" class="ion-arrow-up-a"></i>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,287 @@
+<ion-view hide-nav-bar="isIos" view-title="评估历史" class="color-6">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+
+    <style>
+        .date_title {
+            color: #666666;
+            height: 3rem;
+            font-size: 1.5rem;
+            background-color: #F2F5F5;
+            line-height: 3rem;
+        }
+
+        .user_name {
+            color: #333333;
+            font-size: 2rem;
+            margin-left: 1rem;
+        }
+
+        .separator {
+            float: left;
+            width: 0.25rem;
+            height: 1.875rem;
+            background: #ff7e00;
+        }
+
+        .pg_min_title {
+            color: #ff7e00;
+        }
+
+        li.pg_detail {
+            margin: 2.5rem 1.875rem;
+        }
+
+        .pg_content {
+            margin-left: 1rem;
+            color: #666666;
+            padding: 1rem 0 1rem 1rem;
+        }
+
+        .main_tz {
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
+        .user_name {
+            position: relative;
+        }
+
+        .user_name i {
+            color: #ff9500;
+            position: absolute;
+            padding: 0 10px;
+            right: 0;
+            top: 0;
+        }
+
+        .user_name span {
+            margin-right: -.5rem;
+        }
+
+        .xljk {
+            margin-left: 1rem;
+        }
+
+        .xljk .pg_content {
+            padding: 0 !important;
+            margin-left: 0;
+        }
+
+        .xljk .pg_content:nth-child(even):after {
+            content: "";
+            display: block;
+        }
+
+        .xljk .pg_content:nth-child(odd):after {
+            margin-right: 2rem;
+        }
+        .ion-ios-arrow-right{
+            color:#999;
+            font-size: 20px;
+        }
+    </style>
+    <ion-content>
+        <div>
+            <ul ng-repeat="data in pgList">
+                <li class="date_title">
+                    <p style="margin-left: 1.25rem">{{data.date}}</p>
+                </li>
+                <li class="pg_detail">
+                    <ul ng-repeat="user in data.mainList" ng-if="type=='tzpg'" style="margin-bottom: 2rem" id="{{user.id}}">
+                        <li>
+                            <div class="separator"></div>
+                            <p class="user_name">
+                                <span ng-if="user.myself=='1'">我</span>
+                                <span ng-if="user.myself=='0'&&user.des">{{user.des}}</span>
+                                <span ng-if="user.myself=='0'&&(user.des==''||user.des==null||typeof(user.des)=='undefined'||isNaN(user.des))">他人</span>
+                                的评估结果
+                                <i class="icon iconfont icon-delet_SFontCN" ng-click="pgDelete(user.id)"></i>
+                            </p>
+                        </li>
+                        <div style="border-bottom: 1px solid #ebebeb;" ng-if="type=='tzpg'" ng-click="pgjg_detail(user.result.DATAS,user.createTime)">
+                            <div style="width:100%; display: table-cell;line-height:1.8; padding-right:5rem;">
+                                <div>
+
+                                    <span class="pg_content" ng-repeat="name in user.result.DATAS track by $index"
+                                        ng-class="{true:'main_tz',false:''}[$index==0]" ng-if="$index<=3">
+                                        {{name.P_NAME}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="pg_content" ng-repeat="name in user.result.DATAS track by $index"
+                                        ng-if="$index>3">
+                                        {{name.P_NAME}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="width:20%; display: table-cell;vertical-align:middle;text-align: right;
+                                padding-right: 15px;">
+                                <i class="icon ion-ios-arrow-right" style="color:#999; "></i>
+                            </div>
+                            <div style="height:2rem; "></div>
+                        </div>
+
+                    </ul>
+                    <ul ng-repeat="user in data.mainList" ng-if="type=='ncz'" style="margin-bottom: 2rem" id="{{user.id}}">
+                        <li>
+                            <div class="separator"></div>
+                            <p class="user_name">
+                                <span ng-if="user.myself=='1'">我</span>
+                                <span ng-if="user.myself=='0'&&user.des">{{user.des}}</span>
+                                <span ng-if="user.myself=='0'&&(user.des==''||user.des==null||typeof(user.des)=='undefined'||isNaN(user.des))">他人</span>
+                                的评估结果
+                                <i class="icon iconfont icon-delet_SFontCN" ng-click="pgDelete(user.id)"></i>
+                            </p>
+                        </li>
+                        <p ng-if="(!isNaN(user.result.mainValue)&&user.result.mainValue!='')||user.result.mainValue===0"
+                            class="pg_content" style="width:100%; display: table-cell;line-height:1.8; padding-right:5rem;border-bottom: 1px solid #ebebeb;"
+                            ng-click="pgjg_detail(user.result,user.createTime,user.subList)">总得分为
+                            <span class="pg_min_title">{{user.result.mainValue}}</span>分，10年卒中发病风险为
+                            <span class="pg_min_title">{{user.result.result}}%</span>。
+
+                            <div ng-if="(!isNaN(user.result.mainValue)&&user.result.mainValue!='')||user.result.mainValue===0"
+                                style="width:20%; display: table-cell;vertical-align:middle;text-align: right;
+                                padding-right: 15px;">
+                                <i class="icon ion-ios-arrow-right" style="color:#999999; "></i>
+                            </div>
+
+
+                        </p>
+                        <p ng-if="!(!isNaN(user.result.mainValue)&&user.result.mainValue!=''||user.result.mainValue===0)"
+                            class="pg_content" style="width:100%; display: table-cell;line-height:1.8; padding-right:5rem;border-bottom: 1px solid #ebebeb;"
+                            ng-click="pgjg_detail(user.result,user.createTime,user.subList)">无脑卒中评分结果。
+
+                            <div ng-if="!(!isNaN(user.result.mainValue)&&user.result.mainValue!=''||user.result.mainValue===0)"
+                                style="width:20%; display: table-cell;vertical-align:middle;text-align: right;
+                                padding-right: 15px;">
+                                <i class="icon ion-ios-arrow-right" style="color:#999999; "></i>
+                            </div>
+
+
+                        </p>
+                    </ul>
+                    <ul ng-repeat="user in data.mainList" ng-if="type=='tnb'" style="margin-bottom: 2rem" id="{{user.id}}">
+                        <li>
+                            <div class="separator"></div>
+
+                            <p class="user_name">
+                                <span ng-if="user.myself=='1'">我</span>
+                                <span ng-if="user.myself=='0'&&user.des">{{user.des}}</span>
+                                <span ng-if="user.myself=='0'&&(user.des==''||user.des==null||typeof(user.des)=='undefined'||isNaN(user.des))">他人</span>
+                                的评估结果
+                                <i class="icon iconfont icon-delet_SFontCN" ng-click="pgDelete(user.id)"></i>
+                            </p>
+
+                        </li>
+                        <p class="pg_content" style="width:100%; display: table-cell;line-height:1.8; padding-right:5rem;border-bottom: 1px solid #ebebeb;"
+                            ng-click="pgjg_detail(user.result,user.createTime)">
+                            总得分为
+                            <span class="pg_min_title">{{user.result.mainValue}}</span>分，{{user.result.des}}
+
+                        </p>
+                        <div style="width:20%; display: table-cell;vertical-align:middle;text-align: right;
+                                padding-right: 15px;">
+                            <i class="icon ion-ios-arrow-right" style="color:#999999; "></i>
+                        </div>
+                    </ul>
+                    <ul ng-repeat="user in data.mainList" ng-if="type=='yjk'" style="margin-bottom: 2rem" id="{{user.id}}">
+                        <li>
+                            <div class="separator"></div>
+
+                            <p class="user_name">
+                                <span ng-if="user.myself=='1'">我</span>
+                                <span ng-if="user.myself=='0'&&user.des">{{user.des}}</span>
+                                <span ng-if="user.myself=='0'&&(user.des==''||user.des==null||typeof(user.des)=='undefined'||isNaN(user.des))">他人</span>
+                                的评估结果
+                                <i class="icon iconfont icon-delet_SFontCN" ng-click="pgDelete(user.id)"></i>
+                            </p>
+
+                        </li>
+                        <p class="pg_content" style="border-bottom: 1px solid #ebebeb; padding:10px 10px 10px 0"
+                            ng-click="pgjg_detail(user.result,user.createTime)">
+                            总得分为
+                            <span class="pg_min_title">{{user.result.mainValue}}</span>分，状态：
+                            <span class="pg_min_title">{{user.result.des}}</span>
+                            <i class="icon ion-ios-arrow-right" style="float:right;margin-right: 5px;color:#999999; "></i>
+                        </p>
+                    </ul>
+                    <!-- <ul ng-repeat="user in data.mainList" ng-if="type=='xlzz'" style="margin-bottom: 2rem" id="{{user.id}}" >
+                            <li>
+                                <div class="separator"></div>
+    
+                                <p class="user_name">
+                                    <span ng-if="user.myself=='1'">我</span>
+                                    <span ng-if="user.myself=='0'&&user.des">{{user.des}}</span>
+                                    <span ng-if="user.myself=='0'&&(user.des==''||user.des==null||typeof(user.des)=='undefined'||isNaN(user.des))" >他人</span>的评估结果
+                                    <i class="icon iconfont icon-delet_SFontCN" ng-click="pgDelete(user.id)"></i></p>
+                                    
+                            </li>
+                            <p class="pg_content" style="border-bottom: 1px solid #ebebeb;" ng-click="pgjg_detail(user.result,user.createTime)">
+                                总得分为
+                                <span class="pg_min_title">{{user.result.mainValue}}</span>分。
+                                <i class="icon ion-ios-arrow-right" style="float:right;margin-right: 1.5rem;color:#999999; "></i>
+                            </p>
+                        </ul> -->
+                    <ul ng-repeat="user in data.mainList" ng-if="type=='xlzz'" style="margin-bottom: 2rem" id="{{user.id}}">
+                        <li>
+                            <div class="separator"></div>
+                            <p class="user_name">
+                                <span ng-if="user.myself=='1'">我</span>
+                                <span ng-if="user.myself=='0'&&user.des">{{user.des}}</span>
+                                <span ng-if="user.myself=='0'&&(user.des==''||user.des==null||typeof(user.des)=='undefined'||isNaN(user.des))">他人</span>
+                                的评估结果
+                                <i class="icon iconfont icon-delet_SFontCN" ng-click="pgDelete(user.id)"></i>
+                            </p>
+                        </li>
+                        <div style="border-bottom: 1px solid #ebebeb;" ng-if="type=='xlzz'" ng-click="pgjg_detail(user.result,user.createTime)">
+                            <div style="width:100%; display: table-cell;line-height:1.8; padding-right:5rem;">
+                                <div class="xljk">
+                                    <span class="pg_content" ng-repeat="lab in user.result.result track by $index"
+                                        ng-if="lab.state!=0">
+                                        {{lab.title}}:
+                                        <strong class="xljk-fx">{{lab.text}}度风险</strong>
+                                    </span>
+                                </div>
+                                <div class="xljk">
+                                    <span class="pg_content" ng-repeat="lab in user.result.result track by $index"
+                                        ng-if="lab.state==0">
+                                        {{lab.title}}:
+                                        <strong class="xljk-zc">正常</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="width:20%; display: table-cell;vertical-align:middle;text-align: right;
+                                padding-right: 15px;">
+                                <i class="icon ion-ios-arrow-right" style="color:#999999; "></i>
+                            </div>
+                            <div style="height:2rem; "></div>
+                        </div>
+
+                    </ul>
+                </li>
+            </ul>
+            <!-- 无数据提示 -->
+            <div ng-if="nullTip" class="null-div">
+                <img src="img/pg-null.png" />
+                <p class="nullTip">{{nullTip}}</p>
+            </div>
+
+
+
+        </div>
+    </ion-content>
+</ion-view>

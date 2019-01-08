@@ -1,0 +1,97 @@
+<ion-view hide-nav-bar="isIos" view-title={{modelname}}>
+	<ion-nav-buttons side="left">
+		<div style="text-align: center; height: 100%">
+			<button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+		</div>
+	</ion-nav-buttons>
+	<ion-nav-buttons side="right">
+		<div>
+			<a nav-direction="back">
+				<go-home-android></go-home-android>
+			</a>
+		</div>
+	</ion-nav-buttons>
+	<!-- 返回首页 -->
+	<div class="m-body f-m-body" id="m-body" style="display:none" ng-if="isIos">
+		<go-shouye-in-menu></go-shouye-in-menu>
+		<div ng-click="goPgsy()" class="fl-child" id="tzView">
+			<i class="ion-paper-airplane"></i>
+		</div>
+	</div>
+
+	<div class="floatdiv float-menu" id="switch" ng-click="menuSwitch($event)" ng-if="isIos">
+		<i class="icon ion-plus" id="floatIcon" ng-class="{true:'menu-show',false:''}[isMenuShow]"></i>
+	</div>
+	<style>
+		.tzjg{
+        	margin-left:1.25rem;
+        	margin-right:1.25rem;
+        	margin-top:1.25rem;
+        	min-height:12.5rem;
+        	width:auto;
+        	height:auto;
+        	border:0.07rem solid #F4F9FD;
+        	padding-bottom: 2.25rem;
+        }
+        .jg-title{
+        	background-color:#F4F9FD;
+        	color:#23BBED;
+        	height:4rem;
+        	font-size:2rem;
+        	font-weight:bold;
+        	text-align:center;
+        	padding-top:0.6rem;
+        }
+        .jgline{
+        	border-color:#F4F9FD;
+        	width:41.87rem;
+        	margin:0.31rem auto;
+        	padding-bottom:3.75rem;
+        }
+        .jg-p1{
+        	width:41.87rem;
+        	font-size:2rem;
+        	color:#6c6565;
+        	margin: 1rem auto;
+        }
+        .jg-circle{
+        	width: 10rem;
+			height: 10rem;
+			margin: 2.5rem auto;
+			background-color: #FF9501;
+			color: white;
+			text-align: center;
+			border-radius: 10rem;
+			font-size: 7rem;
+			padding-top: 3.5rem;
+        }
+        .jg-restart{
+        	margin-top: 2.5rem;
+			height: 6rem;
+			width: 25rem;
+			font-size: 2rem;
+			color: #FFF;
+			border: none;
+			outline: none;
+			background-color: #00B6ED;
+			border-radius: 6rem;		
+        }
+        .jg-btn{
+        	width:100%;
+        	text-align:center;
+        }
+    </style>
+	<ion-content ng-click="hideMenuClick($event)">
+		<div class="tzjg">
+			<div class="jg-title">评估结果</div>
+			<!-- <p class="jg-p1">您的{{modelname}}情况如下：</p> -->
+			<!-- <hr class="jgline"/> -->
+			<div class="jg-circle">!</div>
+			<p style="text-align:center;color:#ABABAB">很抱歉，未匹配到合适的评估结果，请重新评估！</p>
+		</div>
+		<div class="jg-btn" style="text-align:center">
+			<input value="重新评估" class="jg-restart" type="button" ng-click="restartPingGu()">
+		</div>
+
+	</ion-content>
+</ion-view>

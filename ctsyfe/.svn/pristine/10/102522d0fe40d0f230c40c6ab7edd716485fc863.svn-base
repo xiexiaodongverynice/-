@@ -1,0 +1,348 @@
+<ion-view hide-nav-bar="isIos" view-title="报告详情">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+	
+    <style>
+
+        .qz_tb {
+            float: right;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .show_qz_info {
+            width: 100%;
+            /*margin-left: 25px;*/
+            font: 14px Microsoft Yahei;
+            /* padding: 0.35rem 0; */
+            display: inline-block;
+            vertical-align: middle;
+            color: black
+        }
+        
+        .show_qz_list {
+            position: relative;
+            margin: 1rem;
+           background: white;
+        }
+    
+        .qz_name {
+            float: left;
+            width: 100%
+        }
+        
+        .medicaldetails_p{
+            font-size: 14px;
+            color: #999999;
+            text-align: center
+        }
+        .medical {
+            background-color: #18b4ed;
+            z-index: 100;
+            position: fixed;
+            border-radius: 6rem;
+            float: right;
+            bottom: 4rem;
+            margin-left: 80%;
+            width: 4rem;
+            height: 4rem;
+            text-align: center;
+            line-height: 4rem;
+        }
+        .medicaldetails_time{
+            position: relative;
+            width: 100%;
+            height: 4rem;
+        }
+        .time_left{
+            width: 30%;
+            float: left;
+            margin-left: 1rem;
+            height: 3rem;
+            border-bottom: 1px solid #ededed
+        }
+        .time_right{
+            width: 30%;
+            float: right;
+            margin-right: 1rem;
+            height: 3rem;
+            border-bottom: 1px solid #ededed
+        }
+        .time_middle{
+            width: 33%;
+            float: left;
+            height: 3rem;
+            text-align: center;
+            vertical-align:middle;
+            padding-top: 1rem;
+            font-size: 14px;
+            color: #999999
+        }
+        .medicaldetails_title{
+            position: relative;
+            width: 100%;
+            height: 4rem;
+            line-height: 4rem;
+            background: #F4F9FD;
+            vertical-align:middle;
+            
+        }
+        .title_left{
+            margin-left: 20px;
+            font-size: 18px;
+            float: left;
+        }
+        .title_right{
+            margin-right: 1.5rem;
+            font-size: 18px;
+            float: right;
+        }
+        .medicaldetails_imglist{
+            position: relative;
+            width: 100%;
+            height: 6rem;
+            margin-left: 16px;
+            margin-top: 15px
+            
+        }
+        .li_title{
+            position: relative;
+            width: 100%;
+            /* height: 3.5rem; */
+            border: 1px solid #999999;
+            line-height: 3.5rem;
+            overflow: auto;
+        }
+        .li_title_left{
+            padding-left:10px;
+            font-size: 16px;
+            display: block;
+            color: #333333;
+            width: 85%;
+        }
+        .li_title_jcleft{
+            padding-left:10px;
+            font-size: 18px;
+            display: inline-block;
+            width: 85%;
+        }
+        .li_title_med{
+            font-size: 14px;
+            color: #999;
+            display:block;
+            width:100%;
+            padding-left: 10px
+            /* position: absolute; */
+            /* text-align: left; */
+            /* top: 0; */
+        }
+        .li_title_meds{
+            font-size: 14px;
+            width: 20%;
+            display: inline-block;
+            color: #EB4F4E;;
+            text-align: right; 
+            margin-left: 10px;
+        }
+        .li_title_right{
+            position: absolute;
+            top: 0;
+            right: 1rem;
+        }
+        .li_title_jcright{
+            position: absolute;
+            top: 0;
+            right: 1rem;
+        }
+        .li_title_icon{
+            margin-left: 1rem;
+            color: #999999;
+        }
+        .li_p{
+            position: relative;
+            width: 100%;
+            white-space:normal;
+        }
+        .li_p h4{
+            margin-left: 1rem;
+            font-size: 18px;
+            color: #FF9808;
+        }
+        .li_p p{
+            margin-left: 1rem;
+            margin-right: 1rem;
+            font-size: 18px;
+            color: #666666;
+          
+        }
+        .floatdiv {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        
+        #switch {
+            right: 8px;
+            top: 125px;
+            width: 44px;
+            height: 22px;
+            background-color: #666;
+            opacity: .8;
+        }
+        .medicallist_div{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden
+        }
+        .medicallist_nodata{
+            margin-top: 20%;
+        }
+        .medicallist_nodata_img{
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+        .medicallist_nodata_p{
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #C7C8C7
+        }
+        .medicallist-line {
+            background: #f8f8f8;
+            color: #999;
+            height: 33px;
+            line-height: 33px;
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+        
+        .medicallist-line i {
+            float: right;
+        }
+        .djfl{
+            display: block;
+            padding-left: 10px;
+            color: #999;
+            font-size: 14px;
+
+        }
+    </style>
+    <ion-content style="background-color:white">
+        <div style="width:100%;height:100%;position: relative">
+            <div class="medicallist_div">
+                <div class="medicaldetails_time">
+                    <div class="time_left"></div>
+                    <span class="time_middle">提交时间</span>
+                    <div class="time_right"></div>
+                </div>
+                <p class="medicaldetails_p">{{medicalDetailslist.pictureList[0].createTime}}</p>
+                <div class="medicaldetails_title">
+                    <span class="title_left">报告结果</span>
+                    <span class="title_right">
+                        <span ng-if="medicalDetailslist.yichangNum!=0"> 
+                            <span style="color:#EB4F4E; ">{{medicalDetailslist.yichangNum}}</span>
+                            项异常
+                        </span>
+                        <span style="color:#00D641 " ng-if="medicalDetailslist.yichangNum==0&&chulizhong!=1">正常</span>
+                        <span style="color:#EB4F4E; " ng-if="medicalDetailslist.yichangNum==0&&chulizhong==1">处理中</span>
+                    </span>
+                </div>
+                <div class="medicaldetails_imglist">
+                    <div  ng-repeat="itemurl in medicalDetailslist.pictureList | limitTo:5" ng-init="innerindex=$index" style="height: 5.5rem; width:18%;padding:0.3rem; margin:0.3rem;background:url({{itemurl.imageName}});background-position: center;background-size: cover;background-repeat: no-repeat;float: left;" ng-click="showimg(medicalDetailslist.pictureList,innerindex)">
+                        <div class="floatdiv" id="switch" ng-click="showimgmore(medicalDetailslist.pictureList,innerindex)" ng-if="medicalDetailslist.pictureList.length>5">
+                            <i class="icon ion-ios-more" id="floatIcon" style="color: white;font-size: 30px;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="medicallist_nodata" ng-if="medicalDetailslist.yichangNum==0">
+                        <div class="medicallist_nodata_img">
+                            <img style="width: 30%" src="img/goodBG.png">
+                        </div>
+                        <div class="medicallist_nodata_p">
+                            <p>{{clztitie}}</p>
+                            <p>{{clzxtitie}}</p>
+                        </div>        
+                </div>
+                <ul class="list no-float" ng-if="medicalDetailslist.yichangNum > 0">
+                    <div class="medicallist-line" ng-click="containerSwitch('jc')" ng-if="medicalDetailslist.jyList.length>0"><span>检验结果</span>
+                        <i class="icon ion-ios-arrow-down" ng-if="!isJCHide"></i>
+                        <i class="icon ion-ios-arrow-right" ng-if="isJCHide"></i>
+                    </div>
+                    <li class="show_qz_list"  ng-repeat="jy in medicalDetailslist.jyList track by $index" ng-hide="isJCHide">
+                       <div class="li_title" ng-click="ishow(jy)">
+                            <span class="li_title_left">{{jy.inspectItemName}}</span>
+                            <span class="djfl" ng-if="jy.specimenName!=null && jy.projectName!=null">{{jy.specimenName}}--{{jy.projectName}}</span>
+                            <span  class="li_title_med" ><span style="display:inline-block;width: 50%">(正常值:{{jy.inspectStandardRange | getnewnormalvalue}})</span><span  class="li_title_meds">{{jy.inspectResult}}</span></span>
+                            <span class="li_title_right" ng-if="jy.matchStatus==1"><i class="icon li_title_icon" ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[order==jy.pid]"></i></span>
+                       </div>
+                       <div class="li_p" ng-if="order==jy.pid">
+                           <h4 ng-if="jiankangzhidao.PDJG !=null">判定结果</h4>
+                           <p>{{jiankangzhidao.PDJG}}</p>
+                           <h4 ng-if="jiankangzhidao.JYMD !=null">检查意义</h4>
+                           <p>{{jiankangzhidao.JYMD}}</p>
+                           <h4 ng-if="jiankangzhidao.SLBHJS!=null">生理解释</h4>
+                           <p>{{jiankangzhidao.SLBHJS}}</p>
+                           <h4 ng-if="jiankangzhidao.BLJDJS!=null||jiankangzhidao.BLZGJS !=null">病理解释</h4>
+                           <p>{{jiankangzhidao.BLJDJS}}</p>
+                           <p>{{jiankangzhidao.BLZGJS}}</p>
+                           <h4 ng-if="jiankangzhidao.JKZD!=null">健康指导</h4>
+                           <p>{{jiankangzhidao.JKZD}}</p>
+                           <p ng-if="jiankangzhidao==null">暂无数据</p>
+                           
+                       </div>
+                    </li>
+                    <div class="medicallist-line" ng-click="containerSwitch('jy')" ng-if="medicalDetailslist.jcList.length>0"><span>检查结果</span>
+                        <i class="icon ion-ios-arrow-down" ng-if="!isJYHide"></i>
+                        <i class="icon ion-ios-arrow-right" ng-if="isJYHide"></i>
+                    </div>
+                    <li class="show_qz_list"  ng-repeat="jc in medicalDetailslist.jcList track by $index" ng-hide="isJYHide">
+                        <div class="li_title" ng-click="ijcshow(jc)">
+                             <span class="li_title_jcleft">
+                                 {{jc.checkPosition}}
+                            </span>
+                            <span class="li_title_jcleft" style="color: #999;font-size: 14px;" ng-if="jc.projectType">
+                                    {{jc.projectType}}
+                            </span>
+                             <span class="li_title_jcright" ng-if="jc.matchStatus==1"><i class="icon li_title_icon" ng-class="{true:'ion-chevron-down',false:'ion-chevron-right'}[checkPosition==jc.pid]"></i></span>
+                        </div>
+                        <div class="li_p" ng-if="checkPosition==jc.pid">
+                            <h4 ng-if="getreultlist.jcyy!=null">检查意义</h4>
+                            <p>{{getreultlist.jcyy}}</p>
+                            <h4 ng-if="getreultlist.jcjg!=null">检查结论</h4>
+                            <p>{{getreultlist.jcjg}}</p>
+                            <div  ng-repeat="item in getreultlist.ycjlDatas" ng-if="getreultlist.ycjlDatas.length>0"> 
+                                <h4 style="color:#525252;font-weight: bold" ng-if="item.ycjl!=null">{{$index+1}}.{{item.ycjl}}</h4>
+                                <h4 style="color:#666666" ng-if="item.lcjs!=null">临床解释</h4>
+                                <P ng-if="item.lcjs!=null"style="color:#B9B9B9" >{{item.lcjs}}</P>
+                                <h4 style="color:#666666" ng-if="item.jkzd!=null">健康指导</h4>
+                                <P ng-if="item.jkzd!=null" style="color:#B9B9B9">{{item.jkzd}}</P>
+                            </div>
+                            <p ng-if="getreultlist==null">暂无结果</p>
+                        </div>
+                     </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

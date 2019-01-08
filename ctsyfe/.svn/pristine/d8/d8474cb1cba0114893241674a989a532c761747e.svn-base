@@ -1,0 +1,280 @@
+<ion-view hide-nav-bar="isIos" view-title="历史报告" class="zljl-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+    <style>
+        #dalist {
+            background-color: #F9F9F9;
+        }
+
+        .jllist_member {
+            width: auto;
+            margin: auto 10px 20px 10px;
+            overflow: hidden;
+            min-height: 80px;
+            border-radius: 8px;
+        }
+
+        .dalist_blueh {
+            position: relative;
+            background-color: #FFF;
+            height: 80px;
+            overflow: hidden;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 7px;
+        }
+
+        .dalist_headimg {
+            width: 60px;
+            height: 60px;
+            margin: 10px;
+            border-radius: 50%;
+        }
+
+        .dalist_blueh p {
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+            line-height: 20px;
+        }
+
+        .dalist_blueh p i {
+            font-size: 20px;
+        }
+
+        .dalist_shensuo {
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            right: 20px;
+        }
+
+        .dalist_shensuo p {
+            display: flex;
+        }
+
+        .dalist_addBtn {
+            position: fixed;
+            bottom: 40px;
+            right: 20px;
+
+            width: 44px;
+            height: 44px;
+            text-align: center;
+            line-height: 44px;
+
+            background-color: #00b5ee;
+            opacity: .6;
+
+            border-radius: 50%;
+            z-index: 100;
+            /* box-shadow: 0px 5px 10px #72D5F5; */
+        }
+
+        .dalist_tianchong {
+            width: 100%;
+            height: 10px;
+        }
+
+        .dangan-list .icon-xieya {
+            color: #2eb7ee;
+        }
+
+        .dangan-list .icon-xietang {
+            color: #ff9500;
+        }
+
+        .dangan-list .icon-tizhong {
+            color: #33cd5f;
+        }
+
+        .dangan-list .icon-yunqihehu {
+            color: #FAB3BB;
+        }
+
+        .dangan-list .icon-tijianbaogaojiedu1 {
+            color: #770fb0;
+        }
+
+        .dangan-list .icon-jianchajianyanbaogao {
+            color: #66CC99;
+        }
+
+        .dangan-list .icon-ertongyimiao {
+            color: #66CC99;
+        }
+
+        .dalist-comongray {
+            color: #cccccc;
+        }
+
+        .dalist_itemname {
+            font-size: 16px;
+            margin: 0px 6px 0px 0px;
+        }
+
+        .dangan-list li {
+            position: relative;
+            border-bottom: 1px solid #d9d9d9;
+            padding: 15px 0 15px 10px;
+            margin: 0 15px 0 20px;
+        }
+
+        .dangan-list li p {
+            color: #333;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+        }
+
+        .dangan-list li i {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+
+        .dangan-list mark {
+            display: inline-block;
+            background-color: #fff;
+            margin-left: 40px;
+            color: #666;
+        }
+
+        .dangan-list .blue-border-button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            bottom: 50%;
+            margin-top: -13px;
+            width: 64px;
+        }
+
+        .dangan-list li.color-c i,
+        .dangan-list li.color-c mark,
+        .color-c {
+            color: #ccc;
+        }
+
+        .dangan-list li mark span.riqi {
+            margin-right: 10px;
+        }
+
+        .dangan-list li mark span.jieguo {
+            margin-left: 10px;
+        }
+
+        .zljl-list .dsp-block {
+            display: block;
+        }
+
+        .color-o {
+            color: #ff9500;
+        }
+
+        .color-g {
+            color: #00d64e;
+        }
+
+        .color-r {
+            color: #EB4F4E;
+        }
+
+        .color-b {
+            color: #00b5ee;
+        }
+
+        .dangan-list .age {
+            margin-left: 10px;
+        }
+        .zljl-list .zljlItem{
+        	margin-top: 10px;
+		  	background: #FFF;
+		  	font-size: 16px;
+		 	color: #333;
+		 	border-radius: 6px;
+		 	padding: 10px;
+        }
+        
+        .zljl-list .zljlTitle{
+        	font-weight:bold;
+        }
+        .zljl-list .zljlContent{
+        	margin: 10px 0;
+        }
+    </style>
+   
+    <!-- 返回首页 -->
+    <!-- <div class="m-body f-m-body" id="m-body" style="display:none">
+        <go-shouye-in-menu></go-shouye-in-menu>
+        <div ng-click="addMemberDA()" class="fl-child" id="tzView">
+            <i class="icon iconfont icon-xinzengyonghu"></i>
+        </div>
+    </div> -->
+
+    
+    <ion-content id="dalist"  ng-click="hideMenuClick($event)">
+        <div class="dalist_tianchong"></div>
+        <!-- 单个用户档案 -->
+        <div class="jllist_member" ng-repeat="member in memberMsg track by $index" id="cy{{$index}}" repeat-finish>
+            <!-- 白色div -->
+            <!-- 初始情况下，第一行展开 -->
+            <div class="dalist_blueh" ng-if="ssflag[$index]=='show'" ng-click="isshowAll($index,member.id,member.chuShengRiQi)">
+                <img class="dalist_headimg" ng-if="$index==0" ng-click="gotoEdit($event,member.id,member.guanXi)"
+                    ng-src="{{(member.imgUrl?member.imgUrl:weiXinTX)}}">
+                <img class="dalist_headimg" ng-if="$index>0" ng-click="gotoEdit($event,member.id,member.guanXi)" ng-src="{{(member.imgUrl?member.imgUrl:'img/DA_touxiang.svg')}}">
+                <p>
+                    <span style="font-size: 20px;">{{member.NAME}}</span>
+                    <span style="margin-left: 15px;">{{member.XINBIE}}</span>
+                    <span class="age">{{member.age}}岁</span><br>
+                    <span class="" >报告生成时间：{{member.gxtime}}</span>
+                </p>
+                <div class="dalist_shensuo">
+                    <p style="border: 1px solid #00b5ee;border-radius: 12px;"><i style="margin: 0 4px;color:#00b5ee;" class="icon ion-ios-arrow-down"></i></p>
+                </div>
+            </div>
+            <!-- 初始情况下，第一行之外关闭 -->
+            <div class="dalist_blueh" ng-if="ssflag[$index]=='hide'" ng-click="isshowAll($index,member.id,member.chuShengRiQi)">
+                <img class="dalist_headimg " ng-if="$index==0 " ng-click="gotoEdit($event,member.id,member.guanXi) "
+                    ng-src="{{(member.imgUrl?member.imgUrl:weiXinTX)}} ">
+                <img class="dalist_headimg" ng-if="$index>0" ng-click="gotoEdit($event,member.id,member.guanXi)" ng-src="{{(member.imgUrl?member.imgUrl:'img/DA_touxiang.svg')}}">
+                <p>
+                   <span style="font-size: 20px;">{{member.NAME}}</span>
+                    <span style="margin-left: 15px;">{{member.XINBIE}}</span>
+                    <span class="age">{{member.age}}岁</span><br>
+                    <span class="" >报告生成时间：{{member.gxtime}}</span>
+                </p>
+                <div class="dalist_shensuo">
+                    <p style="border: 1px solid #00b5ee;border-radius: 12px;"><i style="margin: 0 4px;color:#00b5ee;" class="icon ion-ios-arrow-right"></i></p>
+                </div>
+            </div>
+            <ul ng-if="ssflag[$index]=='show' ">              
+                <li ng-if="member.ZSBS">
+                    <div class="zljlItem">
+                    	<span class="zljlTitle">主诉病史(S)</span>
+                   		<p class = "zljlContent">{{member.ZSBS}}</p>
+                    </div>                   
+                </li>
+                <li ng-if="member.CTFZJC">
+                    <div class="zljlItem">
+                    	<span class="zljlTitle">查体、辅助检查(O)</span>
+                    	<p class = "zljlContent">{{member.CTFZJC}}</p>
+                    </div>                  	
+                </li>
+                <li ng-if="member.ZD">
+                    <div class="zljlItem">
+                    	<span class="zljlTitle">诊断评价(A)</span>
+                    	<p class = "zljlContent">{{member.ZD}}</p>
+                    </div>                   
+                </li>               
+                
+            </ul>
+
+
+    </ion-content>
+</ion-view>

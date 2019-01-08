@@ -1,0 +1,57 @@
+<ion-view hide-nav-bar="isIos" view-title={{htmlTitle}} class="color-6 ypchaxun ypzn yplb">
+    <style>
+        .yp_sub {
+            font-size: 15px;
+        }
+
+        .yplb .show_yp_info {
+            position: relative;
+            font-size: 16px;
+
+            padding-right: 20px;
+        }
+
+        .yplb .show_yp_info i {
+            position: absolute;
+            right: 0;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear icon ion-ios-home-outline" ng-click="back()">
+        </button>
+    </ion-nav-buttons>
+    <ion-content delegate-handle="dashboard" ng-style="{top:(isIos)? '0px': '44px'}" style="padding-top: 0px;">
+
+        <ul>
+            <li ng-repeat='micItem in micList' class="show_yp_list" ng-click="go_yp_detail(micItem.id,micItem.tymc)">
+                <!-- 通用名称 -->
+                <span class="show_yp_info">{{micItem.tymc}}
+                    <span class="yp_sub">
+                        <span style="float : right">
+                            <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span>
+                            <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                            <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                        </span>
+                    </span>
+                </span>
+                <!-- 商品名称 -->
+                <span ng-if="micItem.spmc" class="show_yp_info" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin-top: 5px; font-size:14px; color: #999;">
+                    {{micItem.spmc}}
+                </span>
+                <!-- 厂商 -->
+                <span class="show_yp_info yp-spmc">
+                    {{micItem.cjsx}}
+                </span>
+                <!-- 适应症 -->
+                <span class="show_yp_info yp-discription" ng-bind-html="micItem.syz" compile-html>
+                </span>
+                <i ng-if="micItem.ISZSK=='1'" class="icon ion-ios-arrow-right"></i>
+            </li>
+        </ul>
+
+    </ion-content>
+
+</ion-view>

@@ -1,0 +1,324 @@
+<ion-view hide-nav-bar="isIos" view-title="发布话题">
+	<script id="templates/modal.html" type="text/ng-template">
+			<ion-modal-view>
+			  <ion-header-bar class="bar bar-header bar-positive">
+				<h1 class="title">选择圈子</h1>
+				<button class="button button-clear button-primary" ng-click="modal.hide()"><i class="icon iconfont icon-guanbi1" style="font-size:24px"></i> </button>
+			  </ion-header-bar>
+			  <ion-content>
+				<div class="liebiao left-lb">
+					<ul class="list no-float">
+						<li class="show_li_list" style = "height:74px;line-height: 50px;" ng-repeat="item in quanZi" ng-click="loadqz(item.mc)" ng-class="[{'chose':item.mc===data.qzFl}]">
+							<span ng-if="item.mc===data.buwei" id="curBw" style="position:relative;font-size:2rem;" value="{{$index}}"></span>
+							<span class="show_span_info" style="font-size:14px;" on-finish-render-filters="Complete">{{item.mc}}</span>
+							<!-- <i class="icon ion-chevron-right i_tuBiao"></i> -->
+						</li>
+					</ul>
+				</div>
+				<div class="liebiao right-lb">
+					<ul class="list no-float">
+						<li class="show_li_list show_qz_list" style="border-bottom: 1px solid #dedede;" ng-repeat="qz in notfollowedlist">
+							<div ng-click="chooseqz(qz.id,qz.name)" class="w-70 qz-info">
+								<div class="qz_image"><img id="img" class="img" ng-src="{{qz.qzpicture}}"></div>
+								<div class="qz_name">
+									<span class="show_qz_info">{{qz.name}}</span>
+									<span style="font-size:13px;">成员:{{qz.chengyuanshu}}</span> 
+								</div>
+							</div>
+							<div class="qz_tb"  ng-if="qid==qz.id" class="w-30">
+									<i class="icon iconfont  ion-checkmark-round tubiao tb_area not_jr"></i>
+									<!-- <span class="tubiao_word  not_jr">已选择</span> -->
+							</div>
+						</li>
+					</ul>
+				</div>
+			</ion-content>
+			</ion-modal-view>
+	</script>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons> -->
+    <style>
+      .pl-title{
+        /* height: 4.88rem; */
+		border-bottom: 0.06rem solid #D9D9D9;
+		padding: 0rem 1.88rem;
+		line-height: 4.88rem;
+		/* display: inline-block; */
+		white-space: nowrap;
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color:#333;
+		background: #fff;
+		font-size: 2rem;
+       }
+      
+       .img-Icon{
+	  		width: 6rem;
+			box-sizing:border-box;
+			border: 1px solid #ddd;
+			margin: 1rem;
+			float:left;
+			height: 6rem;
+	  	}
+       .tucaoaddimg{
+		    text-align: center;
+		    width: 6rem;
+		    float: left;
+		    background: #ddd;
+		    margin:1rem;
+		    height: 6rem;
+		    /* vertical-align: -webkit-baseline-middle; */
+		    overflow: hidden;
+		    padding: 1rem 0rem;
+			display: flex;
+            align-items: center;
+            justify-content: center;
+	    }
+     	/**预览图片div*/
+   	   .tcyulanimg{
+	    	text-align: center;
+	    	align-items: center;
+	    	vertical-align: middle;
+	    	display: flex;
+	    	justify-content: center;
+	    	width: 100%;
+	    	height: 90%;
+	    	margin-top: -10px;
+		}
+	    .pl-shuru{
+	    	width: 100%;
+	    	height: 18.75rem;
+	    	padding: 2.37rem 1.88rem;
+	    	color:#333;
+	    	resize: none;
+	    }
+	    .pl-tishi{
+	    	font-size: 0.8em;
+	    	width: 95%;
+	    	text-align: right;
+	    }
+	    .pl-picArea{
+	    	padding: 0.6rem;
+	    	overflow:hidden;
+	    	background: white;
+	    	padding-bottom: 1.5rem;
+	    }
+	    .pl-jiahao{
+	    	font-size: 5rem;
+	    	text-align: center;
+	    	color: #a2a2a2;
+	    	display:inline-block;
+	    	overflow:hidden;
+	    }
+	    .hide-name{
+	    	width:100%;
+	    	height:5.5rem;
+	    	margin-top: 1rem;
+			background-color: #fff;
+			font-size: 2rem;
+			line-height: 5.5rem;
+	    }
+	    .hidenamekaiguan{
+	    	width: 100%;
+	    	height:5.5rem;
+	    	padding-top: 0rem;
+			padding-bottom: 0rem;
+	    }
+	    .hidenamekaiguan label{
+	    	 top: 0.8rem !important;
+	    }
+		.hidenamekaiguans{
+	    	width: 100%;
+	    	height:5.5rem;
+	    	padding-top: 0rem;
+			padding-bottom: 0rem;
+	    }
+	    .hidenamekaiguans label{
+	    	 top: 14px !important;
+	    }
+	    .toggle input:checked + .track {
+    		border-color: #00C0FE;
+    		background-color: #00C0FE;
+		}
+		.sub-div{
+			border-width: 0;
+            z-index: 1;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            background-color: #ebebeb;
+            opacity: 0.9;
+		}
+		.sub-div_input{
+			margin-top: 6.25rem;
+			height: 6rem;
+			width: 25rem;
+			font-size: 2rem;
+			color: #FFF;
+			border: none;
+			outline: none;
+			background-color: #00B6ED;
+			border-radius: 6rem;
+		}
+		.sub-div_inputs{
+			margin-top: 6.25rem;
+			height: 6rem;
+			width: 25rem;
+			font-size: 2rem;
+			color: #EBEBEB;
+			border: none;
+			outline: none;
+			background-color: #BBBBBB;
+			border-radius: 6rem;
+		}
+		.xuanzeQuan{
+			width:100%;
+	    	height:5.5rem;
+	    	margin-top: 1rem;
+			background-color: #fff;
+			font-size: 2rem;
+			line-height: 5.5rem;
+			padding-left:2rem;
+			color: #333;
+		}
+		.xuanzeQuan i{
+			padding: 0rem;
+		}
+		.pl-title input{
+			width: 85%;
+			margin-top:0.1rem
+		}
+		.pl-title span{
+			width:14%;
+			position: absolute;
+			right: 0px;
+			font-size: 1.5rem;
+			top: -0.7rem;
+			color: #DDDDDD;
+		}
+		.qzgc .left-lb .show_li_list{
+            border-right:none;
+        }
+        .qzgc .left-lb .show_span_info{
+            width: auto;
+            margin-right: 25px;
+            padding: 0;
+        }
+        .show_qz_info{
+            width: 100%;
+            font-size:15px;
+            color:#333;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+        .show_qz_list{
+            margin-left: 15px;
+            height: 74px;
+            display: flex;
+            align-items: center;
+        }
+        .qz_image{
+            position: absolute;
+        }
+        .img{
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+        .qz_name{
+        padding-left:50px;
+        }
+        .qz_tb{
+            float: right;
+            text-align: center;
+        } 
+        .qzgc .tubiao{
+            font-size: 22px;
+        }
+        .qz_tuBiao{
+            width:33%;
+            /*width: 70%;
+            margin-left: 25px;*/
+            font: 1rem Microsoft Yahei;
+            padding: 0.35rem 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .tubiao_word{
+            display: block;
+            font-size:11px;
+        }
+        .tb_area{
+            display: inline-block;
+            text-align: center;
+            width:4rem;
+        }
+        .not_jr{
+            color:rgb(0, 204, 255);
+        }
+        .was_jr{
+            color: #dedede;
+        }
+        .w-30{
+            width: 25%;
+        }
+        .w-70{
+            width: 75%;
+        }
+        .qz-info{
+            position: relative;
+        }
+	</style>
+	
+    <ion-content style="background: #ebebeb;">
+    	
+    	<form name='myform'>
+    		<div class="pl-title">
+    			<input type="text" placeholder="标题" ng-model="title" ng-change="titleChange(title)" maxlength="100"  id="title"/>
+				<span>({{wordLen}}/100)</span>
+    		</div>
+    		<div style="width:100%;background-color:#fff;">
+    			<textarea class="pl-shuru"  type="text" ng-change= "textarCHange(textare)" ng-model='textare' placeholder="我要分享"  id="textare"></textarea>
+				<!-- <label class="item item-input" style="color: red;border-top:0px;" ng-show="myform.textare.$dirty && myform.textare.$invalid || textare.length=0">
+		            <span class="pl-tishi">内容不能为空</span>
+		        </label> -->
+		        <label class="item item-input" style="color: red;border-top:0px;" ng-show="myform.textare.$dirty && myform.textare.$invalid || textare.length > 500">
+		           <span class="pl-tishi">不能超过500个字</span>
+		        </label>
+		        
+		        <div class="pl-picArea">				
+					<img class="img-Icon" ng-if="listimg.length>0" ng-repeat="item in listimg" ng-src="{{item}}" ng-click="showimg($index)">					
+					<div class="tucaoaddimg" ng-if="listimg.length<=5"  ngf-pattern="'image/*'" ngf-multiple="true" ngf-select="upload($files)" >
+						<span class="icon ion-android-add pl-jiahao"></span>					
+					</div>
+					<!-- <span style="margin-left: -40px;">添加图片</span> -->
+					<!-- <label class="item item-input" ng-show="listimg.length>6" style="color: red;border-top: 0px;">
+           				<span class="pl-tishi">最多上传6张图片</span>
+      				</label> -->
+				</div>
+    		</div>
+    		<!-- <div class="hide-name">
+    			<ion-toggle style="margin: 0px" ng-model="hidename" ng-class="{true:'hidenamekaiguan',false:'hidenamekaiguans'}[isIos]" ng-change="nimingclick()" >匿名发布 </ion-toggle>
+    		</div> -->
+    		<div class="xuanzeQuan" ng-click="modal.show()">
+				<span class="yuanjiao" ng-click="goquanzi(item.id)"><i class="icon iconfont icon-quanzi"></i>{{qzname}}</span>
+    			<i class="icon ion-chevron-right i_tuBiao"></i>
+			</div>
+    		<div class="sub-div">
+    			<input type="submit" value="提交" ng-class="{true:'sub-div_input',false:'sub-div_inputs'}[issubmit]" ng-disabled="myform.textare.$dirty && myform.textare.$invalid || isClick " ng-click="tijiaoclick()" />
+    		</div>
+    	</form>
+	</ion-content>
+</ion-view>

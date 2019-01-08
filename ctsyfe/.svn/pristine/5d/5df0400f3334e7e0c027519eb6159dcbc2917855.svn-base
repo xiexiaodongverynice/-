@@ -1,0 +1,378 @@
+<ion-view hide-nav-bar="isIos" view-title="报告结果" class="tjbg-qr yyjh">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <div style="z-index: 10;position: fixed;border-radius: 10px;top:80px;right: 0;" ng-if="isIos">
+			<go-shouye gn="curgn" type= "tjtype" id="tjid"></go-shouye>
+	</div> -->
+    <style type="text/css">
+        
+        
+        .tjbg-qr .content {
+            margin: 0 20px;
+        }
+        
+        .tjbg-qr .tjbg-img {
+            margin: 15px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .tjbg-qr .tjbg-img img {
+            width: 59px;
+            height: 59px;
+            margin: 5px;
+            border: 1px solid #00b5ee;
+        }
+        
+        .tjbg-qr .title-line {
+            background: #f8f8f8;
+            color: #999;
+            height: 33px;
+            line-height: 33px;
+            padding: 0 20px;
+        }
+        
+        .tjbg-qr .title-line i {
+            float: right;
+        }
+        
+        .ion-ios-arrow-down,
+        .ion-ios-arrow-right {
+            font-size: 20px;
+        }
+        
+        .tjbg-qr .jy-list ul {
+            display: table;
+            width: 100%;
+        }
+        
+        .tjbg-qr .jc-list .item-title,
+        .tjbg-qr .jy-list li {
+            display: table-row;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        
+        .tjbg-qr .jy-list li span {
+            display: table-cell;
+            height: 44px;
+            vertical-align: middle;
+            /* border-bottom: 1px solid #d4d4d4; */
+        }
+        
+        .tjbg-qr .jc-list .item-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 44px;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        
+        .tjbg-qr .jc-list p {
+            color: #999;
+            font-size: 14px;
+            /* line-height: 1.8; */
+        }
+        
+        .tjbg-qr .jc-list .item-name,
+        .tjbg-qr .jy-list .item-name {
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .tjbg-qr .jy-list .item-zcz {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .tjbg-qr .jy-list .item-val {
+            color: #ff9500;
+            font-size: 16px;
+            width: 20%;
+            text-align: right;
+        }
+        
+        .tjbg-qr .jc-list .op,
+        .tjbg-qr .jy-list .op {
+            color: #999;
+            font-size: 14px;
+            /* border-bottom: 1px solid #d4d4d4; */
+        }
+        
+        .tjbg-qr .jc-list div.item-title>span.op>i,
+        .tjbg-qr .jy-list span.op i {
+            margin-left: 20px;
+        }
+        
+        .tjbg-qr .add-new {
+            margin: 10px 0;
+            color: #00b5ee;
+            font-size: 14px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px dashed #999;
+            border-radius: 4px;
+        }
+        
+        .tjbg-qr ion-content {
+            margin-bottom: 50px;
+        }
+        .medicallist_nodata{
+            margin-top: 20%;
+        }
+        .medicallist_nodata_img{
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+        .medicallist_nodata_p{
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #C7C8C7;
+           
+        }
+        .oa{
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .li_div{
+            position: relative;
+            border-bottom: 1px solid #d4d4d4;
+            width: 100%;
+        }
+        .li_div_div{
+            width: 100%
+        }
+        .jcoa{
+            position: absolute;
+            right: 0;
+            line-height: 44px;
+        }
+        .circle-warp .flexcircle {
+            font-size: 40px;
+            width: 50px;
+            height: 50px;
+            color: #FFF;
+            border-color: #2db4ee;
+            -webkit-text-stroke: 1px #fafafa;
+            background: #2db4ee;
+            box-shadow: 0 0 2px #2db4ee;
+        }
+        .iconfont {
+            font-family: "iconfont" !important;
+            /* font-size: 16px; */
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .flexcircle {
+            border-radius: 50%;
+            /* border: 1px solid; */
+            /* padding: 5px; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .foot_wrap {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            z-index: 99;
+        }
+        
+        .foot {
+            padding: 9px 10px;
+            text-align: center;
+            height: 48px;
+        }
+        .jp-swone{
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            width: 40px;
+            height: 33px;
+            text-align: center;
+        }
+        .jp-swteo{
+            position: absolute;
+            bottom: 15px;
+            left: 64px;
+            width: 33px;
+            height: 33px;
+            border: 1px solid #808080;
+            border-radius: 50%;
+            text-align: center;
+        }
+        .jp-swthr{
+            position: absolute;
+            bottom: 0px;
+            left: 15px;
+            width: 40px;
+            height: 20px;
+            text-align: center;
+        }
+        .jp-swthr-keyboard{
+            position: absolute;
+            bottom: 0px;
+            left: 15px;
+            width: 40px;
+            height: 7px;
+            text-align: center;
+        }
+        .jp-swone-keyboard{
+            position: relative;
+            width: 44px;
+            height: 48px;
+            border-right: 1px solid #808080;
+        }
+        .footer_yinying{
+            width: 100%;
+            height: 10px;
+            background: #F8F8F8;
+            position: absolute;
+            bottom: 44px;
+        }
+    </style>
+    <div ng-show="isshowimg" style="float: left; position: absolute; top: 30%; left: 20%; text-align: center;z-index: 999;">
+        <img src="img/yyquxiao.jpg" style="width: 65%; height: 50%; opacity: 0.7">
+        <br>
+        <span style="margin-top: -30px; color: white; position: relative; float: left; width: 100%;" ng-bind="datas.voiceTip"></span>
+    </div>
+    <footer class="foot_wrap" id="foot_wrap" ng-switch on="inputMethod">
+            <!-- 语音输入 -->
+            <div ng-switch-when="voice"  class="yy-pan">
+                <input type="checkbox" id="{{'checkbox'+randomId}}" class="hide" ng-model="datas.hideVoice" ng-change="resize()">
+                <div ng-click="colseInput()" class="flexcolumn jp-swone">
+                        <i class="icon iconfont icon-zhankai" style="font-size: 36px; color: #71737B;"></i>
+                      
+                </div>
+                <div ng-click="switchInput()" class="flexcolumn jp-swteo">
+                        <i class="icon iconfont icon-jianpan"></i>
+                </div>
+                <div style="display: flex; justify-content: space-around;" class="inputpanel">
+                        
+                    <div class="flexcolumn" ng-class="{true: 'zBot', false: 'zTop'}[zIndex]">
+                        <span  ng-bind="datas.voiceTip"></span>
+                        <div ng-class="start?'circle-recording flexcircle circle-warp':'flexcircle circle-warp'">
+                            <i ng-touchstart="startRecord($event)" ng-touchmove="moveaction($event)" ng-touchend="finishRecord($event)" ng-touchcancel="finishRecord($event)" class="flexcircle  icon iconfont icon-yuyin"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--   键盘输入 -->
+            <div ng-switch-when="keyboard" class="choose-item foot input-bar jp-pan" style="background-color:#ffffff;border-top:none">
+                <div ng-click="colseInput()" class="flexcolumn jp-swone-keyboard">
+                        <i class="icon iconfont icon-zhankai" style="font-size: 36px; color: #71737B;margin-right: 10px;margin-top: 5px;"></i>
+                        
+                </div>
+                <i ng-click="switchInput()" class="icon iconfont icon-yuyin" style="position: absolute;left: 60px;"></i>
+                <input ng-if="inputMethod='keyboard'" class="input-none" ng-model="datas.textValue" autofocus make-focus="inputFocus" type="text" placeholder="{{inputtishi}}" style="position: absolute;right: 60px;bottom: 5px;">
+         
+                <span ng-click="send($event);" ng-disabled="datas.textValue" class="sub-bt" style="position: absolute;right: 10px;">发送</span>
+            </div>
+    
+    </footer>
+    <ion-content style="background-color: #FFFFFF;" ng-style="stylebottom()" delegate-handle="small" overflow-scroll="false">
+        <!-- 提示 -->
+        <div class="tip" ng-if="nohide">
+            <p class="color-6" style="margin:0;width: 95%;">您可以添加、修改、删除任意项目，以您最终确认提交的结果为准。系统只识别异常指标结果，正常值无需解读。</p>
+            <i class="icon ion-close-round" style="right:3%" ng-click="ishide()"></i>
+        </div>
+
+        <section ng-if="data.pictureList.length>0">
+            <div class="title-line" ng-click="containerSwitch('img')"><span>照片</span>
+                <i class="icon ion-ios-arrow-down" ng-if="!isImgHide"></i>
+                <i class="icon ion-ios-arrow-right" ng-if="isImgHide"></i>
+            </div>
+            <div class="content tjbg-img" ng-hide="isImgHide">
+                 <img src="{{item.imageName}}" alt=""  ng-repeat="item in data.pictureList track by $index" ng-click="showimg(data.pictureList,$index)">
+                <!-- <img src="img/xuetang.png" alt="体检单"> -->
+            </div>
+        </section>
+        <section style="margin-top: 20px" ng-if="jybuttom">
+            <div class="title-line" ng-click="containerSwitch('jy')" ><span>检验结果</span>
+                <i class="icon ion-ios-arrow-down" ng-if="!isJYHide"></i>
+                <i class="icon ion-ios-arrow-right" ng-if="isJYHide"></i>
+            </div>
+            <div class="content jy-list" ng-hide="isJYHide">
+                <ul ng-if="data.jyList.length>0"> 
+                    <li ng-repeat="item in data.jyList">
+                        <div class="li_div" >
+                                <div class="li_div_div" style="margin-top: 10px;width:80%;">
+                                    <p class="item-name">{{item.inspectItemName}}</p>
+                                </div>
+                                <div class="li_div_div" ng-if="item.specimenName!=null&&item.projectName!=null">
+                                    <p class="item-zcz" >{{item.specimenName}}--{{item.projectName}}</p>
+                                </div>
+                                <div  class="li_div_div" >
+                                    <div class="item-zcz" style="display:inline-block;width: 50%" ng-if="item.inspectStandardRange!='正常'">(正常值:{{item.inspectStandardRange | getnewnormalvalue}})</div>
+                                    <div class="item-zcz" style="display:inline-block;width: 50%" ng-if="item.inspectStandardRange=='正常'"></div>
+                                    <div class="item-val" style="display:inline-block">{{item.inspectResult}}</div>
+                                </div>
+                                <span class="op oa">
+                                    <i class="icon iconfont icon-xietie" ng-click="gojianyan(item.pid,item.recordPid,item.resultType)"></i>
+                                    <i class="icon iconfont icon-delet_SFontCN" ng-click="delItem('jy','{{item.pid}}',item.recordPid,$index)"></i>
+                                </span>
+                        </div>
+                        
+                    </li>
+                    <!-- <li>
+                        <span class="item-name">收缩压</span>
+                        <span class="item-zcz">(正常范围90~139mmHg)</span>
+                        <span class="item-val">150</span>
+                        <span class="op"><i class="icon iconfont icon-delet_SFontCN"></i><i class="icon iconfont icon-xietie"></i></span>
+                    </li>
+                     -->
+                </ul>
+                <div class="add-new" ng-click="newjianyan()"><i class="icon ion-android-add" ></i>添加检验项目</div>
+            </div>
+        </section>
+        <section  style="margin-top: 20px" ng-if="jcbuttom" >
+            <div class="title-line" ng-click="containerSwitch('jc')" ><span>检查结果</span>
+                <i class="icon ion-ios-arrow-down" ng-if="!isJCHide"></i>
+                <i class="icon ion-ios-arrow-right" ng-if="isJCHide"></i>
+            </div>
+            <div class="content jy-list" ng-hide="isJCHide">
+                <div class="li_div" ng-repeat="item in data.jcList"  ng-if="data.jcList.length>0">
+                    <div class="li_div_div"  style="margin-top:10px;width:80%;">
+                        <p class="item-name">{{item.checkPosition}}</p>
+                    </div>
+                    <div class="li_div_div" ng-if="item.projectType!=null">
+                        <p class="item-zcz" >{{item.projectType}}</p>
+                    </div>
+                    <div  class="li_div_div" ng-hide="ssflag[$index]">
+                        <p class="item-zcz">{{item.checkResult}}</p>
+                    </div>
+                    <span class="op oa">
+                        <i class="icon iconfont icon-xietie"  ng-click="gojiancha(item.pid)"></i>
+                        <i class="icon iconfont icon-delet_SFontCN" ng-click="delItem('jc','{{item.pid}}',item.recordPid,$index)"></i>
+                        <!-- <i class="icon ion-ios-arrow-down" ng-if="!ssflag[$index]" ng-click="jcDetailSwitch($index)"></i>
+                        <i class="icon ion-ios-arrow-right" ng-if="ssflag[$index]" ng-click="jcDetailSwitch($index)"></i> -->
+                    </span>
+                </div>
+                <div class="add-new" ng-click="newjiancha()"><i class="icon ion-android-add"></i>添加检查项目</div>
+            </div>
+        </section>
+    </ion-content>
+    <div class="footer_yinying" ng-style="{bottom:(inputMethod==='voice')?'100px':'44px'}"></div>
+    <div class="bar bar-footer bar-gray">
+        <div ng-click="switchInput()" class="flexcolumn jp-sw" style="background:#FFF;width:90px">
+    
+                <i class="icon iconfont icon-jianpan1" style="color:#6E7178;font-size: 40px"></i>
+        </div>
+        <input type="submit" value="确认提交" id="submit" ng-click="queRenSC()">
+    </div>
+</ion-view>

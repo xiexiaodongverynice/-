@@ -1,0 +1,154 @@
+<ion-view hide-nav-bar="isIos" view-title="人体图导诊" class="kstj color-6">
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+
+    <style>
+        .ertong-back-img {
+            height: 100%;
+            padding-bottom: 5px;
+        }
+        .kstj .tip {
+            display: inline-block;
+            width: 65%;
+            position: absolute;
+            left: 40%;
+            top: 35%;
+            line-height: 20px;
+            height: 20px;
+        }
+        .kstj .tip span{
+            font-size: 12px;
+            
+        }
+        
+        .icon-tishi {
+            color: #FF9501;
+        }
+        .kstj_button{
+            line-height: 1.5;
+            width: 78px;
+            font-size: 14px;
+            height: 32px;
+            min-height: 22px;
+            white-space: nowrap;
+            color: white;
+            border:none;
+            background-color: #18b4ed;
+        }
+        .kstj_active{
+            background-color: #18b4ed;
+            color: white
+        }
+        .kstj .wzrTx{
+            width: 46px;
+            height: 46px;
+            border-radius:50%;
+        }
+        .kstj .wzr-list{
+            padding-bottom: 5px;
+        }
+        .kstj .xzwzr{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            z-index: 999;
+        }
+        .kstj .xzwzr h6.title{
+            position: relative;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            line-height: 36px;
+            margin: 0;
+        }
+        .kstj .xzwzr .title i{
+            position: absolute;
+            right: 0;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+       .kstj  .wzr-list li{
+           width: 25%;
+       }
+    </style>
+    <div id="maskLayer" ng-show="wzrIsShow"></div>
+    <div class="xzwzr" ng-show="wzrIsShow">
+            <h6 class="title">选择就诊人 <i class="icon iconfont icon-guanbi" ng-click="switchWzrPanel(false)"></i></h6>
+        <div class="wzr-list">
+            <div class="up fanye-btn disabled" ng-click="wzrFanye($event,2)" disabled="disabled">
+                <i class="icon ion-ios-arrow-left" ></i>
+            </div>
+            <div class="wzr-choosed">
+                <div class="top">
+                    <img ng-src="{{cyList[0].IMGURL}}" ng-class="{true:'choosed',false:''}[cyList[0].choose]">
+                    <i class="icon iconfont icon-vertical_line fg"></i>
+                </div>
+                <div class="nc">{{cyList[0].value|limitTo:3}}</div>
+            </div>
+
+            <ul data-p=1>
+                <li ng-repeat="item in cyList track by $index" ng-if="$index>0" ng-click="chooseWzr($event,$index)">
+                    <img ng-src="{{item.IMGURL}}">
+                    <div class="nc">{{item.value|limitTo:3}}</div>
+                </li>
+                <li ng-repeat="bl in wzrBlack"></li>
+            </ul>
+            <div class="np fanye-btn" ng-show="cyList.length>5" ng-click="wzrFanye($event,1)">
+                <i class="icon ion-ios-arrow-right"></i>
+            </div>
+        </div>
+    </div>
+    <ion-content scroll="false">
+        <div class="bw-option" style="z-index:2">
+            <div>
+                <img ng-src="{{cyList[0].IMGURL}}" class="wzrTx" ng-click="switchWzrPanel(true)">
+            </div>
+            <div class="bw-shape" ng-hide="cyList[0].XINGBIE">
+                <label ng-class="{'kstj_active':data.xingbie=='男'}"><span>男</span>
+                    <input type="radio" ng-model="data.xingbie" value="男">
+                </label>
+                <!-- 去除间距-->
+                <label ng-class="{'kstj_active':data.xingbie=='女'}"><span>女</span>
+                    <input type="radio" ng-model="data.xingbie" value="女">
+                </label>
+            </div>
+        </div>
+        <div class="lb-option" style="z-index:2">
+            <button class="bw-select kstj_button" ng-click="gobuwei('头部')">部位列表</button>
+        </div>
+
+        <div ng-click="turn()" class="brcircle v-flex turn-back" style="z-index: 1">
+            <i class="ion-loop"></i><span>转身</span>
+        </div>
+        <div class="center-parent transform-parent  center-container">
+            <div class="text-center center-child">
+                <img class="pic-body" ng-src="img/bwt/{{urls[data.xingbie+data.renqun+'正']}}" alt="{{data.xingbie}}性{{data.renqun}}身体部位图"
+                    usemap="#bodymap">
+                <div class="tip">
+                    <i class="icon iconfont icon-tishi"></i>
+                    <span>请选择需要诊治的部位</span>
+                </div>
+                <map name="bodymap" id="bodymap" map-area area-data="bodymap[data.xingbie+data.renqun+'正']" area-action="gobuwei(para)"></map>
+            </div>
+            <div class="text-center center-child back" ng-class="(data.xingbie == '男' && data.renqun == '儿童')?'ertong-back-img':''">
+                <img class="pic-body " ng-src="img/bwt/{{urls[data.xingbie+data.renqun+'反']}}" alt="{{data.xingbie}}性{{data.renqun}}身体部位图"
+                    usemap="#fbodymap">
+                <div class="tip">
+                    <i class="icon iconfont icon-tishi"></i>
+                    <span>请选择需要诊治的部位</span>
+                </div>
+                <map name="fbodymap" id="fbodymap" map-area area-data="bodymap[data.xingbie+data.renqun+'反']"
+                    area-action="gobuwei(para)"></map>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

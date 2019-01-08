@@ -1,0 +1,75 @@
+<ion-view view-title="问疾病" >
+<style>
+.myspan{
+color: red;
+}
+</style>
+    <ion-nav-buttons>
+        <div>
+            <a href="javascript:history.go(-1)"><button class="button button-clear icon ion-chevron-left" >
+            </button></a>
+        </div>
+    </ion-nav-buttons>
+    <ion-content>
+        <div ng-show="data.haveResult" class="detail" style="padding-bottom: 20px">
+            <h3>疾病名称：{{jibingmc}}</h3>
+             <i class="icon-yisheng" ng-click="gozhaoyisheng(jibingmc)" style="width: 30px;height: 30px;float: right;margin-top: -40px;margin-right: 60px;color:#faa900;font-size: 24px;display: none;"></i>
+            <dl>
+                <!-- <dt ng-repeat-start="(key,value) in baogaodetail">
+                    <label class="checklabel" for="{{key}}">
+                        <h4>{{key}}</h4>
+                        <i ng-class="direction[$index] ? 'ion-chevron-right' : 'ion-chevron-down'"></i>
+                    </label>
+                </dt>
+                <input class="hide" ng-model="direction[$index]" type="checkbox" id="{{key}}">
+                <dd ng-repeat-end="">
+                    <p>{{value}}</p>
+                </dd> -->
+                <!-- 概述 -->
+                <dt>
+                    <label class="checklabel" for="gaishu">
+                        <h4>疾病描述</h4>
+                        <i ng-class="direction[0] ? 'ion-chevron-right' : 'ion-chevron-down'"></i>
+                    </label>
+                </dt>
+                <input class="hide" ng-model="direction[0]" type="checkbox" id="gaishu">
+                <dd class="tag-p">
+                  <!--   <p ng-bind-html="gaishu">{{gaishu}}</p> -->
+                </dd>
+                <!-- 治疗 -->
+                <dt>
+                    <label class="checklabel" for="zhiliao">
+                        <h4>治疗原则</h4>
+                        <i ng-class="direction[5] ? 'ion-chevron-right' : 'ion-chevron-down'"></i>
+                    </label>
+                </dt>
+                <input class="hide" ng-model="direction[5]" type="checkbox" id="zhiliao">
+                <dd class="tag-zlyz">
+                   <!--  <p>{{zhiliao}}</p> -->
+                </dd>
+                <!-- 预防 -->
+                <dt>
+                    <label class="checklabel" for="yufang">
+                        <h4>健康指导</h4>
+                        <i ng-class="direction[6] ? 'ion-chevron-right' : 'ion-chevron-down'"></i>
+                    </label>
+                </dt>
+                <input class="hide" ng-model="direction[6]" type="checkbox" id="yufang">
+                <dd class="tag-jkzd">
+                   <!--  <p>{{yufang}}</p> -->
+                </dd>
+                
+            </dl>
+        </div>
+    </ion-content>
+    <ion-footer-bar style="height:auto;width: 100%" >
+    <div class="bar bar-footer bar-balanced" style="    height: 78px;
+    background: #67afe2;">
+        <dl>
+            <dt style="color:#8E7070;color: #d64242;
+    text-indent: 10px;font-family: 微软雅黑;"></dt>
+            <dd style="padding: 6px;font-size:15px;color:white;font-family: 微软雅黑;">内容来源于医学知识库,仅供参考,建议您到当地医院咨询疾病详细信息。</dd>
+        </dl>
+    </div>
+    </ion-footer-bar>
+</ion-view>

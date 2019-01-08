@@ -1,0 +1,58 @@
+<ion-view hide-nav-bar="isIos" view-title="孕期呵护" class="yqhh yq-sy">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <style type="text/css">
+        .yq-sy .cj-info {
+            border-bottom: 1px solid #d4d4d4;
+        }
+        
+        .yq-sy .zs {
+            background-color: #fff;
+            margin-top: 10px;
+        }
+    </style>
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content>
+        <div class="hy-info">
+            <div class="title" ng-click="goEdit(yunqixx.pid)">
+                <p><i class="icon iconfont icon-yunchanqi"></i>预产期：<span>{{yunqixx.yuChanQi}}</span></p>
+                <i style="color:#999; " class="icon iconfont icon-xietie t-r"></i>
+            </div>
+            <div class="title" ng-click="goEdit(yunqixx.pid)">
+                <p><i class="icon iconfont icon-yunchanqi"></i>已怀孕：<span>{{yunqixx.huaiyunzhou}}</span></p>
+
+            </div>
+        </div>
+        <div class="cj-info">
+            <div class="title">
+                <p><i class="icon iconfont icon-yunzhou"></i>{{newChanJian.chanjianshiduan}}</p>
+                <a class="t-r" ng-click="goAll()">全部<i style="margin-left:10px; color:#999; " class="icon ion-ios-arrow-right "></i></a>
+            </div>
+            <p ng-if="newChanJian.chanjiantime" class="cj-time">
+                <i class="icon iconfont icon-wodexiaoxi"></i>建议下次产检时间 {{newChanJian.chanjiantime}}
+            </p>
+            <div ng-if="newChanJian.chanjiantime" class="info-item">
+                <h5>产检说明</h5>
+                <p>{{newChanJian.shuoMing}}</p>
+            </div>
+        </div>
+        <div class="zs" ng-click="goYuyin()">
+            <div class="title">
+                <p><i class="icon iconfont icon-yunqizhishi"></i>孕期知识</p>
+                <a class="t-r"><i style="margin-left:10px; color:#999; " class="icon ion-ios-arrow-right "></i></a>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

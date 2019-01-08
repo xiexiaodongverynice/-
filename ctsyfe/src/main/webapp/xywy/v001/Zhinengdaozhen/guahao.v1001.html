@@ -1,0 +1,115 @@
+<ion-view hide-nav-bar="isIos" view-title="全国医院排名">
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+
+    <style type="text/css">
+        #guahao {
+            padding-bottom: 50px;
+        }
+
+        #guahao #banner {
+            text-align: center;
+        }
+
+        #guahao h3 {
+            font-size: 18px;
+            padding: 20px 0 10px 0;
+        }
+
+        #guahao img {
+            width: 60%;
+            margin-top: 30px;
+        }
+
+        .juzhong {
+            text-align: center;
+            color: #999;
+            padding-top: 10px;
+            font-size: 16px;
+        }
+
+        article h3,
+        article h5 {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .yiyuan_list {
+            margin: 20px 0;
+        }
+
+        .yiyuan_list table {
+            margin: 0 auto;
+            text-align: center;
+            width: 75%;
+            border-collapse: unset;
+        }
+
+        .yiyuan_list th,
+        .yiyuan_list td {
+            padding: 5px 0;
+            border-width: 1px 1px 0 1px;
+            border-style: solid;
+            vertical-align: middle;
+        }
+
+        .yiyuan_list tr:last-child td {
+            border-bottom: 1px solid;
+        }
+
+        .yiyuan_list tr th:first-child,
+        .yiyuan_list tr td:first-child {
+            border-right: none;
+        }
+
+        .yiyuan_list header {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+    </style>
+    <ion-content>
+        <div id="guahao">
+            <article ng-if="ksList">
+                <header>
+                    <h3>中国最佳临床学科评估排行榜</h3>
+                    <h5>来源:北京大学临床学科评估</h5>
+                </header>
+                <div ng-repeat="item in ksList" class="yiyuan_list">
+                    <header>{{item.KSMC}}</header>
+                    <table>
+                        <tr>
+                            <th>名次</th>
+                            <th>医院名称</th>
+                        </tr>
+                        <tr ng-repeat="YYMC in item.YYMC">
+                            <td>{{$index+1}}</td>
+                            <td>{{YYMC}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </article>
+        </div>
+
+    </ion-content>
+</ion-view>

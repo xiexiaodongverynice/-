@@ -1,0 +1,154 @@
+<ion-view hide-nav-bar="isIos" view-title="血压历史记录" class="xueYaList">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        .xueYaList .top {
+            margin: 15px 0;
+        }
+        
+        .xueYaList .top i {
+            margin: 0 -10px;
+        }
+        
+        .xueYaList .top input {
+            display: inline-block;
+            height: 35px;
+            border-radius: 4px;
+        }
+        
+        .xueYaList .top input[type="text"] {
+            width: 28%;
+            color: #999;
+            font-size: 14px;
+            text-align:center;
+            background: #f2f2f2;
+            margin: 0 15px;
+        }
+        
+        .xueYaList .top input[type="button"] {
+            color: #fff;
+            max-height: 35px;
+            min-height: 35px;
+            line-height: 35px;
+            font-size: 14px;
+            background: #00b5ee;
+        }
+        
+        .xy-list {
+            border-top: 10px solid #f2f2f2;
+        }
+        
+        .xy-list li {
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+        }
+        .xy-list li p{
+            margin: 0;
+        }
+
+        .xy-list li:nth-of-type(even) {
+            background: #f2f2f2;
+        }
+        .xy-list li:nth-of-type(even) mark{
+            background: #f2f2f2;
+        }
+        .xy-list li:nth-of-type(odd) mark{
+            background: #FFFFFF;
+        }
+        .xy-list li span {
+            flex-grow: 1;
+            text-align: center;
+
+        }
+        .xy-list li span:first-child{
+            text-align: left;
+            flex-grow: 0;
+        }
+        .xy-list li span:last-child{
+            text-align: right;
+            flex-grow: 0;
+
+        }
+        .xy-list li span:nth-child(4){
+            text-align: right;
+            flex-grow: 0;
+
+        }
+        
+        .xy-list caption {
+            color: #999;
+            flex-grow: 0;
+        }
+        .xueYaList .title{
+            background-color:#fff !important;
+        }
+        /**结果高**/
+        .xueYaList .jg-gao-yi{
+        	color:#ff6666;
+        }
+         .xueYaList .jg-gao-er{
+        	color:#ff3333;
+        }
+         .xueYaList .jg-gao-san{
+        	color:#cc3333;
+        }
+        /**结果低**/
+        .xueYaList .jg-di{
+        	color:#ff9500;
+        }
+        /**结果正常**/
+        .xueYaList .jg-zc{
+        	color:#00d641;
+        }
+        .xueYaList .wsj {
+            margin-top: 60px;
+            text-align: center;
+            color: #999;
+        }
+        .xueYaList .wsj img{
+            width: 100px;
+        }
+        .xueYaList .wsj p{
+            margin-top: 15px;
+        }
+    </style>
+    <ion-content>
+        <div class="top">
+            <input type="text" id="startDate" placeholder="请选择起始日期" ng-click="datePiker('startDate')" data-year="" data-month="" data-date="" readonly="readonly">
+            <i class="icon ion-minus color-9"></i>
+            <input type="text" id="endDate" placeholder="请选择结束日期" ng-click="datePiker('endDate')"  data-year="" data-month="" data-date="" readonly="readonly">
+            <input type="button" class="button" value="查询" ng-click="doSearch()">
+        </div>
+        <div class="xy-list color-3 s-14">
+            <ul ng-if="xueyalist.length>0">
+            	<!-- <li class="title" ng-repeat-start="item in xueyalist track by $index" ng-if="item.riqiday!=xueyalist[$index-1].riqiday">
+                    <caption>{{item.riqiday}}</caption>
+                </li> -->
+                
+	            <li  ng-repeat="item in xueyalist track by $index" style="display: block;padding: 10px;">
+	                <p style="display: flex; align-items: center;">
+                    <span style="width: 30%;">{{item.riqi}}</span>
+                    <mark style="text-align: left;width: 30%;"><span ng-class="{'jg-di':item.gaoyapd==='低','jg-gao-yi':item.gaoyapd==='高','jg-zc':item.gaoyapd==='正常'}">{{item.gaoya}}</span>/<span ng-class="{'jg-di':item.diyapd==='低','jg-gao-yi':item.diyapd==='高','jg-zc':item.diyapd==='正常'}">{{item.diya}}</span> <span style="color: black;">mmHg</span></mark>
+                    <mark style="text-align: left;width: 20%"><span ng-class="{'jg-di':item.xinlvpd==='低','jg-gao-yi':item.xinlvpd==='高','jg-zc':item.xinlvpd==='正常'}">{{item.xinlv}} </span> bpm</mark>
+                    <span style="width: 15%" ng-class="{'jg-di':item.jieguoshow==='低血压','jg-gao-yi':(item.jieguoshow==='一级'||item.jieguoshow==='二级'||item.jieguoshow==='三级'),'jg-zc':item.jieguoshow==='正常'}">{{item.jieguoshow}} </span>
+                    <span style="padding-left: 15px;width: 20px;padding-right: 15px;" ng-click="deljilu($index,item)"><i class="icon iconfont icon-delet_SFontCN"></i></span>
+                    </p>
+                    <p style="display: flex;">
+                    <span style="float: right;margin-right: 30px;flex-grow: 1;" >脉压差{{item.maiyacha}}</span>
+                    </p>
+                </li>
+            </ul>
+            <div ng-if="xueyalist.length==0" class="wsj">
+            	 <img src="img/wushuju.png" alt="无任何历史记录"> 
+                <p>无任何历史记录</p>
+            </div>
+        </div>
+       <ion-infinite-scroll ng-if="!ishowall" immediate-check="false"
+	on-infinite="loadMicMore()" distance="1%"> </ion-infinite-scroll>
+	 
+    </ion-content>
+</ion-view>

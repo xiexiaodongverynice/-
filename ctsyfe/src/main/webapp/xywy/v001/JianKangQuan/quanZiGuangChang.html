@@ -1,0 +1,123 @@
+<ion-view hide-nav-bar="isIos" view-title="圈子列表">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <div style="text-align: center; height: 100%">
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons> -->
+    <style>
+        .qzgc .left-lb .show_li_list{
+            border-right:none;
+        }
+        .qzgc .left-lb .show_span_info{
+            width: auto;
+            margin-right: 25px;
+            padding: 0;
+        }
+        .show_qz_info{
+            width: 100%;
+            font-size:15px;
+            color:#333;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+        .show_qz_list{
+            margin-left: 15px;
+            height: 74px;
+            display: flex;
+            align-items: center;
+        }
+        .qz_image{
+            position: absolute;
+        }
+        .img{
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+        .qz_name{
+        padding-left:50px;
+        }
+        .qz_tb{
+            float: right;
+            text-align: center;
+        } 
+        .qzgc .tubiao{
+            font-size: 22px;
+        }
+        .qz_tuBiao{
+            width:33%;
+            /*width: 70%;
+            margin-left: 25px;*/
+            font: 1rem Microsoft Yahei;
+            padding: 0.35rem 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .tubiao_word{
+            display: block;
+            font-size:11px;
+        }
+        .tb_area{
+            display: inline-block;
+            text-align: center;
+            width:4rem;
+        }
+        .not_jr{
+            color:rgb(0, 204, 255);
+        }
+        .was_jr{
+            color: black;
+        }
+        .w-30{
+            width: 25%;
+        }
+        .w-70{
+            width: 75%;
+        }
+        .qz-info{
+            position: relative;
+        }
+    </style>
+    
+    <ion-content>
+        <div class="liebiao left-lb" ng-if="istrue">
+            <ul class="list no-float">
+                <li class="show_li_list" style = "height:74px;line-height: 50px;" ng-repeat="item in quanZi" ng-click="loadqz(item.mc)" ng-class="[{'chose':item.mc===data.qzFl}]">
+                    <span ng-if="item.mc===data.buwei" id="curBw" style="position:relative;font-size:2rem;" value="{{$index}}"></span>
+                    <span class="show_span_info" style="font-size:14px;" on-finish-render-filters="Complete">{{item.mc}}</span>
+                    <!-- <i class="icon ion-chevron-right i_tuBiao"></i> -->
+                </li>
+            </ul>
+        </div>
+        <div class="liebiao right-lb" ng-if="istrue">
+            <ul class="list no-float">
+                <li class="show_li_list show_qz_list" style="border-bottom: 1px solid #dedede;" ng-repeat="qz in notfollowedlist">
+                    <div ng-click="chooseqz(qz.id)" class="w-70 qz-info">
+                        <div class="qz_image"><img id="img" class="img" ng-src="{{qz.qzpicture}}"></div>
+                        <div class="qz_name">
+                            <span class="show_qz_info">{{qz.name}}</span>
+                            <span class="show_qz_info" style="font-size:13px;">成员&nbsp;&nbsp;{{qz.chengyuanshu}}</span> 
+                        </div>
+                    </div>
+                    <div class="qz_tb" ng-click="add_quanZi(qz.id,qz.shifoujiaru)" ng-if="qz.shifoujiaru=='0'">
+                        <i class="icon iconfont icon-guanzhu tubiao tb_area was_jr"></i>
+                        <span class="tubiao_word  was_jr">加入圈子</span>
+                    </div>
+                    <div class="qz_tb" ng-click="add_quanZi(qz.id,qz.shifoujiaru)" ng-if="qz.shifoujiaru=='1'">
+                            <i class="icon iconfont icon-yijiaru tubiao tb_area not_jr"></i>
+                            <span class="tubiao_word not_jr">已加入</span>
+                        </div>
+                </li>
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>

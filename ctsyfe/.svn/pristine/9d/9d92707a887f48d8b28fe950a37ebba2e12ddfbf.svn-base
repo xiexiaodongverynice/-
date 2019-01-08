@@ -1,0 +1,120 @@
+angular.module('starter.audioCtrl', [])
+    /**
+     * 语音播放控制条,停止、下一段、上一段、关闭
+     * 
+     <audio-control>
+     */
+    .directive('audioCtrlBar', ['audioControl', 'Popup', '$state', function (audioControl, Popup, $state) {
+        return {
+            scope: {
+                items: "@",
+                isShow: "=",
+                outSwitch: "@"
+            },
+            restrict: 'AEC',
+            transclude: true,
+            template: '<div class="audio-ctrl" ng-class="{true:\'ios\',false:\'andrio\'}[isIos||isIos==\'true\']" ng-if="isShow==1"><div><i class="icon iconfont icon-yuyin1 voiceI"></i><span ng-click="switchMenuBody()">正在收听：{{datas[playing].title}}<i class="icon iconfont icon-menu audio-menu"></i></span></div><div class="ctrl-buts"><i class="icon iconfont icon-xiangshang" ng-class="{true:\'disabled\',false:\'\'}[playing==0]" ng-disabled="playing==0" ng-click="up()"></i><i class="icon iconfont icon-zanting" ng-if="!isZanTing" ng-click="zanTing()"></i><i class="icon iconfont icon-bofang" ng-if="isZanTing" ng-click="boFang()"></i><i class="icon iconfont icon-xiangxia" ng-class="{true:\'disabled\',false:\'\'}[playing>=datas.length-1]" ng-disabled="playing>=datas.length-1" ng-click="next()"></i><i class="icon iconfont icon-guanbi" ng-click="close()"></i></div></div><div class="audio-menu-body" ng-if="menuBodyShow" ng-class="{true:\'ios\',false:\'andrio\'}[isIos||isIos==\'true\']"><ul><li ng-repeat="item in datas" ng-bind="item.title" ng-click="selectPlay($index)"></li></ul></div>',
+            link: function ($scope, iElm, iAttrs, controller) {
+                var ionContent = document.getElementsByClassName('detailContent');
+                $scope.isIos = false;
+                if (sessionStorage.getItem('isIos') && sessionStorage.getItem('isIos') != 'undefined') { $scope.isIos = sessionStorage.getItem('isIos'); }
+                $scope.playing = 0;//当前播放index
+                $scope.isZanTing = false;
+
+                $scope.menuBodyShow = false;//是否显示菜单
+
+                // 播放器控制条开关
+                $scope.switchAudioCtrl = function () {
+                    $scope.datas = JSON.parse($scope.items);
+                    if ($scope.isShow == 0) {
+                        audioControl.pause();
+                        if ($scope.isIos == "true" || $scope.isIos == true) {
+                            ionContent[0].style.top = "0px";
+                        } else {
+                            var h = ionContent[0].style.top;
+                            ionContent[0].style.top = "44px";
+                        }
+                    }
+                    else {
+                        audioControl.play($scope.datas[$scope.playing].content);
+                        if ($scope.isIos == "true" || $scope.isIos == true) {
+                            ionContent[0].style.top = "40px";
+                        } else {
+                            //var h = ionContent[0].style.top;
+                            ionContent[0].style.top = (40 + 44) + "px";
+                        }
+                    }
+                };
+                // 监听外部控制开关
+                $scope.$watch('outSwitch',
+                    function (newVal) {
+                        $scope.isShow = newVal;
+                        $scope.switchAudioCtrl();
+                    });
+                // 
+
+
+                // 显示因此菜单
+                $scope.switchMenuBody = function () {
+                    $scope.menuBodyShow = !($scope.menuBodyShow);
+                    event.stopPropagation();
+                };
+
+                // 暂停
+                $scope.zanTing = function () {
+                    $scope.isZanTing = !$scope.isZanTing;
+                    audioControl.pause();
+                    event.stopPropagation();
+                };
+                // 播放
+                $scope.boFang = function () {
+                    $scope.isZanTing = !$scope.isZanTing;
+                    audioControl.play();
+                    event.stopPropagation();
+                };
+                // 播放下一个
+                $scope.next = function () {
+                    if (event.target.disabled) {
+                        return;
+                    }
+                    $scope.isZanTing = false;
+                    $scope.playing = $scope.playing + 1;
+                    audioControl.pause();
+                    audioControl.play($scope.datas[$scope.playing].content);
+                    event.stopPropagation();
+                };
+                // 播放上一个
+                $scope.up = function () {
+                    if (event.target.disabled) {
+                        return;
+                    }
+                    $scope.isZanTing = false;
+                    $scope.playing = $scope.playing - 1;
+                    audioControl.pause();
+                    audioControl.play($scope.datas[$scope.playing].content);
+                    event.stopPropagation();
+                };
+                // 关闭播放控制条
+                $scope.close = function () {
+                    var audioSwitch = document.getElementById("outSwitch");
+                    audioControl.pause();
+                    $scope.isShow = 0;
+                    $scope.switchAudioCtrl();
+                    audioSwitch.classList.remove("gray");
+                    event.stopPropagation();
+
+                };
+                // 菜单选择播放
+                $scope.selectPlay = function (index) {
+                    $scope.isZanTing = false;
+                    $scope.playing = index;
+                    audioControl.pause();
+                    audioControl.play($scope.datas[$scope.playing].content);
+                    $scope.menuBodyShow = false;//是否显示菜单
+                    event.stopPropagation();
+                };
+
+
+            }
+        };
+    }]);

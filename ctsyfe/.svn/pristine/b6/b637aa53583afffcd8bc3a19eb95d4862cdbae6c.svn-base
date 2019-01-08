@@ -1,0 +1,907 @@
+angular.module('starter.wenyiControllers', ['ionic'])
+    //找医生
+    .controller('wenyi', function (wxApi, $scope, $http, $state, $stateParams, $interval, $timeout, XywyService, Popup, Outlet, Message, $ionicScrollDelegate, audioControl, Yuyin, $window, $rootScope, geoLocation) {
+
+        $scope.isIos = false;
+        $scope.inputFocus = false;
+        if (!!$window.navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            $scope.isIos = true;
+            sessionStorage.setItem('isIos', $scope.isIos);
+        }
+        //默认打开语音播放
+        //    	$scope.localyyzt = "打开";
+        //    	localStorage.setItem("yyzhuangtai", "打开");
+
+        $scope.labelpadding = function (curgn) {
+            return;
+            // if(curgn=="WZZ"){
+            // 	return ;
+            // }else{
+            // 	return{"padding-left":"40px"};
+            // }
+        };
+        //    	用户输入信息记录
+        $scope.yonghuinput = "";
+        //       根据功能判断年龄性别是否显示的显示
+        $scope.showagesex = function (gn) {
+            var p = "";
+            // if(gn=="WZZ" || gn=="ZNDZ"){
+
+            // }else{
+            // 	p="hidden";
+            // }
+            return { "visibility": p };
+        }
+        /**
+        *当交互页面打开时调用，判断容器的大小是否需要改变
+        *如：不需要语音部分时的容器调整
+        */
+        $scope.ionscrollngstyle = function (hideVoice, inputMethod) {
+            if ($stateParams.gn == "WSS" || $stateParams.gn == "WYP" || $stateParams.gn == "WJB" || $stateParams.gn == "ZWPG" || $stateParams.gn == "CJZZ") {
+                $scope.resize();
+                return;
+            }
+            var bottom = "";
+            if (!hideVoice && inputMethod === "voice") {
+                bottom = "205px";
+            } else {
+                bottom = "49px";
+            }
+            return { "bottom": bottom }
+        }
+        //  语音状态（用于判断页面显示图标）
+        $scope.localyyzt = localStorage.getItem("yyzhuangtai");
+        if (localStorage.getItem("yyzhuangtai") === "禁止") { //禁止语音播放
+            $scope.yuyinopen = "打开语音";
+        } else { //允许语音播放
+            $scope.yuyinopen = "关闭语音";
+        }
+
+        //隐藏年龄列表
+        $scope.isHidePopup = function () {
+            $scope.isShow_jj_yp_list = false;
+            $scope.isShow_bl_yp_list = false;
+            $scope.isShow_bl_yp_btn = true;
+        };
+
+        //  判断语音播放状态（语音播放按钮点击事件）
+        $scope.yuyinzt = function () {
+            //      当前状态是禁止播放
+            if (localStorage.getItem("yyzhuangtai") === "禁止") {
+                //          改变当前状态
+                localStorage.setItem("yyzhuangtai", "打开");
+                $scope.yuyinopen = "关闭语音";
+            } else {
+                localStorage.setItem("yyzhuangtai", "禁止");
+                $scope.yuyinopen = "打开语音";
+                audioControl.pause();
+            }
+            $scope.localyyzt = localStorage.getItem("yyzhuangtai");
+        };
+
+        //  标题
+        $scope.curgn = $stateParams.gn;
+        $scope.data = { textValue: "", voiceTip: "按住说话" };
+        $scope.title = "快速问医";
+        $scope.inputMethod = 'voice';
+        $scope.data.hideVoice = false;
+
+        //  获取微信用户的openid
+        var userid = sessionStorage.getItem("openId");
+        //  返回按钮
+        $scope.goBack = function () {
+            var historyPage = $stateParams.history;
+            if (historyPage == 'zndz') {
+                javascript: history.go(-1);
+            } else if (sessionStorage.getItem('hosorgCode')) {
+                var token = sessionStorage.getItem("token");
+                var yxzsurl = sessionStorage.getItem('yxzsurl');
+                var hosorgCode = sessionStorage.getItem('hosorgCode');
+                $state.go("yiyuanshouye", { hosorgCode: hosorgCode, openid: userid, token: token, yxzsurl: yxzsurl });
+            } else {
+                var token = sessionStorage.getItem("token");
+                $state.go("shouye", { openid: userid, token: token });
+            }
+        }
+        $scope.messageArr = [];
+        // addDialog(testData.audio);
+        //  当前交互问题的存放
+        $scope.resdata = {};
+        //  是否走疑似疾病流程（0是，1不走疾病流程）
+        $scope.iszsk = 1;
+        //        判断多选是否是点击了确认
+        var tjbdqd = "";
+        //  （点击按钮或连接文字，获得患者选中内容，并发送到显示页面）（可能需要患者回答内容的类型type）
+        $scope.$on('userSubmit', function (event, userChoose) {
+            userChoose.style = '1';
+            if (userChoose === false || userChoose.input === false) {
+                //TODO 用户多选时取消
+                console.log('用户取消了')
+                //              取消重新输入主词
+                $scope.setGn($stateParams.gn);
+                //                取消时将重新走症状知识库部分
+                $scope.iszsk = 1;
+            } else if (userChoose.input === "继续") {
+                //              是否走疑似疾病流程（0是，1不走疾病流程进入知识库流程）
+                $scope.iszsk = 0;
+                interaction(userChoose, userid);
+            } else if (userChoose.input === "没有了") {
+                interaction(userChoose, userid);
+            } else {
+                //              是否走疑似疾病流程（0是，1不走疾病流程进入知识库流程）
+                $scope.iszsk = 0; //??待定
+                //              判断当前问题类型是否是多选类型（是则不在页面显示用户选择了哪些内容）
+                if ($scope.resdata[0].type === "multiple") {
+                    //                  不显示用户发送消息内容
+                } else {
+                    var InputStr = userChoose.input.toString();
+                    if (InputStr.indexOf("fgfh") > -1) {
+                        var a = [];
+                        a = InputStr.split("fgfh", 3);
+                        addDialog({ type: 'text', message: a[2], user: true });
+                    }
+                    else if (InputStr.indexOf("×") == 0 && InputStr.length > 1) {
+                        var InputStrqx = InputStr.substring(1);
+                        addDialog({ type: 'text', message: InputStrqx, user: true });
+                    }
+                    else {
+                        addDialog({ type: 'text', message: userChoose.input, user: true });
+                    }
+                }
+                interaction(userChoose, userid);
+                //              }
+
+            }
+        });
+
+        //      检查检验类型获取
+        $scope.$on('jcjytype', function (event, userChoose) {
+            $scope.jcjytype = userChoose.jcjytype;
+        });
+
+        function addDialog(message) {
+            if (angular.isString(message)) {
+
+            }
+            $scope.inputFocus = false;
+            audioControl.pause();
+            $scope.messageArr.push(message);
+            //console.log($scope.messageArr);
+        }
+
+        document.oncontextmenu = function (e) {
+            e.preventDefault();
+        };
+
+        //语音部分代码
+        $scope.listSize = myConfig.listSize;
+        var smallScroll = $ionicScrollDelegate.$getByHandle('small');
+        var scrollContainer;
+        $timeout(function () {
+            scrollContainer = smallScroll.getScrollView().__container;
+        });
+        var realHeight = $window.innerHeight;
+        $scope.randomId = Math.random().toString(16).slice(2);
+
+        /**
+        *当滚动容器大小应该变化时调用
+        *如：切换语音输入、语音输入按钮显示隐藏
+        */
+        $scope.resize = function () {
+            if ($scope.stylebottom = function () {
+                //    		自我评估，常见症状判断距底端距离
+                if ($scope.curgn == "ZWPG" || $scope.curgn == "CJZZ") {
+                    return { "bottom": "0px" };
+                }
+                //    		问症状问报告时判断距底端距离
+                if ($scope.isbottom0) {
+                    return { "bottom": "0px" };
+                }
+                if (!$scope.data.hideVoice && $scope.inputMethod === 'voice') {
+                    return { "bottom": "101px" };
+                } else {
+                    return { "bottom": "48px" };
+                }
+
+            }.hideVoice) {
+                var clientHeight = scrollContainer.clientHeight;
+                smallScroll.resize().then(function () {
+                    var bottomPos = smallScroll.getScrollPosition().top + scrollContainer.clientHeight;
+                    if (bottomPos < scrollContainer.scrollHeight) {
+                        smallScroll.scrollBy(0, -155, true);
+                    }
+                    // else if(scrollContainer.scrollHeight -bottomPos < 155){
+                    //         console.log(scrollContainer.scrollHeight-bottomPos);
+                    //     smallScroll.scrollBy(0, scrollContainer.scrollHeight-bottomPos, true);
+                    // }
+                });
+            } else {
+                smallScroll.scrollBy(0, 155, true);
+            }
+        }
+
+        $scope.switchInput = function () {
+            realHeight = $window.innerHeight;
+            if ($scope.inputMethod === 'keyboard') {
+                $scope.inputFocus = false;
+                $scope.inputMethod = 'voice';
+                $scope.resize();
+            } else {
+                $scope.inputFocus = true;
+                $scope.inputMethod = 'keyboard';
+            }
+        };
+        //		是否显示语音提示图标
+        $scope.isshowimg = false;
+        var startY = 0,
+            startAudio = new Audio("./mp3/luyinkaishi.mp3"),
+            finishAudio = new Audio("./mp3/luyinjieshu.mp3"),
+            startTime;
+        $scope.start = false;
+
+        function startFunc() {
+            $scope.start = true;
+            $scope.isshowimg = true;
+            $scope.data.voiceTip = '向上滑动，取消发送';
+        }
+
+        function finishFunc() {
+            $scope.data.voiceTip = '按住说话';
+            $scope.start = false;
+        }
+        $scope.send = function ($event) {
+            $scope.inputFocus = false;
+            //            $scope.sendmessage();
+            $scope.sendMessageXin();
+        }
+        //识别回调函数
+        function successFunc(text) {
+            if (text === false || text === "只是一个模拟调试的结果") {
+                addDialog({ type: 'text', message: "没有听清", radioMsg: "没有听清" });
+                $scope.zIndex = false;
+            } else {
+                //                $scope.sendmessage(text);
+                $scope.sendMessageXin(text);
+            }
+        };
+        var bindFunces = Yuyin(startFunc, finishFunc, successFunc);
+
+        $scope.startRecord = function ($event) {
+            $scope.zIndex = true;
+            // startAudio.play();
+            $scope.isshowimg = true;
+            $event.preventDefault();
+            startTime = $event.timeStamp;
+            startY = $event.touches[0].screenY;
+            bindFunces.start();
+            $scope.moveaction($event)
+        };
+
+        $scope.moveaction = function ($event) {
+            $scope.isshowimg = true;
+            if ($scope.start) {
+                if ($event.touches[0].screenY - startY < -50) {
+                    $scope.data.voiceTip = '松开手指，取消发送';
+                    $scope.cancel = true;
+                } else {
+                    $scope.cancel = false;
+                    $scope.data.voiceTip = '向上滑动，取消发送';
+                };
+                $scope.zIndex = false;
+            }
+        };
+
+        $scope.finishRecord = function ($event) {
+            $scope.isshowimg = false;
+            if ($scope.cancel) { /* || ($event.timeStamp && $event.timeStamp - startTime < 100)*/
+                bindFunces.stop();
+                $scope.zIndex = false;
+            } else {
+                // finishAudio.play();
+                bindFunces.finish();
+                $scope.zIndex = false;
+            }
+            $scope.cancel = false;
+            $timeout(function () {
+                smallScroll.resize();
+            });
+        };
+        // $(function() {
+        //     // 解决输入法遮挡
+        //     var timer = null;
+        //     $('.input-none').on('focus', function() {
+        //         clearInterval(timer);
+        //         var index = 0;
+        //         timer = setInterval(function() {
+        //             if(index>5) {
+        //                 $('body').scrollTop(1000000);
+        //                 clearInterval(timer);
+        //             }
+        //             index++;
+        //         }, 50)
+        //     })
+        // });
+        //ios手机input键盘弹出问题
+        var bodyScroll = $ionicScrollDelegate.$getByHandle('intBody');
+        var realHeight = $window.innerHeight;
+        var timerId = null;
+        $scope.inputFocu = function () {
+            $timeout(function () {
+                console.log($window.innerHeight)
+                bodyScroll.scrollBy(0, realHeight - $window.innerHeight, true)
+                // document.body.scrollTop = document.body.scrollHeight
+            }, 300)
+        };
+        $scope.inputBlur = function () {
+
+            $timeout(function () {
+                var inputIntId = document.getElementById("inputIntId");
+                inputIntId.blur();
+                // realHeight = $window.innerHeight;
+            }, 300)
+
+        };
+
+        $scope.$on('fankui', function (event, bool) {
+            $scope.fankui(bool);
+        });
+        $scope.fankui = function (bool) {
+            var index = 0,
+                length = $scope.messageArr.length;
+            for (var i = length - 1; i >= 0; i--) {
+                if ($scope.messageArr[i].newSearchFlag) {
+                    index = i - 1;
+                    break;
+                }
+            }
+            var data = angular.toJson($scope.messageArr.slice(index));
+            if (bool) {
+                var param = {
+                    fknr: '正确',
+                    jhnr: data
+                };
+                XywyService.save('/fankuiyijian', param)
+                    .then(function (res) {
+                        if (res.data) Popup.alert(res.data + "！");
+                    });
+            } else {
+                Popup.fankui({ data: data });
+            }
+        };
+
+        //发送消息新方法
+        $scope.sendMessageXin = function (value, resloid, length) {
+            if ($scope.questiontype === "textbs") {
+                return $scope.sendmessage(value, resloid, length);
+            }
+            if (!value && !$scope.data.textValue) {
+                return;
+            }
+            var param = { userid: userid, gnname: $stateParams.gn };
+            var config = {
+                params: param,
+                cache: false
+            }
+            $scope.setting = true;
+            XywyService.query("/newstart", config).then(function (response) {
+                //            	重新选功能时(或者重新输入时)清空用户输入信息展示的内容
+                $scope.yonghuinput = "";
+                $scope.resdata = response.data;
+                $scope.questiontype = response.data.type;
+                $scope.setting = false;
+                if (angular.isArray(response.data)) {
+                    //                    angular.forEach(response.data, function (e) {
+                    //                        addDialog(new Message(e));
+                    //                    });
+                    $scope.sendmessage(value, resloid, length);
+                } else {
+                    //                    addDialog(new Message(response.data));
+                    $scope.sendmessage(value, resloid, length);
+                }
+            }, Popup.alert);
+        }
+
+
+
+        //  发送信息
+        $scope.sendmessage = function (value, resloid, length) {
+            if (!value) {
+                value = $scope.data.textValue;
+            }
+            if (!!resloid) {
+                addDialog({ type: 'text', radioMsg: resloid, message: value, user: true });
+            } else if (!!value) {
+                addDialog({ type: 'text', message: value, user: true });
+            } else {
+                return;
+            }
+
+            //      清空输入框中的内容
+            $scope.data.textValue = "";
+            //            if ($scope.resdata.type === "multiple"&& value.indexOf("以上都不存在")<0) {
+            //                var tishi = { type: "text", message: "请点击确认按钮确定选择内容，或者输入以上都不存在排除上述所有内容，或者选择取消按钮重新输入症状。" };
+            //                addDialog(new Message(tishi));
+            //            } else {
+            //                interaction({ input: value }, userid);
+            //            }
+            if ($scope.resdata.type === "multiple") {
+                tjbdqd = "非确认";
+            }
+            interaction({ input: value, style: '2' }, userid);
+            if ($scope.questiontype != "textbs") {
+                $('.button-ddd').attr('disabled', "true");//历史会话设置为不可用
+            } else {
+                $('.button-textbs').attr('disabled', "true");//设置无其他症状伴随按钮不可用（当用户输入其他伴随症状时设置为不可用）
+            }
+
+        }
+        //  用户输入内容后的操作（后台执行操作判断交互过程）交互处理
+        function interaction(params, userid) {
+            //        	开发模式和非开发模式显示疾病个数(开发模式显示5个)
+            var keshiLimit = myConfig.keshiLimit;
+            if ($stateParams.gn == "WZZ" && localStorage.getItem("showpingfen") == "true") {
+                keshiLimit = 5;
+            }
+            //state: params.style 判断input是输入的还是列表获取的'1'是列表获取 '2'是输入的
+            var param = { userid: userid, input: params.input, style: params.style, processNo: params.processNo, hosOrgCode: sessionStorage.getItem('hosorgCode'), keshiLimit: keshiLimit, iszsk: $scope.iszsk, tjbdqd: tjbdqd, jhwdgz: params.jhwdgz, jcjytype: $scope.jcjytype, yonghuid: sessionStorage.getItem('wzrId') };
+            var config = {
+                params: param
+            }
+
+            XywyService.query("/interactionWY", config).then(function (response) {
+                $scope.checkIndex = 0;
+                $scope.resdata = response.data;
+                $scope.questiontype = response.data[0].type;
+                //                判断用户输入内容记录是否存在
+                if (response.data.userjl) {
+                    //                  设置页面展示用户输入内容
+                    userinputjl(response.data.sex, response.data.age, response.data.userjl);
+                }
+                //初始化科室未转换
+                sessionStorage.setItem('ksSwitch', 'failed');
+                $scope.depsData = [];
+                var hosorgcode = sessionStorage.getItem('hosorgCode');
+                if ($scope.questiontype == 'html') {
+                    //跳转儿童免疫、孕期时间表静态页面
+                    $state.go(response.data[0].laiyuan);
+                } else
+                    if (sessionStorage.getItem('hosorgCode') && $scope.questiontype == 'listdetail' && response.data[0].tjkslist != null) {
+                        var params = {
+                            hosorgcode: hosorgcode,
+                            cgksmc: angular.toJson(response.data[0].tjkslist)
+                            //response.data[0].list[0].xxdxkdis
+                        };
+                        XywyService.query("/yiyuanVersion/getkeshiZhuanhuanUrl", { params: { yiyuanBm: hosorgcode } }).then(
+                            function (result) {
+                                var url = result.data.keshiZhuanhuanUrl + '/keshiConvert';
+                                $http.post(url, angular.toJson(params))
+                                    .success(function (response) {
+                                        if (response.resultcode == "success") {
+                                            sessionStorage.setItem('ksSwitch', 'success');
+                                            angular.forEach(response.data, function (array, index) {
+                                                $scope.depsData.push({
+                                                    type: '科室',
+                                                    xxdxkdis: array.yyKsMc,
+                                                    depCode: array.yyKsDm
+                                                })
+                                            })
+                                            $scope.resdata[0].tjkslist = $scope.depsData;
+                                        }
+                                        addDialog(new Message($scope.resdata[0]));
+                                    })
+
+                            })
+
+                    } else if (sessionStorage.getItem('hosorgCode') && ($scope.questiontype == 'ysjbresult' && response.data[0].tjkslist != null)) {
+                        var params = {
+                            hosorgcode: hosorgcode,
+                            cgksmc: angular.toJson(response.data[0].tjkslist)
+                        };
+                        XywyService.query("/yiyuanVersion/getkeshiZhuanhuanUrl", { params: { yiyuanBm: hosorgcode } }).then(
+                            function (result) {
+                                var url = result.data.keshiZhuanhuanUrl + '/keshiConvert';
+                                $http.post(url, angular.toJson(params))
+                                    .success(function (response) {
+                                        if (response.resultcode == "success") {
+                                            sessionStorage.setItem('ksSwitch', 'success');
+                                            angular.forEach(response.data, function (array, index) {
+                                                $scope.depsData.push({
+                                                    type: '科室',
+                                                    xxdxkdis: array.yyKsMc,
+                                                    depCode: array.yyKsDm
+                                                })
+                                            })
+                                            $scope.resdata[0].tjkslist = $scope.depsData;
+                                        }
+                                        addDialog({
+                                            type: $scope.resdata[0].type,
+                                            radioMsg: $scope.resdata[0].radioMsg,
+                                            list: $scope.resdata[0].list,
+                                            resData: $scope.resdata[0].tjkslist,
+                                            laiyuan: $scope.resdata[0].laiyuan,
+                                            liucheng: $scope.resdata[0].liucheng
+                                        });
+                                    })
+                            })
+                    } else if (sessionStorage.getItem('hosorgCode') && $scope.questiontype == 'tjksresult') {
+                        var params = {
+                            hosorgcode: hosorgcode,
+                            cgksmc: angular.toJson(response.data[0].list)
+                        };
+                        XywyService.query("/yiyuanVersion/getkeshiZhuanhuanUrl", { params: { yiyuanBm: hosorgcode } }).then(
+                            function (result) {
+                                var url = result.data.keshiZhuanhuanUrl + '/keshiConvert';
+                                $http.post(url, angular.toJson(params))
+                                    .success(function (response) {
+                                        if (response.resultcode == "success") {
+                                            sessionStorage.setItem('ksSwitch', 'success');
+                                            angular.forEach(response.data, function (array, index) {
+                                                $scope.depsData.push({
+                                                    type: '科室',
+                                                    xxdxkdis: array.yyKsMc,
+                                                    depCode: array.yyKsDm
+                                                })
+                                            })
+                                            $scope.resdata[0].tjkslist = $scope.depsData;
+                                        }
+                                        addDialog(new Message($scope.resdata[0]));
+                                    })
+                            })
+                    } 
+                    else if (response.data[0].type == "duodetail") {
+                        addDialog({ type: "text", message: response.data[0].message, radioMsg: response.data[0].radioMsg, });
+                        response.data[0].radioMsg=null;
+                        addDialog(new Message(response.data[0]));
+                    }else if (response.data[0].type == "yiBaoYaoPinLB") {
+                        addDialog({ type: "text", message: response.data[0].message, radioMsg: response.data[0].radioMsg, });
+                        response.data[0].radioMsg=null;
+                        addDialog(new Message(response.data[0]));
+                    }else if (response.data[0].type == "resultbmcx") {
+                        addDialog({ type: "text", message: response.data[0].message, radioMsg: response.data[0].radioMsg, });
+                        response.data[0].radioMsg=null;
+                        addDialog(new Message(response.data[0]));
+                    }else if (response.data[0].type == "jtyyresult") {
+
+                        addDialog(new Message(response.data[0]));
+                    }
+                    else if (response.data[0].type == "listdetail") {
+                        addDialog({ type: "text", message: response.data[0].message, radioMsg: response.data[0].radioMsg, });
+                        response.data[0].radioMsg=null;
+                        addDialog(new Message(response.data[0]));
+                    }
+                    else if (response.data[0].type != "ysjbresult") {
+                        for (var i = 0; i < response.data.length; i++) {
+                            addDialog(new Message(response.data[i]));
+                        }
+                    } else {
+                        for (var i = 0; i < response.data.length; i++) {
+                            if (i == 0) {
+                                addDialog({ type: "text", message: response.data[0].message, radioMsg: response.data[0].radioMsg, });
+                                addDialog({ type: response.data[i].type, list: response.data[i].list, resData: response.data[i].tjkslist, laiyuan: response.data[i].laiyuan, userjl: response.data[i].userjl, tjksmessage: $scope.resdata[i].tjksmessage, isShowDianZan: $scope.resdata[i].isShowDianZan, liucheng: $scope.resdata[i].liucheng });
+                            } else {
+                                addDialog(new Message(response.data[i]));
+                            }
+                        }
+                    }
+                //                判断是否是问症状结果,如果是则改变iszsk的值
+                if ($stateParams.gn == "WZZ") {
+                    if (response.data.type == "result" || response.data.type == "zskresult" || response.data.type == "text") {
+                        $scope.iszsk = 1;
+                    }
+                }
+                if (response.data.sex) {
+                    $scope.itemsex = response.data.sex.substring(0, 1) + "性";
+                } else {
+                    $scope.itemsex = "未选择";
+                }
+                if (response.data.age) {
+                    $scope.itemage = response.data.age;
+                } else {
+                    $scope.itemage = "未选择";
+                }
+                $scope.zIndex = false;
+                yesclick();
+            }, Popup.alert);
+            //            清空判断是否点击确认的内容
+            tjbdqd = "";
+        }
+        /***
+         * 当前用户输入信息记录显示
+         */
+        function userinputjl(sex, age, yonghujilu) {
+            //			交互信息的性别
+            var jhsex = ""
+            if (sex) {
+                jhsex = sex + "-->";
+            }
+            var jhage = "";
+            if (age) {
+                jhage = age + "岁-->";
+            }
+            //            替换文本中的逗号
+            //            yonghujilu=yonghujilu.replace(/[，|,]/g,"-->");
+            //          判断是哪个功能模块（用于判断是否展示年龄、性别）  
+            if ($stateParams.gn == "WZZ" || $stateParams.gn == "ZNDZ") {
+                //              用户输入信息值展示
+                $scope.yonghuinput = "您当前输入的信息：" + jhsex + jhage + yonghujilu;
+            } else {
+                //              用户输入信息值展示
+                $scope.yonghuinput = "您当前输入的信息：" + yonghujilu;
+            }
+        }
+        //  取消输入其它主词
+        $scope.cancelToSrzc = function () {
+            var param = { userid: userid };
+            var config = {
+                params: param
+            }
+
+            XywyService.query("/cancelToSrzc", config).then(function (response) {
+                addDialog({ type: response.data.type, message: response.data.message, list: response.data.daan });
+            }, Popup.alert);
+        }
+        //  取消选择其它功能
+        $scope.cancelToXgn = function () {
+            var param = { userid: userid };
+            var config = {
+                params: param
+            }
+
+            XywyService.query("/cancelToXgn", config).then(function (response) {
+                addDialog({ type: response.data.type, message: response.data.message, list: response.data.daan });
+            }, Popup.alert);
+        }
+        //  在页面下方直接选择功能
+        $scope.restart = function (msg) {
+            if ($stateParams.gn === 'WBG') {
+                $scope.sendmessage(msg);
+            } else {
+                $scope.setGn();
+            }
+        }
+        $scope.setGn = function (name) {
+            if (!name) {
+                name = $stateParams.gn;
+            }
+            var param = { userid: userid, gnname: name, fresh: 0 };
+            var config = {
+                params: param,
+                cache: false
+            }
+            $scope.setting = true;
+            XywyService.query("/newstart", config).then(function (response) {
+                //            	重新选功能时(或者重新输入时)清空用户输入信息展示的内容
+                $scope.yonghuinput = "";
+                $scope.resdata = response.data;
+                $scope.questiontype = response.data.type;
+                $scope.setting = false;
+                if (angular.isArray(response.data)) {
+                    angular.forEach(response.data, function (e) {
+                    	//setgn时当选择用户为true时显示（默认为true，false时表示首次进入）
+                    	if(e.isshowYongHu==true){
+                    		addDialog(new Message(e));
+                    	}else{
+                    		sessionStorage.setItem("wzrId", e.list[0].id);
+                    	}
+                    });
+                } else {
+                    addDialog(new Message(response.data));
+                }
+            }, Popup.alert);
+        }
+        /**进入页面判断是哪个功能，判断语音播放状态*/
+        //  判断$stateParams是否存在功能和主词信息
+        //        if ($stateParams.gn) {
+        $scope.setGn($stateParams.gn);
+        //        } else {
+        //            $scope.cancelToXgn();
+        //        }
+
+        /** 年龄性别选择*/
+        //        保存性别年龄
+        var savesexage = function (sex, age, gn) {
+            var param = { userid: userid, sex: sex, age: age, gn: gn };
+            var config = {
+                params: param
+            }
+            //          修改userinfo中的性别人群
+            XywyService.query("/saveuserinfoxx", config).then(function (response) { }, Popup.alert);
+        }
+
+        //      确定按钮点击事件
+        function yesclick() {
+            //          用于页面展示年龄性别
+            var showage = "年龄";
+            var showsex = "性别";
+            //          用于保存年龄性别用的数据
+            var saveage = "";
+            var savesex = "";
+            if ($scope.itemsex != "未选择") {
+                savesex = $scope.itemsex;
+                showsex = $scope.itemsex;
+            }
+            if ($scope.itemage != "未选择") {
+                saveage = $scope.itemage;
+                showage = $scope.itemage + "岁";
+            }
+            $scope.sexagevalue = showsex + "," + showage;
+            localStorage.setItem("sex", $scope.itemsex);
+            localStorage.setItem("age", $scope.itemage);
+        }
+
+        $scope.sexagevalue = "性别,年龄";
+        $scope.itemage = localStorage.getItem("age");
+        $scope.itemsex = localStorage.getItem("sex");
+        if (!$scope.itemage || $scope.itemage == "null") {
+            $scope.itemage = "未选择";
+        }
+        if (!$scope.itemsex || $scope.itemsex == "null") {
+            $scope.itemsex = "未选择";
+        }
+        //       初始化页面时判断年龄性别
+        yesclick();
+        if ($scope.itemsex == undefined && $scope.itemage == undefined) {
+            $scope.sexagevalue = "性别,年龄";
+            $scope.itemsex = "未选择";
+            $scope.itemage = "未选择";
+        }
+        //        滑动样式的年龄性别选择框
+        //        年龄性别取值范围
+        var suData = [{ 'id': '0', 'value': '未选择' }, { 'id': '1', 'value': '男性' }, { 'id': '2', 'value': '女性' }];
+        var weiData = [{ 'id': '0', 'value': '未选择' }];
+        for (var i = 1; i < 101; i++) {
+            var agenumobj = { 'id': i, 'value': i };
+            weiData[i] = agenumobj;
+        }
+
+        var showGeneralDom = document.querySelector('#showGeneral');
+        var suIdDom = document.querySelector('#suId');
+        var weiIdDom = document.querySelector('#weiId');
+        //      showGeneralDom = document.getElementById('showGeneral');
+        //        var suIdDom = document.getElementById('suId');
+        //        var weiIdDom = document.getElementById('weiId');
+        $scope.click = function () {
+            //          展示年龄性别选择框时，展示当前选中的年龄性别
+            if ($scope.itemsex == "未选择") {
+                showGeneralDom.dataset.su_id = 0;
+            } else if ($scope.itemsex == "男性") {
+                showGeneralDom.dataset.su_id = 1;
+            } else if ($scope.itemsex == "女性") {
+                showGeneralDom.dataset.su_id = 2;
+            }
+            if ($scope.itemage == "未选择") {
+                showGeneralDom.dataset.wei_id = 0;
+            } else {
+                showGeneralDom.dataset.wei_id = $scope.itemage;
+            }
+
+            var suId = showGeneralDom.dataset['su_id'];
+            var suValue = showGeneralDom.dataset['su_value'];
+            var weiId = showGeneralDom.dataset['wei_id'];
+            var weiValue = showGeneralDom.dataset['wei_value'];
+            var sanguoSelect = new IosSelect(2, [suData, weiData], {
+                title: '选择性别年龄',
+                itemHeight: 35,
+                oneLevelId: suId,
+                twoLevelId: weiId,
+                callback: function (selectOneObj, selectTwoObj) {
+                    suIdDom.value = selectOneObj.id;
+                    weiIdDom.value = selectTwoObj.id;
+                    //                    showGeneralDom.innerHTML = '蜀国将领是：' + selectOneObj.value + ' 魏国将领是：' + selectTwoObj.value;
+
+                    showGeneralDom.dataset['su_id'] = selectOneObj.id;
+                    showGeneralDom.dataset['su_value'] = selectOneObj.value;
+                    showGeneralDom.dataset['wei_id'] = selectTwoObj.id;
+                    showGeneralDom.dataset['wei_value'] = selectTwoObj.value;
+                    $scope.itemsex = selectOneObj.value;
+                    $scope.itemage = selectTwoObj.value;
+                    //                  执行确定按钮操作
+                    yesclick();
+                    var age = "";
+                    var sex = "";
+                    if ($scope.itemsex != "未选择") {
+                        sex = $scope.itemsex;
+                    }
+                    if ($scope.itemage != "未选择") {
+                        age = $scope.itemage;
+                    }
+                    savesexage(sex, age, $stateParams.gn);
+                }
+            });
+        };
+
+        geoLocation.getCity().then(function (city) {
+            $scope.yiyuan = city.mc;
+            sessionStorage.setItem("citydm", city.csdm);
+        }, function (reason) {
+            $scope.yiyuan = angular.isString(reason) ? reason : '';
+        });
+        $rootScope.$on('userCityUpdate', function (event, city) {
+            $scope.yiyuan = city.mc;
+            sessionStorage.setItem("citydm", city.csdm);
+        });
+
+        $scope.gocity = function () {
+            $state.go('xuanchengshi');
+        }
+        //问药品禁忌药品年龄段选择
+        $scope.jjYpNl = [{ 'key': '孕妇', 'value': '1' }, { 'key': '儿童', 'value': '2' }, { 'key': '老人', 'value': '3' }];
+        $scope.isShow_bl_yp_btn = true;
+
+        $scope.show_jj_yp_nld = function () {
+            if ($scope.isShow_jj_yp_list) {
+                $scope.isShow_jj_yp_list = false;
+                $scope.isShow_bl_yp_btn = true;
+            } else {
+                $scope.isShow_jj_yp_list = true;
+                $scope.isShow_bl_yp_btn = false;
+            }
+            $scope.isShow_bl_yp_list = false;
+        }
+        //不良反应药的列表     
+        $scope.show_bl_yp_nld = function () {
+            if ($scope.isShow_bl_yp_list) {
+                $scope.isShow_bl_yp_list = false;
+            } else {
+                $scope.isShow_bl_yp_list = true;
+            }
+        }
+
+        //年龄段列表跳转
+        $scope.go_jj_yp_List = function (nld, type) {
+            $state.go('wenyaojjYpList', { jj_yp_nld: nld, jj_yp_type: type, jj_yp_keyWord: "" });
+            $scope.isShow_jj_yp_list = false;
+            $scope.isShow_bl_yp_list = false;
+            $scope.isShow_bl_yp_btn = true;
+        }
+        //    	交互页面底端样式bottom的距离判断
+        $scope.stylebottom = function () {
+            //    		自我评估，常见症状判断距底端距离
+            if ($scope.curgn == "ZWPG" || $scope.curgn == "CJZZ") {
+                return { "bottom": "0px" };
+            }
+            //    		问症状问报告时判断距底端距离
+            if ($scope.isbottom0) {
+                return { "bottom": "0px" };
+            }
+            if (!$scope.data.hideVoice && $scope.inputMethod === 'voice') {
+                return { "bottom": "101px" };
+            } else {
+                return { "bottom": "48px" };
+            }
+
+        }
+        //    	（WZZ、WBG）是否显示输入框
+        $scope.isshowinput = function () {
+            //     		if($scope.curgn=="WZZ"){
+            // //    			判断$scope.questiontype是否存在，存在则判断剩余的两个
+            //     			if(!$scope.questiontype||$scope.questiontype=="text"||$scope.questiontype=="ysjbresult"){
+            //     				$scope.isbottom0=false;
+            //     				return;
+            //     			}else{
+            // //    				判断距离底部的距离（当输入框隐藏时距底部为0px，bottomheight为true）
+            //     				$scope.isbottom0=true;
+            //     				return{"display":"none"};
+            //     			}		
+            //     		}
+            //     		if($scope.curgn=="WBG"){
+            //     			if(!$scope.questiontype||$scope.questiontype=="text"||$scope.questiontype=="duodetail"){
+            //     				$scope.isbottom0=false;
+            //     				return;
+            //     			}else{
+            // //    				判断距离底部的距离（当输入框隐藏时距底部为0px，bottomheight为true）
+            //     				$scope.isbottom0=true;
+            //     				return{"display":"none"};
+            //     			}		
+            //     		}
+            if (!$scope.questiontype || $scope.questiontype == "text" || $scope.questiontype == "duodetail" || $scope.questiontype == "ysjbresult" || $scope.questiontype == "listdetail" || $scope.questiontype == "tjksresult" || $scope.questiontype == 'html' || $scope.questiontype == "textbs") {
+                $scope.isbottom0 = false;
+                return;
+            } else {
+                //    				判断距离底部的距离（当输入框隐藏时距底部为0px，bottomheight为true）
+                $scope.isbottom0 = true;
+                return { "display": "none" };
+            }
+        }
+
+    })

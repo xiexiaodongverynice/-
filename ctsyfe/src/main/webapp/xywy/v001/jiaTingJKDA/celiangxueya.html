@@ -1,0 +1,53 @@
+<ion-view hide-nav-bar="isIos" view-title="手动记录血压" class="celiangxueya jkda-item-edit">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css"></style>
+    <ion-content id="XYSContent">
+        <form id="xueyasave">
+            <fieldset class="jbxx">
+                <!-- <legend>基本信息</legend> -->
+
+                <div>
+                    <label for="gaoya">收缩压(高压)</label>
+                    <div class="input-div shuru">
+                        <input type="number" id="gaoya" name="gaoya" maxlength="3" step="0.01" placeholder="请输入收缩压值" ng-model="subData.gaoya" ng-blur="valiForm()" required />
+                        <span class="danwei"><label for="gaoya">mmHg</label></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="diya">舒张压(低压)</label>
+                    <div class="input-div shuru">
+                        <input type="number" id="diya" name="diya" maxlength="3" step="0.01" placeholder="请输入舒张压值" ng-model="subData.diya" ng-blur="valiForm()" required />
+                        <span class="danwei"><label for="diya">mmHg</label></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="xinlv">心率</label>
+                    <div class="input-div shuru">
+                        <input type="number" id="xinlv" name="xinlv" maxlength="3" step="0.01" placeholder="请输入心率值" ng-model="subData.xinlv" ng-blur="valiForm()" required />
+                        <span class="danwei"> <label for="xinlv">bpm</label></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="celiangriqi">测量日期</label>
+                    <input type="text" id="celiangriqi" name="celiangriqi" placeholder="请选择日期" readonly="readonly"  data-year="" data-month="" data-date="" required ng-blur="valiForm()" ng-click="datePiker('celiangriqi')" unselectable="on"  onfocus="this.blur()"/>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div>
+                    <label for="celiangshijian">测量时间</label>
+                    <input type="time" id="celiangshijian" name="celiangshijian" placeholder="" ng-focus="timeFocus();" ng-blur="timeBlur()" required >
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                
+            </fieldset>
+
+        </form>
+    </ion-content>
+    <div class="bar bar-footer bar-gray">    
+        <!-- <div class="title" ng-click="xueyaonsubmit()">保存</div> -->
+        <input type="submit" value="保存" form="xueyasave" id="submit" ng-disabled="valiForm()" ng-click="onsubmit()">
+    </div>
+</ion-view>

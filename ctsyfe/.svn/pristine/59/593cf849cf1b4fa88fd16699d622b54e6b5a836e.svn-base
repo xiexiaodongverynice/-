@@ -1,0 +1,110 @@
+<ion-view hide-nav-bar="isIos" view-title="家庭常用药" class="color-6 jtyy">
+	<style>
+		.titleBox {
+			position: absolute;
+			width: 100%;
+			background-color: #fff;
+			z-index: 10;
+			border-bottom: 1px solid #dedede;
+		}
+
+		.titleBox>ul {
+			overflow: hidden;
+			width: 90%;
+			border: 1px solid #18b4ed;
+			border-radius: 10px;
+			box-sizing: border-box;
+			margin: 10px auto;
+		}
+
+		.chooseCurrent {
+			color: #18B4ED;
+		}
+
+		.bar.item-input-inset .item-input-wrapper input {
+			padding-left: 0px;
+			width: 94%;
+			height: 28px;
+			background: 0 0;
+			line-height: normal;
+		}
+
+		.h4-zz {
+			font-size: 16px;
+			font-weight: normal;
+			margin-left: 5px;
+		}
+
+		dd {
+			border-top: none;
+		}
+
+		.detail h4 {
+			margin-top: 0;
+		}
+
+		.bszz {
+			display: inline-block;
+			margin: 0px 20px;
+			height: 40px;
+			font-size: 16px;
+			line-height: 40px;
+			text-align: center;
+		}
+
+		.jtyy dt {
+			border-bottom: 1px solid #D9D9D9;
+		}
+	</style>
+	<ion-nav-buttons side="left">
+		<div style="text-align: center;">
+			<button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+		</div>
+	</ion-nav-buttons>
+	<ion-nav-buttons side="right">
+            <div>
+                <a ng-click="back()">
+                    <button class="button button-clear icon ion-ios-home-outline">
+                    </button>
+                </a>
+            </div>
+    </ion-nav-buttons>
+	<nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+
+		<div style="background-image: none; top: 2px" class="bar item-input-inset">
+			<div class="item-input-wrapper" ng-click="displaySelect()">
+				<button ng-click="searchZz()" type="button" name="" class="button button-clear ion-android-search" style="color: #ccc; font-size: 20px; height: 28px; padding-top: 1px;"></button>
+				<input ng-model="data.keyword" ng-change="searchZz()" type="search" ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="请输入疾病或症状名称">
+				<i ng-click="cleanZz()" ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']" style="font-size: 16px; padding-right: 8px; padding-top: 1px; height: 28px;"></i>
+			</div>
+		
+		</div>
+		<div style="border: 1px #ddd soild; margin-top: -6px;"></div>
+	</nav>
+	<ion-content delegate-handle="dashboard" ng-click="isHidePopup()" ng-style="{top:(isIos)? '50px': '94px'}" style="padding-top: 0px;">
+		<dl style="padding: 0 24px 0 15px">
+			<dt ng-repeat-start="item in shaixuanlist track by $index" ng-click="isShowBszz($index,item.zzz,item.bszz)">
+					<div style="background: #ebebeb;font-size: 16px;padding-left: 22px;line-height:30px;height: 30px;margin-top:-1px;margin-left:-15px;margin-right:-24px;" ng-if="item.szm!=shaixuanlist[$index-1].szm">
+						{{item.szm}}
+					</div>
+				<label>
+					<span style="display: inline-block; width: 90%;">
+						<h4 ng-bind="item.zzz" class="h4-zz" ng-class = "{true:'chooseCurrent',false:''}[currentChoose.zzz == item.zzz]"></h4>
+					</span>
+					<span ng-if="item.bszz" style="display: inline-block">
+						<i ng-class="iBiaoqian[$index] ? 'ion-chevron-down' : 'ion-chevron-right'"></i>
+					</span>
+				</label>
+			</dt>
+			<dd ng-repeat-end ng-if="item.bszz">
+				<div id="{{'id'+$index}}" style="display: none;"ng-class = "[currentChoose.zzz == item.zzz&&currentChoose.bszz == it ? 'chooseCurrent':'']">
+					<span ng-repeat="it in item.bszz" class="bszz" ng-click="chooseBszz(it,item.zzz)">{{it}}</span>
+				</div>
+			</dd>
+		</dl>
+		<ion-infinite-scroll ng-hide="isShow" immediate-check="false" on-infinite="loadMicMorezz()" distance="1%"> </ion-infinite-scroll>
+	</ion-content>
+	<right-list cru-gn="'WYP'"></right-list>
+	<div ng-show="ishsowzimu&&zimu" id="sx" style="position: fixed; z-index: 2; background: #bcbcbc; width: 80px; height: 80px; text-align: center; vertical-align: middle; padding-top: 30px; font-size: 2em; margin-left: 40%; margin-top: 70%; border-radius: 50%; opacity: 0.8; color: white;">
+		{{zimu}}</div>
+</ion-view>

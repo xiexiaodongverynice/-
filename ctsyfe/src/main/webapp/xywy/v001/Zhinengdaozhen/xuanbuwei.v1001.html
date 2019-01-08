@@ -1,0 +1,129 @@
+<ion-view hide-nav-bar="isIos" view-title="人体图导诊" class="kstj color-6">
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+	            </button>
+            </a>
+        </div>
+        <!-- <div ng-if="backButton">
+            <a nav-direction="back" ng-if="!data.choosing" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+            <a ng-if="data.choosing" href="">
+                <button class="button button-clear icon ion-close-round" ng-click="close()">
+                </button>
+            </a>
+        </div> -->
+    </ion-nav-buttons>
+
+    <!-- <ion-nav-buttons side="right">
+        <div class="nav-loc">
+        	<button ng-click="goyuyin()" class="ion-android-microphone"
+        	style="font-size: 30px;color: white;background-color: transparent;border: none;margin-right: 10px;"></button>
+        </div>
+    </ion-nav-buttons> -->
+    <style>
+        #rttdz{
+            top:50px;
+        }
+        .ertong-back-img {
+            height: 100%;
+            padding-bottom: 5px;
+        }
+        .kstj .tip {
+            display: inline-block;
+            width: 65%;
+            position: absolute;
+            left: 40%;
+            top: 35%;
+            line-height: 20px;
+            height: 20px;
+        }
+        .kstj .tip span{
+            font-size: 12px;
+            
+        }
+        
+        .icon-tishi {
+            color: #FF9501;
+        }
+        .kstj_button{
+            line-height: 1.5;
+            width: 78px;
+            font-size: 14px;
+            height: 32px;
+            min-height: 22px;
+            white-space: nowrap;
+            color: white;
+            border:none;
+            background-color: #18b4ed;
+        }
+        .kstj_active{
+            background-color: #18b4ed;
+            color: white
+        }
+        .top-tip{
+            position: absolute;
+            display: flex;
+            align-items: center;
+            height: 50px;
+            font-size: 12px;
+            background-color: #fffbeb;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0 15px;
+        }
+    </style>
+    <p class="top-tip" ng-style="{top:(isIos)? '': '44px'}">人体图导诊是通过直观的人体图查找发生在某部位的疾病，并提供相应的诊疗科室。</p>
+    <ion-content scroll="false" id="rttdz" ng-style="{top:(isIos)? '50px': '94px'}">
+        <div class="bw-option" style="z-index:2">
+            <div class="bw-shape">
+                <label ng-class="{'kstj_active':data.xingbie=='男'}"><span>男</span>
+	                    <input type="radio" ng-model="data.xingbie" value="男">
+	                </label>
+                <!-- 去除间距
+	             --><label ng-class="{'kstj_active':data.xingbie=='女'}"><span>女</span>
+	                    <input type="radio" ng-model="data.xingbie" value="女">
+	                </label>
+            </div>
+            <!-- <div class="bw-shape">
+                <label ng-class="{'op-active':data.renqun=='成人'}"><span>成人</span>
+	                    <input type="radio"  ng-model="data.renqun" value="成人">
+	                </label>
+                    <label ng-class="{'op-active':data.renqun=='儿童'}"><span>儿童</span>
+	                    <input type="radio"  ng-model="data.renqun" value="儿童">
+	                </label>
+            </div> -->
+        </div>
+        <div class="lb-option" style="z-index:2">
+            <button class="bw-select kstj_button" ng-click="gobuwei('头部')">部位列表</button>
+            <!-- <button style="margin-top:10px" class="xt-select button button-guahao" ng-click="goLieBiao('xitong')">疾病列表</button>
+            <button style="margin-top:10px" class="xt-select button button-guahao" ng-click="goLieBiao('zhengzhuang')">问症寻医</button>
+            <button class="xt-select button button-guahao" ng-click="goyypm()">医院排名</button> -->
+        </div>
+
+        <div ng-click="turn()" class="brcircle v-flex turn-back" style="z-index: 1">
+            <i class="ion-loop"></i><span>转身</span>
+        </div>
+        <div class="center-parent transform-parent  center-container">
+            <div class="text-center center-child">
+                <img class="pic-body" ng-src="img/bwt/{{urls[data.xingbie+data.renqun+'正']}}" alt="{{data.xingbie}}性{{data.renqun}}身体部位图" usemap="#bodymap">
+                <div class="tip">
+                    <i class="icon iconfont icon-tishi"></i>
+                    <span>请选择需要诊治的部位</span>
+                </div>
+                <map name="bodymap" id="bodymap" map-area area-data="bodymap[data.xingbie+data.renqun+'正']" area-action="gobuwei(para)"></map>
+            </div>
+            <div class="text-center center-child back" ng-class="(data.xingbie == '男' && data.renqun == '儿童')?'ertong-back-img':''">
+                <img class="pic-body " ng-src="img/bwt/{{urls[data.xingbie+data.renqun+'反']}}" alt="{{data.xingbie}}性{{data.renqun}}身体部位图" usemap="#fbodymap">
+                <div class="tip">
+                    <i class="icon iconfont icon-tishi"></i>
+                    <span>请选择需要诊治的部位</span>
+                </div>
+                <map name="fbodymap" id="fbodymap" map-area area-data="bodymap[data.xingbie+data.renqun+'反']" area-action="gobuwei(para)"></map>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

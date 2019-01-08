@@ -1,0 +1,3 @@
+angular.module('starter.zhenLiaoJLControllers', ['ionic'])
+/* 诊疗记录查询 */
+

@@ -1,0 +1,116 @@
+<ion-view hide-nav-bar="isIos" view-title="状态提醒">
+        <ion-nav-buttons side="left">
+            <div style="text-align: center; height: 100%">
+                <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+            </div>
+        </ion-nav-buttons>
+        <style>
+          
+           .img-Icon{
+                  width: 6rem;
+                box-sizing:border-box;
+                border: 1px solid #ddd;
+                margin: 1rem;
+                float:left;
+                height: 6rem;
+              }
+           .tucaoaddimg{
+                text-align: center;
+                width: 6rem;
+                float: left;
+                background: #ddd;
+                margin:1rem;
+                height: 6rem;
+                /* vertical-align: -webkit-baseline-middle; */
+                overflow: hidden;
+                padding: 1rem 0rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+             /**预览图片div*/
+              .tcyulanimg{
+                text-align: center;
+                align-items: center;
+                vertical-align: middle;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                height: 90%;
+                margin-top: -10px;
+            }
+         
+            .pl-picArea{
+                height: 31rem;
+                margin-top: 1.5rem;
+                padding: 0.6rem;
+                overflow:hidden;
+                background: white;
+                padding-bottom: 1.5rem;
+            }
+            .medicalstats-div{
+                width: 100%;
+                text-align: center;
+                margin-top: 5rem;
+            }
+            .button_left{
+                height: 4rem;
+                width: 35%;
+                font-size: 16px;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                background-color: #01B6ED;
+                margin-right: 1rem;
+            }
+            .button_right{
+                margin-left: 1rem;
+                height: 4rem;
+                width: 35%;
+                font-size: 16px;
+                color: black;
+                border: 1px solid #999999;
+                border-radius: 4px;
+                background-color: white;
+            }
+            .medicalstats{
+                position: relative;
+                width: 100%;
+                height: 20rem;
+                margin-top: 5rem;
+            }
+            .medicalstats_img{
+                display: flex;
+                margin: 0 auto;
+                height:45%;
+                padding-top: 2rem;
+            }
+            .medicalstats_h3{
+                text-align: center;
+                font-size: 18px;
+            }
+            .medicalstats_span{
+                display: block;
+                font-size: 16px;
+                color: #999999;
+                text-align: center;
+            }
+        </style>
+        
+        <ion-content style="background: white;">
+                <div style="width:100%;background-color:white;position: relative;">
+                    <div class="medicalstats">
+                            <img src="img/sccg.png" class="medicalstats_img"/>
+                            <h3 class="medicalstats_h3">提交成功</h3>
+                            <span class="medicalstats_span">您已经成功提交报告,系统正在解读中，</span>
+                            <span class="medicalstats_span">请耐心等候。</span>
+                    </div>
+                    <div class="medicalstats-div">
+                            <button class="button_left" ng-click="continue()">继续添加</button>
+                            <button class="button_right" ng-click="close()">关闭</button>
+                    </div>
+                </div>
+               
+        </ion-content>
+    </ion-view>
+    

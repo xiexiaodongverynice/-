@@ -1,0 +1,153 @@
+<ion-view hide-nav-bar="isIos" view-title="家庭档案" class="dangan-list color-3">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+    <style>
+        .dangan-list li {
+            position: relative;
+            border-bottom: 1px solid #f2f2f2;
+            padding: 15px 0;
+            margin: 0 10px;
+        }
+        
+        .dangan-list li p {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .dangan-list li i {
+            font-size: 24px;
+        }
+        
+        .dangan-list mark {
+            background-color: #fff;
+            margin-left: 24px;
+            color: #666;
+        }
+        
+        .dangan-list button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            bottom: 50%;
+            margin-top: -13px;
+            width: 64px;
+        }
+    </style>
+    <!-- 书写内容标记 -->
+    <div ng-click="addMemberDA()" class="dalist_addBtn">
+        <i class="icon ion-plus-round" style="color: white;font-size: 20px;"></i>
+    </div>
+    <ion-content id="dalist">
+        <section class="da-item">
+            <!-- 伸缩div -->
+					<div class="dalist_whiteb " ng-if="ssflag[$index]=='show' ">
+                            <div class="dalist_checklist ">
+                                <!-- 血压 -->
+                                <!-- 未开启 -->
+                                <div class="dalist_ckItem " ng-if="member.xueya==null ">
+                                    <span class="dalist_itemlogo iconfont icon-xieya dalist-comongray "></span>
+                                    <p class="dalist_itemname dalist-comongray ">血压</p>
+                                    <mark>科学有效控制血压</mark>
+                                    <div class="dalist_itemrig ">
+                                        <p><button ng-click="openItem( 'xueya',member.id) " class="dalist_btnOpen ">开启</button></p>
+                                    </div>
+                                </div>
+                                <!-- 已开启 -->
+                                <div class="dalist_ckItem " ng-click="gotoDetail( 'xueya',member.id) " ng-if="member.xueya!=null ">
+                                    <span class="dalist_itemlogo iconfont icon-xieya dalist-xueyastyle "></span>
+                                    <p class="dalist_itemname ">血压</p>
+                                    <div class="dalist_itemrig ">							
+                                        <p class="dalist_itemTime ">{{member.xueya.RIQI|limitTo:5:5}}</p>
+                                        <p class="dalist_zhibiao ">{{member.xueya.GAOYA}} / {{member.xueya.DIYA}} mmHg<span class="ml-20 " ng-class="{false: 'color-red',true: 'color-green'}[member.xueya.JIEGUO=='正常' ] ">{{member.xueya.JIEGUO}}</span></p>
+                                    </div>
+                                </div>
+                                <!-- 血糖 -->
+                                <!-- 未开启 -->
+                                <div class="dalist_ckItem "  ng-if="member.xuetang==null ">
+                                    <span class="dalist_itemlogo iconfont icon-xietang dalist-comongray "></span>
+                                    <p class="dalist_itemname dalist-comongray ">血糖</p>
+                                    <div class="dalist_itemrig ">
+                                        <p><button ng-click="openItem( 'xueTang',member.id) " class="dalist_btnOpen ">开启</button></p>							
+                                    </div>
+                                </div>
+                                <!-- 已开启 -->
+                                <div class="dalist_ckItem " ng-click="gotoDetail( 'xueTang',member.id) " ng-if="member.xuetang!=null ">
+                                    <span class="dalist_itemlogo iconfont icon-xietang dalist-xtstyle "></span>
+                                    <p class="dalist_itemname ">血糖</p>
+                                    <div class="dalist_itemrig ">
+                                        <p class="dalist_itemTime ">{{member.xuetang.RIQI|limitTo:5}}</p>
+                                        <p class="dalist_zhibiao ">{{member.xuetang.XUETANG}} mmol/L<span class="ml-20 " ng-class="{false: 'color-red',true: 'color-green'}[member.xuetang.JIEGUO=='正常' ] ">{{member.xuetang.JIEGUO}}</span></p>
+                                    </div>
+                                </div>
+                                <!-- 体重 -->
+                                <!-- 未开启 -->
+                                <div class="dalist_ckItem " ng-if="member.tizhong==null ">
+                                    <span class="dalist_itemlogo iconfont icon-tizhong dalist-comongray "></span>
+                                    <p class="dalist_itemname dalist-comongray ">体重 </p>
+                                    <div class="dalist_itemrig ">
+                                        <p><button ng-click="openItem( 'tiZhong',member.id) " class="dalist_btnOpen ">开启</button></p>						
+                                    </div>						
+                                </div>
+                                <!-- 已开启 -->
+                                <div class="dalist_ckItem " ng-click="gotoDetail( 'tiZhong',member.id) " ng-if="member.tizhong!=null ">
+                                    <span class="dalist_itemlogo iconfont icon-tizhong dalist-tzstyle "></span>
+                                    <p class="dalist_itemname ">体重 </p>
+                                    <div class="dalist_itemrig ">
+                                        <p class="dalist_itemTime ">{{member.tizhong.RIQI}}</p>
+                                        <p class="dalist_zhibiao ">{{member.tizhong.TIZHONG}} kg<span class="ml-20 " ng-class="{false: 'color-red',true: 'color-green'}[member.tizhong.JIEGUO=='正常' ] ">{{member.tizhong.JIEGUO}}</span></p>
+                                    </div>
+                                    
+                                </div>
+                                <!-- 体检报告解读 -->
+                                <!-- 未开启 -->
+                                <div class="dalist_ckItem " ng-if="member.jcjybg==null ">
+                                    <span class="dalist_itemlogo iconfont icon-tijianbaogaojiedu1 dalist-comongray "></span>
+                                    <p class="dalist_itemname dalist-comongray ">体检报告解读</p>
+                                    <div class="dalist_itemrig ">
+                                        <p><button ng-click="openItem( 'tiJianBGJD',member.id) " class="dalist_btnOpen ">开启</button></p>
+                                    </div>
+                                </div>
+                                <!-- 已开启 -->
+                                <div class="dalist_ckItem " ng-click="gotoDetail( 'tiJianBGJD',member.id) " ng-if="member.jcjybg!=null ">
+                                    <span class="dalist_itemlogo iconfont icon-tijianbaogaojiedu1 dalist-tzbgstyle "></span>
+                                    <p class="dalist_itemname ">体检报告解读</p>
+                                    <div class="dalist_itemrig ">
+                                        <p class="dalist_itemTime ">7月15日</p>
+                                        <p class="dalist_zhibiao ">3项异常&nbsp;&nbsp;偏高</p>
+                                    </div>
+                                </div>
+                                <!-- 检查检验报告 -->
+                                <div class="dalist_ckItem dalist-comongray ">
+                                    <span class="dalist_itemlogo iconfont icon-jianchajianyanbaogao "></span>
+                                    <p class="dalist_itemname ">检查检验报告</p>
+                                    <div class="dalist_itemrig ">
+                                        <p><button class="dalist_btnOpen " style="color:#cccccc;border-color:#cccccc; ">开启</button></p>
+                                    </div>
+                                </div>
+                                <div class="dalist_ckItem dalist-comongray ">
+                                    <span class="dalist_itemlogo iconfont icon-yunqihehu " ></span>
+                                    <p class="dalist_itemname ">孕期呵护</p>
+                                    <div class="dalist_itemrig ">
+                                        <p><button class="dalist_btnOpen " style="color:#cccccc;border-color:#cccccc; ">开启</button></p>
+                                    </div>
+                                </div>
+                                <div class="dalist_ckItem dalist-comongray ">
+                                    <span class="dalist_itemlogo iconfont icon-ertongyimiao "></span>
+                                    <p class="dalist_itemname ">儿童疫苗</p>
+                                    <div class="dalist_itemrig ">
+                                        <p><button class="dalist_btnOpen " style="color:#cccccc;border-color:#cccccc; ">开启</button></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                
+           
+        </section>
+    </ion-content>
+</ion-view>

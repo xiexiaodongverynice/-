@@ -1,0 +1,178 @@
+<ion-view hide-nav-bar="isIos" view-title="科室推荐" class="color-6">
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <style>
+        .zhanshi {
+            display: block !important
+        }
+
+        .juzhong {
+            width: 100%;
+            text-align: center;
+            color: #999999;
+            padding-top: 10px;
+        }
+        .jbtks_yypm{
+            line-height: 1.5;
+		    min-width: 58px;
+		    height: 32px;
+		    min-height: 22px;
+		    white-space: nowrap;
+		    color: #fff;
+		    border: 1px solid #18b4ed;
+		    background-color: #18b4ed;
+		    border-radius: 3px;
+        }
+        .jbtks_title{
+        	font-size:16px;
+        	height:45px;
+        	line-height:45px;
+        	width:182px;
+        	margin: 0 auto;
+        	display: -webkit-box;       	
+		    display: -ms-flexbox;
+		    display: flex;
+		    -webkit-box-sizing: border-box;
+		    box-sizing: border-box;
+		    
+		    -webkit-box-pack: justify;
+		    -ms-flex-pack: justify;
+		    justify-content: space-between;
+		    -webkit-box-align: center;
+		    -ms-flex-align: center;
+		    align-items: center;
+        }
+        .jbtks_tch{
+        	padding:0 5px;        	
+        }
+        .jbtks_choosed{
+        	border-bottom: 3px solid #18b4ed;
+        }
+    </style>
+    <ion-content>
+        <div>
+        	<header ng-if="showjbzs==1" class="jbtks_title">
+	        	<div class="jbtks_tch" ng-click="changeKsShow('ks')" ng-class="{true: 'jbtks_choosed', false: ''}[jbtks_showks==true]">推荐科室</div>
+	        	<div class="jbtks_tch" ng-click="changeKsShow('jb')" ng-class="{true: 'jbtks_choosed', false: ''}[jbtks_showks==false]">疾病详情</div>
+        	</header>
+            <!-- <header class="xywy-center xywy-title"><span class="">为您推荐以下常规科室：</span></header> -->
+            <hr class="hr-5">
+            <div ng-show="jbtks_showks==true">
+            <div class="xywy-center xywy-title" style="border-bottom: 1px solid #ddd;margin: 0 15px;">为您推荐以下常规科室：</div>
+            <div ng-show="show" class="xywy-center doctor" style="padding-top:2%;padding-bottom:2%" ng-repeat="(key,value) in cgkeshi"
+                ng-click="choosekeshi(key)">
+                <label style="font-size:16px;margin-left:3%;" class="iwidth limit-width">{{key}}
+                </label>
+                <button ng-click="choosekeshi(key)" style="font-size:16px;margin-right:3%" class="button jbtks_yypm" ng-if="value">医院排名</button>
+            </div>
+            <div ng-class="{true:'ng-hide',false:'zhanshi'}[show]">
+                <div align="center">
+                    <img src="img/wukeshi.png" style="width:60%;padding-top:30px">
+                </div>
+                <div class="juzhong" style="font-size: 14px;">暂未找到相关推荐，您可以试试其他功能！</div>
+            </div>
+            </div>
+            
+            <!-- <span style="margin:15px" ng-class="{true:'ng-hide',false:'zhanshi'}[show]"> 无推荐科室</span> -->
+        	<div ng-show="jbtks_showks==false" class="detail" style="padding-bottom: 20px;">
+        		 
+                    <div class="mainpadding">
+		                <h3 class="inline" ng-bind="jbDes.jbmc" style="font-size:18px;color:#666;"></h3>
+		            </div>
+		            <dl ng-if="jbDes.jbms">
+		                <dt ng-click="changeWD('jbms')">
+		                    <label class="checklabel">
+		                        <h4>疾病描述</h4>
+		                        <i ng-class="showjbms ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+		                    </label>
+		                </dt>
+		                <!-- <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}"> -->
+		                <dd ng-show="showjbms">
+		                    <audio-content>
+		                        <div class="ptext" ng-bind-html="jbDes.jbms||'无相关信息'" compile-html></div> <!---->
+		                       
+		                    </audio-content>
+		                </dd>
+		            </dl>
+		            <dl ng-if="jbDes.lcbx">
+		                <dt  ng-click="changeWD('lcbx')">
+		                    <label class="checklabel">
+		                        <h4>临床表现</h4>
+		                        <i ng-class="showlcbx ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+		                    </label>
+		                </dt>
+		                <!-- <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}"> -->
+		                <dd ng-show="showlcbx">
+		                    <audio-content>
+		                        <div class="ptext" ng-bind-html="jbDes.lcbx||'无相关信息'" compile-html></div> <!---->
+		                       
+		                    </audio-content>
+		                </dd>
+		            </dl>
+		            <dl ng-if="jbDes.jyzs">
+		                <dt  ng-click="changeWD('jyzs')">
+		                    <label class="checklabel">
+		                        <h4>辅助检查</h4>
+		                        <i ng-class="showjyzs ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+		                    </label>
+		                </dt>
+		                <!-- <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}"> -->
+		                <dd ng-show="showjyzs">
+		                    <audio-content>
+		                        <div class="ptext" ng-bind-html="jbDes.jyzs||'无相关信息'" compile-html></div> <!---->
+		                        
+		                    </audio-content>
+		                </dd>
+		            </dl>
+		            <dl ng-if="jbDes.zlyz">
+		                <dt ng-click="changeWD('zlyz')">
+		                    <label class="checklabel">
+		                        <h4>治疗意见</h4>
+		                        <i ng-class="showzlyz ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+		                    </label>
+		                </dt>
+		                <!-- <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}"> -->
+		                <dd ng-show="showzlyz">
+		                    <audio-content>
+		                        <div class="ptext" ng-bind-html="jbDes.zlyz||'无相关信息'" compile-html></div> <!---->
+		                        
+		                    </audio-content>
+		                </dd>
+		            </dl>
+		            <dl ng-if="jbDes.jkzd">
+		                <dt ng-click="changeWD('jkzd')">
+		                    <label class="checklabel">
+		                        <h4>健康指导</h4>
+		                        <i ng-class="showjkzd ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+		                    </label>
+		                </dt>
+		                <!-- <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}"> -->
+		                <dd ng-show="showjkzd">
+		                    <audio-content>
+		                        <div class="ptext" ng-bind-html="jbDes.jkzd||'无相关信息'" compile-html></div> <!---->
+		                        
+		                    </audio-content>
+		                </dd>
+		            </dl>
+        	</div>
+        </div>
+    </ion-content>
+</ion-view>

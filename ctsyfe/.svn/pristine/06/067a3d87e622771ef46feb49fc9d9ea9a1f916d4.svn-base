@@ -1,0 +1,47 @@
+<ion-view hide-nav-bar="isIos" view-title={{htmlTitle}} class="color-6 ypchaxun ypzn yplb">
+    <style>
+        .show_yp_list {
+            overflow: hidden;
+            border-bottom: 1px solid #dedede;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        .yp_sub {
+            font-size: 15px;
+        }
+
+        .yplb .show_yp_info {
+            position: relative;
+            font-size: 16px;
+            padding-right: 20px;
+        }
+
+        .yplb .show_yp_info i {
+            position: absolute;
+            right: 0;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear icon ion-ios-home-outline" ng-click="back()">
+        </button>
+    </ion-nav-buttons>
+    <ion-content delegate-handle="dashboard" ng-style="{top:(isIos)? '0px': '44px'}" style="padding-top: 0px;">
+
+        <ul>
+            <div ng-repeat='micItem in micList'>
+                <li class="show_yp_list" ng-click="ypClick(micItem)">
+                    <span class="show_yp_info">
+                        {{micItem.YPMC}}
+                        <i ng-if="micItem.ISZSK=='1'" class="icon ion-ios-arrow-right"></i>
+                    </span>
+                </li>
+            </div>
+        </ul>
+
+    </ion-content>
+
+</ion-view>

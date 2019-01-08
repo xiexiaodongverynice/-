@@ -1,0 +1,313 @@
+<ion-view hide-nav-bar="isIos" view-title="{{titlename}}"ng-view>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <style>
+        .overflow-scroll {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
+        #tzpg h1 {
+            font-size: 2.87rem;
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+        
+        p.tip {
+            margin: 1.25rem;
+            padding: 1.25rem;
+            font-size: 2rem;
+            color: #666;
+            background-color: #f8f8f8;
+            line-height: 3rem;
+        }
+        
+        #questions li {
+            border: 1px solid #ebebeb;
+            margin-bottom: 2.5rem;
+        }
+        
+        #questions p.tip {
+            padding: 0;
+            margin: 0;
+            color: #FF9500;
+            background-color: #FFF;
+        }
+        
+        #tzpg .more {
+            font-size: 2rem;
+            color: #00B6ED;
+            text-align: right;
+            margin-right: 2.87rem;
+        }
+        
+        .order-line .order-num {
+            color: #FF9500;
+        }
+        
+        .order-line .order-total {
+            color: #666;
+        }
+        
+        #tzpg .question-intro {
+            border-bottom: 0px;
+            margin: 0;
+        }
+        
+        .question-intro>h2 {
+            padding: .8rem;
+            background-color: #F4F9FD;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        .question-intro>h2>span.require {
+            color: #FF9500;
+        }
+        
+        .question-intro>h2>span.title {
+            color: #00B6ED;
+        }
+        
+        .question-intro>p {
+            font-size: 1.75rem;
+            padding: .3rem 1.25rem 1.25rem 1.25rem;
+            color: #999;
+            margin: 0;
+            border-bottom: 1px solid #ebebeb;
+        }
+        
+        .question-answer {
+            padding: 16px;
+        }
+        
+        .question-answer,
+        .question-answer .item-content {
+            color: #666;
+            font-size: 1.75rem;
+        }
+        
+        .question-answer .item {
+            border: none;
+        }
+        
+        .question-answer.text {
+            margin: 1.25rem;
+        }
+        
+        .question-answer input[type="text"] {
+            color:#999;
+            background-color: #FFF;
+            display: inline-block;
+            width: 35%;
+            border-bottom: 1px solid #ebebeb;
+            text-align: center;
+        }
+        
+        .question-answer>p {
+            position: relative;
+        }
+        
+        .question-answer>p>label {
+            display: inline-block;
+            height: 3rem;
+            line-height: 3rem;
+            /* padding: 1rem; */
+            width: 100%;
+        }
+        
+        .question-answer>p input[type=radio] {
+            position: absolute;
+            width: 3rem;
+            height: 3rem;
+            right: 1.25rem;
+            top: 0;
+        }
+        
+        #questions #sub-li {
+            border-width: 0;
+            z-index: 1;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            background-color: white;
+            opacity: 0.9;
+        }
+        /* 单选框自定义样式 */
+        
+        input[type=radio] {
+            /*去除浏览器默认样式*/
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /*自定义样式*/
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+        }
+        /* 单选框的样式 */
+        
+        input[type=radio]:after {
+            display: block;
+            text-align: center;
+            content: '\e608';
+            color: #999;
+            line-height: 3rem;
+            font-size: 3rem;
+        }
+        /* 单选框 选中之后的样式 */
+        
+        input[type=radio]:checked:after {
+            content: '\e606';
+            background-color: #FFF;
+            color: #00bfff;
+        }
+        
+        .datagrid-mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #ccc;
+            opacity: 0.3;
+            filter: alpha(opacity=30);
+            display: none;
+        }
+        
+        .datagrid-mask-msg {
+            position: absolute;
+            left: 100px;
+            top: 50px;
+            width: auto;
+            height: 16px;
+            padding: 12px 5px 10px 30px;
+            background: #fff url('images/pagination_loading.gif') no-repeat scroll 5px 10px;
+            border: 2px solid #ccc;
+            color: #222;
+            display: none;
+        }
+        
+        .question-answer .item-radio i:after {
+            content: '\e608';
+            color: #999;
+            font-size: 3rem;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 3;
+            padding: 14px;
+            height: 100%;
+            font-size: 24px;
+        }
+        
+        .question-answer .item-radio input:checked+.radio-content .item-content {
+            background: #FFF;
+        }
+        
+        .question-answer .item-radio input:checked+.radio-content i:after {
+            content: '\e606';
+            color: #00bfff;
+        }
+        
+        #questions ol {
+            height: 110%;
+        }
+    </style>
+
+    <ion-content id="tzpg">
+        <h1>{{modelname}}</h1>
+        <p class="tip">{{modelinfo}}</p>
+        <p class="more" ng-show="isshow" ng-if="type==tzpg">
+            <a ng-click="tzpgJieShao()">九种体质详情</a>
+        </p>
+        <form name="form" novalidate>
+            <div id="questions">
+                <p class="tip">所有标*的题目均为必答题,
+                    <span>{{syrq}}</span>
+                </p>
+                <ol>
+                    <li id="li-1">
+
+                        <div class="question-intro">
+                            <h2>
+                                <span class="require">*</span>
+                                <span class="title">1. 选择家庭成员</span>
+                            </h2>
+                        </div>
+                        <div class="question-answer text">
+                            <label for="cy" class="radio-label">成员</label>
+                            <input type="text" ng-click="clickCYlist()" required name="cy" id="cy" readonly="readonly" unselectable="on"  onfocus="this.blur()">
+                        </div>
+                    </li>
+                    <li id="li-2" ng-show="showNc">
+                        <div class="question-intro">
+                            <h2>
+                                <span class="title">2. 昵称</span>
+                            </h2>
+                        </div>
+                        <div class="question-answer text">
+                            <label for="des" class="radio-label">昵称</label>
+                            <input type="text" required ng-model="subData.lqTemp.des" name="des" id="des">
+                        </div>
+                    </li>
+                    <li ng-repeat="item in questions track by $index" ng-init="outerIndex = $index" id="li-{{$index+3}}">
+                        <div class="question-intro">
+                            <h2>
+                                <span class="require">*</span>
+                                <span class="title">{{$index+indexPre+1}}. {{item.queName}}</span>
+                            </h2>
+                            <p ng-if="item.queCtnt">({{item.queCtnt}})</p>
+
+                        </div>
+                        <div class="question-answer text" ng-if="item.queType=='text'">
+                            <label for="{{item.queCode}}">{{item.queName}}</label>
+                            <input type="text" required ng-model="$parent.answers[$index]" name="text{{$index}}" id="text{{$index}}" />
+                            <span ng-if="item.queUnit">({{item.queUnit}})</span>
+                        </div>
+                        <div class="question-answer text" ng-if="item.queType=='step'">
+                            <label for="{{item.queCode}}">{{item.queName}}</label>
+                            <input type="text" required ng-model="$parent.answers[$index]" name="text{{$index}}" id="text{{$index}}" ng-click="clicklist($index,item)" readOnly="readOnly" unselectable="on"  onfocus="this.blur()" />
+                            <span ng-if="item.queUnit">({{item.queUnit}})</span>
+                        </div>
+                        <div class="question-answer" ng-if="item.queType=='radio'">
+                            <!-- <p ng-repeat="answer in item.answers">
+                                <label for="{{item.queCode+answer.ansCode}}" class="radio-label">{{answer.ansName}}</label>
+                                <input type="radio" name="radio{{outerIndex}}" id="{{item.queCode+answer.ansCode}}" ng-model="$parent.answers[outerIndex]"
+                                    ng-change="dingwei(outerIndex+2)" value="{{answer.ansValue}}" class="icon iconfont">
+                            </p> -->
+                            <label class="item item-radio" ng-repeat="answer in item.answers">
+                                <input type="radio" name="radio{{outerIndex}}" value="{{answer.ansValue}}" ng-model="$parent.answers[outerIndex]" ng-change="dingwei(outerIndex+2)" >
+                                <div class="radio-content">
+                                    <div class="item-content">
+                                        {{answer.ansName}}
+                                    </div>
+                                    <i class="icon iconfont"></i>
+                                </div>
+                            </label>
+
+                        </div>
+                    </li>
+                </ol>
+                <ion-infinite-scroll ng-hide="isShow" immediate-check="false" on-infinite="loadMicMore()" distance="5%"></ion-infinite-scroll>
+                <div id="sub-li" ng-hide="task_hasMoreItem">
+                    <input type="submit" value="提交" ng-click="submit()" />
+                </div>
+            </div>
+
+        </form>
+    </ion-content>
+</ion-view>

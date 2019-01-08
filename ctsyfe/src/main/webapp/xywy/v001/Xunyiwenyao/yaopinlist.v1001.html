@@ -1,0 +1,65 @@
+<ion-view hide-nav-bar="isIos" view-title="{{biaoti}}" class="color-6">
+<style>
+.show_yp_info {
+	width: 85%;
+	margin-left: 5px;
+	font: 16px Microsoft Yahei;
+	padding: 10px 0;
+	display: inline-block;
+}
+
+.tuBiao {
+	float: right;
+	margin-right: 30px;
+	font-size: 18px;
+	padding: 15px 0;
+}
+/*查询没有没有返回值时的提示框样式*/
+.popup-body span {
+	text-align: -webkit-center;
+	width: 100%;
+	margin: 7px auto;
+	display: inline-block;
+}
+
+.popup-head {
+	background-color: #18b4ed;
+}
+
+.popup-head h3 {
+	color: #fff;
+	font-size: 16px;
+}
+.bar.item-input-inset .item-input-wrapper input {
+	padding-left: 0px;
+    width: 94%;
+    height: 28px;
+    background: 0 0;
+    line-height:normal;
+}
+</style>
+<ion-nav-buttons side="left">
+<div style="text-align: center;">
+	<button class="button button-clear icon ion-chevron-left"
+		ng-click="goBack()"></button>
+</div>
+</ion-nav-buttons>
+<ion-content>
+<span class="xywy-center xywy-title">{{title}}</span>
+<hr class="hr-5" />
+<ul>
+	<div ng-repeat='ypItem in ypList' >
+	<li class="show_yp_list" ng-click="goyaopindetail('{{ypItem.id}}')">
+	<!-- <span ng-if="ypItem.spmc!=''" class="show_yp_info">{{ypItem.tymc}} <span class="yp_sub">({{ypItem.spmc}})</span></span> -->
+	<!-- <span ng-if="ypItem.spmc==''" class="show_yp_info">{{ypItem.tymc}} <span class="yp_sub">({{ypItem.cjsx}})</span></span> -->
+	<span ng-if="ypItem.shushi" class="show_yp_info">{{ypItem.shushi}}</span>
+    <span ng-if="ypItem.tymc" class="show_yp_info">{{ypItem.tymc}} <span class="yp_sub">({{ypItem.cjsx||ypItem.spmc}})</span></span>
+    <span ng-if="ypItem.jbmc" class="show_yp_info">{{ypItem.jbmc}}</span>
+    <span ng-if="ypItem.zzmc" class="show_yp_info">{{ypItem.zzmc}}</span>
+    <span ng-if="ypItem.jymc" class="show_yp_info">{{ypItem.flmc}} {{ypItem.jymc}} {{ypItem.jlzb}}</span>
+		<!-- <i class="ion-chevron-right tuBiao"></i> -->
+	</li>
+	</div>
+</ul>
+	</ion-content> 
+</ion-view>

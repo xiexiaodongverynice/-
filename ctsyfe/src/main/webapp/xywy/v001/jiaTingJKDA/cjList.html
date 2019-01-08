@@ -1,0 +1,33 @@
+<ion-view hide-nav-bar="isIos" view-title="全部产检" class="yqhh jc-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+    .jc-list .cj-info{
+        margin-top:10px;
+    }
+    .jc-list .title{
+        border-left:4px solid #00b5ee;
+        padding-left: 11px;
+    }
+    </style>
+    <ion-content id="cjList">
+        <div class="cj-info" ng-repeat="item in cjList track by $index" id="item{{$index}}" repeat-finish>
+            <div class="title" ng-click="switchC($index)">
+                <p>{{item.chanjianshiduan}}({{item.chanJianName}})</p>
+                <a class="t-r"><i class="icon" ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[hideList[$index]]"></i></a>
+            </div>
+            <div ng-hide="hideList[$index]" class="cj-content">
+                <p class="cj-time">
+                    <i class="icon iconfont icon-wodexiaoxi"></i>建议当次产检时间 {{item.chanjiantime}}
+                </p>
+                <div class="info-item">
+                    <h5>产检说明</h5>
+                    <p>{{item.shuoMing}}</p>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

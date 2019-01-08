@@ -1,0 +1,165 @@
+<ion-view hide-nav-bar="isIos" view-title="药品指南" class="ypzn">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="back()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+   
+        
+        .ypzn .i_tuBiao {
+            font-size: 20px;
+			color: #666;
+			margin-right:15px;
+        }
+        
+       
+        
+        .titleBox>ul {
+            overflow: hidden;
+            width: 90%;
+            border: 1px solid #18b4ed;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin: 10px auto;
+        }
+        
+        #fxpg-main {
+            width: 100%;
+            padding-top: 44px;
+        }
+        
+        .fxpg-div {
+            height: auto;
+            position: relative;
+        }
+        
+        .div-wod {
+            float: left;
+            width: 100%;
+            align-items: center;
+            display: inline-flex;
+        }
+        
+        #fxpg-main .ion-chevron-right::before {
+            color: #999999;
+        }
+        
+        .img-sty {
+            width: 50px;
+            margin-left: 15px;
+            margin-right: 10px;
+            margin-top: 18px;
+            margin-bottom: 18px;
+        }
+        
+        .ypzn .p-sty {
+            font-size: 14px;
+            color: #666;
+			width: 100%;
+			line-height: 1.8;
+			margin: 0;
+        }
+        .ypzn div.p-title,
+        .ypzn span.p-title {
+            font-size: 16px;
+			color: #333;
+			display: block;
+			
+		}
+		.ypzn div.p-title
+		{
+			margin: 15px 10px;
+		}
+        
+        .cut-line {
+            width: 100%;
+        }
+        .ybbg{
+			display:flex;
+			align-items:center;
+			flex-wrap: wrap;
+			border-top:1px solid #d4d4d4;
+			
+		}
+        .div-cjyp {
+			display:flex;
+			width: 25%;
+            justify-content: center;
+            align-items: center;
+
+			color:#666;
+			font-size: 14px;
+
+			text-align: center;
+			height: 60px;
+			line-height: 20px;
+
+			padding: 0 5px 0 5px;
+			border-right: 1px solid #d4d4d4;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        
+    </style>
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div  class="bar item-input-inset">
+            <div class="item-input-wrapper" ng-click="displaySelect()">
+                <button type="button" name="" class="button button-clear ion-android-search" style="color: #999; font-size: 20px; height: 28px;  line-height: 28px; "></button>
+                <input type="search" ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="请输入药品名称">
+            </div>
+
+        </div>
+        <div style="border: 1px #ddd soild; margin-top: -6px;"></div>
+    </nav>
+    <ion-content>
+        <div id="fxpg-main">
+            <hr class="cut-line" />
+
+            <div class="fxpg-div" ng-click="goDrugDetail(1)">
+                <div class="div-wod">
+                    <img class="img-sty" alt="" src="./img/jtyy.png">
+					<!-- <p class="p-sty"><span class="p-title">按病症找药</span> -->
+					<p class="p-sty"><span class="p-title">家庭常用药</span>
+						<span>{{jtyyjs}}</span>
+                    </p>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+
+            </div>
+            <!-- <div class="fxpg-div">	
+						<div class="div-wod">
+							<img class="img-sty" alt="" src="./img/jtyy.png">
+							<p class="p-sty" style = "color:#C0C0C0;">
+								<span class="p-title" style = "color:#C0C0C0;">家庭用药</span><br>
+							{{jtyyjs}}</p>
+							 <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+						</div>
+					</div> -->
+            <hr style="height:1px;  border-top: 0px; background-color:#d4d4d4;"  />
+            <div class="fxpg-div" ng-click="goDrugDetail(2)">
+                <div class="div-wod">
+                    <img class="img-sty" alt="" src="./img/xtyy.png">
+                    <p class="p-sty">
+                        <span class="p-title">按系统找药</span>
+                        <span>{{xtyyjs}}</span>
+                    </p>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+            </div>
+            <hr class="cut-line" />
+            <!-- 家庭常备药 -->
+            <!-- <div>
+                <div class="p-title">家庭常备药</div>
+                <ul  class="ybbg">
+                   
+                    <li class="div-cjyp" ng-repeat="item in jtcyyList track by $index" ng-click="goList(item)">
+                        {{item}}
+					</li>
+				<li class="div-cjyp" ng-if="empty>=1" ></li>
+				<li class="div-cjyp" ng-if="empty>=2"></li>
+				<li class="div-cjyp" ng-if="empty>=3"></li>
+                </ul>
+            </div> -->
+        </div>
+    </ion-content>
+</ion-view>

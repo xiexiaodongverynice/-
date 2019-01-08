@@ -1,0 +1,172 @@
+<ion-view hide-nav-bar="isIos" view-title="添加报告">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+      
+       .img-Icon{
+	  		width: 8.5rem;
+			box-sizing:border-box;
+			border: 1px solid #ddd;
+			margin:1rem -5px 1rem 20px;
+			float:left;
+			height: 8.5rem;
+	  	}
+       .tucaoaddimg{
+		    text-align: center;
+		    width: 8.5rem;
+		    float: left;
+		    background: #ddd;
+		    margin:1rem 5px 1rem 20px;
+		    height: 8.5rem;
+		    /* vertical-align: -webkit-baseline-middle; */
+		    overflow: hidden;
+		    padding: 1rem 0rem;
+			display: flex;
+            align-items: center;
+            justify-content: center;
+			
+	    }
+     	/**预览图片div*/
+   	   .tcyulanimg{
+	    	text-align: center;
+	    	align-items: center;
+	    	vertical-align: middle;
+	    	display: flex;
+	    	justify-content: center;
+	    	width: 100%;
+	    	height: 90%;
+	    	margin-top: -10px;
+		}
+	 
+	    .medical-picArea{
+			width:100%;
+            overflow:auto;
+            position:absolute;
+            z-index:10;
+			height: 50%;
+	    }
+		.medical_sub-div{
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			border-width: 0;
+            z-index: 11;
+            margin-bottom: 0;
+            text-align: center;
+            background-color: #ebebeb;
+            opacity: 0.9;
+		}
+		.medical_sub-input{
+			height: 44px;
+			width: 100%;
+			font-size: 2rem;
+			color: #FFF;
+			border: none;
+			outline: none;
+			background-color: #00B6ED;
+		}
+		.medical_sub-inputs{
+			height: 44px;
+			width: 100%;
+			font-size: 2rem;
+			color: #DDDDDD;
+			border: none;
+			outline: none;
+			background-color: #CCCC99;
+		}
+		.medical_div{
+			height: 40%;
+			background: white
+		}
+		.medical_img{
+			display: flex;
+			margin: 0 auto;
+			height:45%;
+			padding-top: 50px;
+		}
+		.medical_h3{
+			text-align: center;
+			font-size: 18px;
+		}
+		.medical_span{
+			font-size: 14px;
+			color: #999999;
+			overflow: hidden;
+			display: block;
+			margin-left: 20px;
+			margin-right: 10px;
+		}
+		.div_title{
+			position: relative;
+			width: 68%;
+			margin-left: 28%;
+		}
+		.tishi{
+            font-size: 12px;
+            background: #fffbeb;
+            display: flex;
+            align-items: center;
+			padding: 10px;
+			position: absolute;
+			width: 100%;
+			z-index: 10
+        }
+        .tishi i{
+            color: #eb4f4e;
+            font-size: 16px;
+            position: absolute;
+            right: 15px;
+        }
+	</style>
+	
+	<ion-content style="background: white;">
+		<div class="tishi" ng-if="nohide">
+            <p class="color-6" style="margin:0">恭喜您免费获得10次报告解读试用机会，快来体验吧!</p>
+            <i class="icon ion-close-round" ng-click="ishide()"></i>
+        </div>
+		<form name='myform' style="height: 100%;">
+    		<div style="width:100%;background-color:white;position: relative;height: 100%;">
+				<div class="medical_div">
+						<img src="img/tjba.png" class="medical_img"/>
+						<h3 class="medical_h3">报告解读说明</h3>
+						<span class="medical_span">您可以上传自己的检查和检验报告单照片，我们会自动分析报告结果，并告诉您异常指标或检查结论的详细解释及健康指导。</span>
+				</div>
+				<div style="background: #ebebeb;width: 100%;height: 1.5rem;"></div>
+		        <div class="medical-picArea" ng-if="type==1">				
+					<img class="img-Icon"  ng-if="listimg.length>0" ng-repeat="item in listimg" ng-src="{{item}}" ng-click="showimg($index)">
+					<input type="file" ngf-select="upload($files)" accept="image/*" id="cameraInput" name="cameraInput" class="hide"/>					
+					<div class="tucaoaddimg" ng-click="tackImgClick()" ng-if="listimg.length<=19" >
+					<!-- <div class="tucaoaddimg" ngf-pattern="'image/*'" ngf-multiple="true" ngf-select="upload($files)" ng-if="listimg.length<=19" > -->
+						<span class="icon ion-android-add pl-jiahao"></span>		
+					</div>
+					<div ng-if="listimg.length==0" class="div_title">
+						<h4 style="font-size: 14px;margin-top: 8px;margin-bottom: 5px">添加照片</h4>
+						<span style="color: #AFAFAE;">请上传您的检查和检验报告单照片，最多可上传20张</span>
+					</div>
+				</div>
+				<div class="medical-picArea"  ng-if="type==2" >				
+					<img class="img-Icon" ng-if="listimg2.length>0" ng-repeat="item in listimg2" ng-src="{{item}}" ng-click="showimg2($index)">
+					<input type="file" ngf-select="upload2($files)" accept="image/*" id="cameraInputs" name="cameraInputs" class="hide"/>					
+					<div class="tucaoaddimg" ng-click="tackImgClick()" ng-if="listimg2.length<=19" >
+					<!-- <div class="tucaoaddimg" ngf-pattern="'image/*'" ngf-multiple="true" ngf-select="upload($files)" ng-if="listimg.length<=19" > -->
+						<span class="icon ion-android-add pl-jiahao"></span>		
+					</div>
+					<div ng-if="listimg2.length==0" class="div_title">
+						<h4 style="font-size: 14px;margin-top: 8px;margin-bottom: 5px">添加照片</h4>
+						<span style="color: #AFAFAE;">请上传您的检查和检验报告单照片，最多可上传20张</span>
+					</div>
+				</div>
+				<div class="medical_sub-div"  ng-if="type==1">
+					<input type="submit" ng-class="{true:'medical_sub-input',false:'medical_sub-inputs'}[listimg.length>0]" value="立即提交" ng-disabled="listimg.length==0" ng-click="tijiaoclick()" />
+				</div>
+				<div class="medical_sub-div"  ng-if="type==2">
+					<input type="submit" ng-class="{true:'medical_sub-input',false:'medical_sub-inputs'}[listimg2.length>0]" value="立即提交" ng-disabled="listimg2.length==0" ng-click="tijiaoclick()" />
+				</div>
+    		</div>
+    		
+    	</form>
+	</ion-content>
+</ion-view>

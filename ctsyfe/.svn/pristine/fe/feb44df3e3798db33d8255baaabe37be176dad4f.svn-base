@@ -1,0 +1,125 @@
+<ion-view hide-nav-bar="isIos" view-title="血压管理" class="xueya jkda-item-main">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <style type="text/css">
+    .xueya .top {
+            position: relative;
+            margin: 30px 10px 0 10px;
+            padding-bottom: 30px;
+            background-color: white;
+        }
+ 		.xueya .fenzhi {
+            border-radius: 50%;
+            background-color: #06DF48;
+            width: 160px;
+            height: 160px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            text-align: center;
+            padding-top: 25px;
+            margin-bottom: 20px;
+            /* box-shadow: 0px 10px 10px #9BEFB4; */
+            margin-top: 20px;
+           /*  border: 10px solid white; */
+        }
+        .xueya .divbeijijng{
+        background-color: white;
+        margin-top: 10px;
+        padding: 10px;
+        }
+         
+        /* 按钮定位 */
+        
+       .xueya  .btn-sdjl {
+            position: absolute;
+            right: 0;
+            margin-right: 10px;
+            z-index: 9;
+        }
+        .xueya .xt-info {
+            font-size: 14px;
+            border: 10px solid #f8f8f8;
+            border-width: 10px 0;
+            padding: 10px;
+        }
+        .more {
+            float: right;
+            display: flex;
+            align-items: center;
+        }
+        
+        .more i {
+            font-size: 20px;
+            margin-left: 10px;
+        }
+        .xueya_active{
+            background-color: #18b4ed;
+            color: white
+        }
+    </style>
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content >
+    <div class="top">
+    	<div class="circle" ng-class="{'bg-pd':jieguo==='低血压','bg-pg':(jieguo==='一级高血压'||jieguo==='二级高血压'||jieguo==='三级高血压'),'bg-ud':jieguo==='未知','bg-zc':jieguo==='正常'}">
+             <p class="f-12">{{riqi|limitTo:10:5}}</p>
+             <p class="f-28" >{{jieguoshow}}</p>
+             <div>
+             <div style="float: left;margin-top: 5px;padding-right: 5px;">
+             	<p class="f-20">{{xueya}}</p>
+             	<p style="color:white;text-align: center;" class="f-12">mmHg</p>
+             </div>
+             <div style="float: right;margin-top: 5px;padding-left: 5px;">
+             	<p class="f-20">{{xinlv}}</p>
+             	<p style="color:white;text-align: center;" class="f-12">bpm</p>
+             </div> 
+             </div>
+         </div>
+         <!-- <div style="float: left;margin-top: -40px;color:#999;">
+         	<span>控压目标</span><br>
+         	<span>高压：90-140</span><br>
+       		<span>低压：60-90</span>
+         </div> -->
+         <div class="zcz" ng-click="gozzc()">
+                    <p><i class="icon ion-help-circled"></i><span>正常值标准</span></p>
+            </div>
+         <button class="blue-border-button btn-sdjl" ng-click="gowriteXueYa()">手动记录</button>
+    </div>
+    <div class="xt-info">
+    	<h3 ng-class="{'fc-pd':jieguo==='低血压','fc-pg':(jieguo==='一级高血压'||jieguo==='二级高血压'||jieguo==='三级高血压'),'fc-ud':jieguo==='未知','fc-zc':jieguo==='正常'}"><i class="icon iconfont icon-xieya"></i>{{jieguo}}</h3>
+    	<p style="color:#999;line-height: 1.8;margin: 0px;" ng-if="jieguo=='低血压'">您属于低血压。{{xinlvjg}}</p>
+    	<p style="color:#999;line-height: 1.8;margin: 0px;" ng-if="jieguo=='正常'">您的血压正常，请继续保持。{{xinlvjg}}</p>
+    	<p style="color:#999;line-height: 1.8;margin: 0px;" ng-if="jieguo=='一级高血压'">您属于一级高血压。{{xinlvjg}}</p>
+    	<p style="color:#999;line-height: 1.8;margin: 0px;" ng-if="jieguo=='二级高血压'">您属于二级高血压。{{xinlvjg}}</p>
+    	<p style="color:#999;line-height: 1.8;margin: 0px;" ng-if="jieguo=='三级高血压'">您属于三级高血压。{{xinlvjg}}</p>
+    </div>
+    <div class="p-10">    
+     <div class="p-10 chart-container" >
+       <h3 class="s-14 color-3">最近7次{{showechars}}趋势图<a class="more" ng-click="goList()">全部<i class="icon ion-ios-arrow-right color-9"></i></a></h3>
+        <div style="white-space: nowrap;text-align: center;padding: 10px;">
+                <label style="padding:5px 30px;border-top-left-radius: 5px;border-bottom-left-radius: 5px;border: 1px solid #18b4ed;" ng-class="{'xueya_active':showechars=='血压'}"><span>血压</span>
+	                    <input class="hide" type="radio" ng-model="showechars" value="血压">
+	                </label>
+                <!-- 去除间距-->
+                <label style="padding:5px 30px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;border: 1px solid #18b4ed;" ng-class="{'xueya_active':showechars=='心率'}"><span>心率</span>
+	                    <input class="hide" type="radio" ng-model="showechars" value="心率">
+	                </label>
+            </div>
+       <xue-ya ng-if="showechars=='血压'" id="xueyaceshi" item="item" legend="diya" data="gaoya" userid="yonghuid"></xue-ya>
+       <xin-lv ng-if="showechars=='心率'" id="xinlvechars" userid="yonghuid"></xin-lv>
+     </div>
+    </div>
+	
+    </ion-content>
+</ion-view>

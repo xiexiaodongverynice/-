@@ -1,0 +1,278 @@
+<ion-view hide-nav-bar="isIos" view-title="会员中心" class="hytd">
+        <ion-nav-buttons side="left">
+                <div style="text-align: center; height: 100%">
+                    <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+                </div>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+             
+            </ion-nav-buttons>
+    <style type="text/css">
+        .hytd ul {
+            margin-bottom: 0;
+        }
+        
+        .huiyuanli {
+            background-color: white;
+            padding: 15px 10px;
+            border: 1px solid #ddd;
+            border-width: 1px 0 0 0;
+        }
+        
+        .huiyuanli .icon {
+            color: #333;
+        }
+        
+        .huiyuanli .iconfont {
+            color: #FFF;
+        }
+        
+        .hytd .toggle input:checked+.track {
+            border-color: #00C6FE;
+            background-color: #00C6FE;
+        }
+        
+        .hytd ul li.huiyuanli:last-child {
+            border-bottom-width: 1px;
+        }
+        
+        .huiyuanli .i-bg {
+            margin: 0 10px 0 0;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            height: 26px;
+            width: 26px;
+            border-radius: 26px;
+            color: #FFF;
+        }
+        
+        .hytd mark {
+            font-size: 12px;
+            color: #999;
+            background-color: #FFF;
+        }
+        
+        .huiyuani {
+            font-size: 16px;
+            line-height: 26px;
+            align-self: center;
+        }
+        
+        .huiyuaniright {
+            align-self: center;
+            float: right;
+            /* margin-right: 10px; */
+            font-size: 22px;
+        }
+        
+        .huiyuanspan {
+            white-space: normal;
+            align-self: center;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .item-toggle .toggle {
+            top: 0px;
+        }
+        
+        .toggle-small.item-toggle .toggle {
+            top: 9px;
+        }
+        
+        .huiyuannicheng {
+            text-align: center;
+            width: 100%;
+            top: 67%;
+            position: absolute;
+            padding-top: 20px;
+            font-size: 1.3em;
+            color: white;
+        }
+        
+        .huiyuankaiguan {
+            width: 10%;
+            float: right;
+            margin-top: -4px;
+            border: 0px;
+            margin-right: -10px;
+        }
+        
+        .huiyuantxdiv {
+            border-radius: 50%;
+            background-color: white;
+            height: 100px;
+            width: 100px;
+            display: block;
+            text-align: center;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            margin-top: -30px;
+            margin-left: -50px;
+            padding: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .huiyuanbjdiv {
+            height: 25%;
+            background-image: url(img/huiyuantd.jpg);
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        #u-info {
+			margin-top: 15px;
+            padding: 15px 10px;
+			background: #FFF;
+			border: 1px solid #ddd;
+            border-width: 1px 0 1px 0;
+		}
+
+		#u-info img{
+            height: 60px;
+			width: 60px;
+			border-radius: 50%;
+		}
+        
+        #u-info .info {
+			margin-left: 10px;
+			display: inline-block;
+        }
+        #u-info .info span{
+			display: table-cell;
+			height: 60px;
+			vertical-align: middle;
+        } 
+        
+        .hytd .m-t {
+            margin-top: 20px;
+            border-left: 3px solid #00B5EE;
+            padding-left: 5px;
+            height: 14px;
+            margin-left: 10px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .hytd .m-t.f {
+            margin-top: 10px;
+        }
+    </style>
+    
+    <ion-content style="background: #eff0f4;">
+        <!-- <div class="huiyuanbjdiv">
+            <div class="huiyuantxdiv" style="background-image: url({{imgurl}})">
+                <img id="imgid" alt="" src="">
+            </div>
+            <div class="huiyuannicheng">{{nicheng}}</div>
+        </div> -->
+         <div id="u-info" ng-click="gotoInfoEdit()">
+            <img src="{{imgurl}}">
+            <div class="info">
+                <span>{{nicheng}}</span>
+            </div>
+        </div> 
+        <!-- <img style="height: 40%;" class="imgstyle" src="img/huiyuantd.jpg"> -->
+        <div>
+            <h4 class="m-t f">健康服务</h4>
+            <ul class="list no-float">
+                <!-- <li class="huiyuanli" ng-click="pengyouquan()">
+					<i class="icon-pyq huiyuani"></i>
+					<span class="huiyuanspan">朋友圈</span>
+					<i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+				</li> -->
+                <!-- <li class="huiyuanli" ng-click="jlhd()">
+					<i class="icon-pyq huiyuani"></i>
+					<span class="huiyuanspan">交流互动</span>
+					<i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+				</li> -->
+                <li class="huiyuanli gray">
+                    <span class="i-bg" style="background-color:#FF9600;">
+						<i  class="icon iconfont icon-wodedingyue huiyuani"></i>
+					</span>
+
+                    <span class="huiyuanspan">我的订阅
+						<mark>(个性化健康指导)</mark>
+					</span>
+                    <i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+                </li>
+                
+                <li class="huiyuanli gray">
+                    <span class="i-bg" style="background-color: #FF1A17;">
+						<i class="icon iconfont icon-wodexiaoxi huiyuani"></i>
+					</span>
+
+                    <span class="huiyuanspan">我的消息
+						<mark>(危急症状消息提醒)</mark>
+					</span>
+                    <i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+                </li>
+                <li class="huiyuanli"  ng-click="jtjkda()">
+                    <span class="i-bg" style="background-color: #00D642;">
+						<i class="icon iconfont icon-jiatingjiankangdangan huiyuani"></i>
+					</span>
+                    <span class="huiyuanspan">家庭健康管理</span>
+                    <i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+                </li>
+                <!-- <li class="huiyuanli" ng-click="gomedical()">
+                    <span class="i-bg" style="background-color: #FF5C8F;">
+						<i class="icon iconfont icon-tijianbaogaojiedu huiyuani"></i>
+					</span>
+                    <span class="huiyuanspan">体检报告解读
+						<mark>(拍照、上传、解读结果)</mark>
+					</span>
+                    <i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+                </li> -->
+                
+            </ul>
+            <h4 class="m-t" style="display: none;">医生专栏</h4>
+            <ul class="list no-float" style="display: none;">
+                <li class="huiyuanli"  ng-click="jbssbmcx()">
+                    <span class="i-bg" style="background-color: #1CBD9C;">
+						<i class="icon iconfont icon-jibingshoushubianmachaxun huiyuani"></i>
+					</span>
+
+                    <span class="huiyuanspan">疾病手术操作编码查询</span>
+                    <i class="icon ion-ios-arrow-right huiyuaniright"></i>
+                </li>
+            </ul>
+            <ul style="display: none;" class="list no-float">
+                <li class="huiyuanli" ng-click="tucao()">
+                    <span class="i-bg" style="background-color: #FFA861;">
+						<i class="icon iconfont icon-woyaotucao huiyuani"></i>
+					</span>
+
+                    <span class="huiyuanspan">我要吐槽</span>
+                    <i class="icon ion-ios-arrow-right huiyuaniright"></i>
+                </li>
+            </ul>
+            <ul style="display: none;" class="list no-float">
+                <li class="huiyuanli">
+                    <span class="i-bg" style="background-color: #00CEBC;">
+						<i class="icon iconfont icon-yinpinkaiguan huiyuani"></i>
+					</span>
+
+                    <span class="huiyuanspan">语音播报</span>
+                    <ion-toggle ng-model="yuyin.value" class="huiyuankaiguan" ng-change="yuyinclick(yuyin.value)"></ion-toggle>
+                </li>
+                <li class="huiyuanli" ng-click="guanyu()">
+                    <span class="i-bg" style="background-color: #00B5EE;">
+						<i class="icon iconfont icon-guanyuwomen huiyuani"></i>
+					</span>
+                    <span class="huiyuanspan">关于我们</span>
+                    <i class="icon  ion-ios-arrow-right huiyuaniright"></i>
+                </li>
+            </ul>
+        </div>
+
+    </ion-content>
+    <!--  <ion-footer-bar style="height: 50px;background-color: #eff0f4;background-size: 0;">
+            <div class="bar bar-footer bar-balanced" style="height:auto;background: #b2b2b2;opacity: 0.5;">
+                <artice style="padding:0 2%;font-size:12px;color:#fff;">免责声明：草堂上医仅仅提供家庭健康管理的建议参考，不能作为医院诊断和治疗的方案或依据。</artice>
+            </div>
+        </ion-footer-bar> -->
+</ion-view>

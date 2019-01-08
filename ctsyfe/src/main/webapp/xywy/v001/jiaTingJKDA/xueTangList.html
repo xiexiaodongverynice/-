@@ -1,0 +1,110 @@
+<ion-view hide-nav-bar="isIos" view-title="血糖历史记录" class="jkda-item-list xuetang-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        .xuetang-list .top {
+            position: absolute;
+            display: flex;
+            align-items: center;
+        }
+        
+        .xuetang-list .top input[type="text"] {
+            width: 22%;
+            margin: 0 10px;
+        }
+        
+        .xuetang-list .top i {
+            margin: 0 -6px;
+        }
+        /* 下拉框样式_start */
+        
+        .xuetang-list .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 0 0 0 15px;
+            text-align: center;
+        }
+        
+        .xuetang-list .dropdown i {
+            margin: 0;
+        }
+        
+        .xuetang-list .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 100px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            left: -15px;
+            top: 30px;
+        }
+        
+        .xuetang-list .dropdown-content li {
+            font-size: 14px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+        
+        .xuetang-list .tabClick {
+            display: block;
+            z-index: 10;
+        }
+        
+        .xuetang-list .chooseCurrent {
+            color: #18B4ED;
+        }
+        
+        
+        /* 下拉框样式_end */
+    </style>
+    <div class="top" ng-style="{top:(isIos)? '0': '44px'}" ng-click="docClick($event)">
+        <div class="dropdown">
+            <div ng-click="changeButton($event)" id="sortButton">
+                <span ng-if="selectIndex==null">全部</span>
+                <span class="tab" ng-repeat="item in xueTangTime track by $index" ng-if="item.chose&&selectIndex!=null">{{item.CODE_NAME}}</span>
+                <i class="icon ion-ios-arrow-down"></i>
+            </div>
+            <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx]">
+                <!-- 倒三角 -->
+                <!-- <div style="margin-left: 27px;margin-top: -29px;width:0px;height:0px;border-width: 10px;border-style: solid;border-color: white transparent transparent;transform: rotate(180deg);"></div> -->
+                <ul>
+                    <li class="tab" ng-class="{true:'chooseCurrent',false:'notChoose'}[selectIndex==null]" ng-click="selectOption(null,$event)">全部</li>
+                    <li ng-repeat="item in xueTangTime track by $index" ng-class="{true:'chooseCurrent',false:'notChoose'}[item.chose&&selectIndex!=null]" ng-click="selectOption($index,$event)">{{item.CODE_NAME}}</li>
+                </ul>
+            </div>
+        </div>
+        <input type="text" id="startDate" placeholder="请选择起始日期" ng-click="datePiker('startDate')" data-year="" data-month="" data-date="" readonly="readonly">
+        <i class="icon ion-minus color-9"></i>
+        <input type="text" id="endDate" placeholder="请选择结束日期" ng-click="datePiker('endDate')" data-year="" data-month="" data-date="" readonly="readonly">
+        <input type="button" class="button" ng-click="doSearch()" value="查询">
+    </div>
+    <ion-content ng-style="{top:(isIos)? '65px': '109px'}" ng-click="docClick($event)">
+
+        <div class="xt-list color-3 s-14">
+            <ul ng-if="xueTanglist.length>0">
+                <!-- <li class="title" ng-repeat-start="item in xueTanglist track by $index" ng-if="$index==0||item.riqiday!=xueTanglist[$index-1].riqiday">
+                    <caption>{{item.riqiday}}</caption>
+                </li> -->
+                <li ng-repeat="item in xueTanglist track by $index" ng-class="{'color-red':item.jieguo=='偏高','color-green':item.jieguo=='正常','color-yellow':item.jieguo=='偏低'}">
+                    <span>{{item.riqiday}}</span>
+                    <span>{{item.riqihours}}</span>
+                    <span>{{item.celiangshiduan}}</span>
+                    <span><a class="color-sp">{{item.xuetang}}</a> mmol/L</span>
+                    <span class="color-sp">{{item.jieguo}}</span>
+                    <span ng-click="deljilu($index,item)"><i class="icon iconfont icon-delet_SFontCN"></i></span>
+                </li>
+            </ul>
+            <div ng-if="xueTanglist.length==0" class="wsj">
+                <img src="img/wushuju.png" alt="无任何历史记录"> 
+                <p>无任何历史记录</p>
+            </div>
+
+        </div>
+        <ion-infinite-scroll ng-if="!ishowall" immediate-check="false" on-infinite="loadMicMore()" distance="1%"> </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

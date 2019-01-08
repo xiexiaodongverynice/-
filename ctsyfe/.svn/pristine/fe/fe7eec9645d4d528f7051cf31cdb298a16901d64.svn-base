@@ -1,0 +1,126 @@
+<ion-view hide-nav-bar="isIos" view-title="科室推荐">
+	<ion-nav-buttons side="left">
+		<div style="text-align: center; height: 100%">
+			<button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+		</div>
+	</ion-nav-buttons>
+	<!-- 返回首页 -->
+	<style>
+		 #kstj-main {
+			width: 100%;
+			/* padding-top: 7px; */
+		}
+
+		 #kstj-main .kstj-div {
+			min-height: 8rem;
+			height: auto;
+			position: relative;
+		}
+
+		
+
+		 #kstj-main .div-wod {
+			float: left;
+			width: 100%;
+			align-items: center;
+			display: inline-flex;
+            border-bottom: 1px solid #ebebeb;
+
+		}
+
+		 #kstj-main .ion-chevron-right::before {
+			color: #999999;
+		}
+
+		 #kstj-main .kstj-img-sty {
+			width: 6.25rem;
+			margin: 2.5rem
+		}
+
+		 #kstj-main .p-sty {
+			font-size: 14px;
+			color: #999999;
+			margin-bottom: 0rem;
+			/* margin-right: 2.5rem; */
+			width: 100%;
+			line-height: 1.5;
+		}
+
+		 #kstj-main .p-title {
+			font-size: 16px;
+			color: #333333;
+		}
+
+		 #kstj-main .cut-line {
+			width: 92%;
+			background-color: #ebebeb;
+			height: 1px;
+			border: none;
+		}
+		#kstj-main .kstj-tisi{
+			font-size: 12px;
+            background: #fffbeb;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+		#kstj-main .kstj-tisi p{
+			margin: 0;
+        }
+		#kstj-main .kstj-tisi i{
+			color: #eb4f4e;
+            font-size: 16px;
+			position: absolute;
+			right: 15px;
+        }
+		#kstj-main .kstj_tuBiao{
+            float: right;
+            margin-right: 20px;
+            font-size: 18px;
+            padding: 15px 0;
+        }
+      
+	</style>
+	<ion-content>
+		<div id="kstj-main">
+            <div class="kstj-tisi" ng-if="istishishow">
+				<p>10岁以下儿童请直接去医院儿科就诊</p>
+				<i class="icon ion-close-round" ng-click="isshow($event)"></i>
+            </div>
+			<!-- <div class="kstj-div" >	 -->
+				<div class="div-wod" ng-click="gorttdz()">
+					<img class="kstj-img-sty" alt="" src="./img/rttdz.png">
+					<p class="p-sty"><span class="p-title">人体图导诊</span><br>
+					{{rttdz}}</p>
+					 <i class="icon ion-chevron-right kstj_tuBiao"></i>
+				</div>
+			
+			<!-- </div> -->
+				<div ng-show="false" class="div-wod" ng-click="goabdz()">
+					<img class="kstj-img-sty" alt="" src="./img/abdz.png">
+					<p class="p-sty"><span class="p-title">按病导诊</span><br>
+					{{abdz}}</p>
+					 <i class="icon ion-chevron-right kstj_tuBiao"></i>
+				</div>
+			
+				<div class="div-wod" ng-click="gozndz()">
+					<img class="kstj-img-sty" alt="" src="./img/zndz.png">
+					<p class="p-sty">
+						<span class="p-title">智能导诊</span>
+						<br> {{zndz}}
+					</p>
+					<i class="icon ion-chevron-right kstj_tuBiao"></i>
+				</div>
+
+				<div ng-show="false" class="div-wod" ng-click="goyypm()">
+					<img class="kstj-img-sty" alt="" src="./img/yypm.png">
+					<p class="p-sty">
+						<span class="p-title">医院排名</span>
+						<br> {{yypm}}
+					</p>
+					<i class="icon ion-chevron-right kstj_tuBiao"></i>
+				</div>
+			
+		</div>
+	</ion-content>
+</ion-view>

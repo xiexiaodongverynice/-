@@ -1,0 +1,48 @@
+<ion-view hide-nav-bar="isIos" view-title="症状问答">
+    <style type="text/css">
+
+    </style>
+    <ion-nav-buttons side="left">
+        <div>
+            <a href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content>
+        <div ng-if="haveQuestion">
+            <div class="last-border">
+                <section ng-repeat="question in questiones" ng-if="question.WT">
+                    <span class="item padding questionTitel">{{$index+1+'、'+question.WT}}</span>
+                    <div class="answer mainpadding wenda">
+                        <label ng-class="[{'chose':question.choose==='是'},'button button-small button-choose']">
+                            <input class="hide" type="checkbox" ng-change="chooseAnswer(question)" ng-model="question.choose"
+                                ng-true-value="'是'" ng-false-value="">是
+                        </label>
+                        <label ng-class="[{'chose':(question.choose==='否')},'button button-small button-choose']">
+                            <input class="hide" type="checkbox" ng-change="chooseAnswer(question)" ng-model="question.choose"
+                                ng-true-value="'否'" ng-false-value="">否
+                        </label>
+                    </div>
+                </section>
+            </div>
+            <div>
+                <button ng-disabled="clickable()" ng-click="confirm()" class="button button-block button-energized button-space">确定</button>
+                <button ng-click="reset()" class="button button-block button-space">重置</button>
+                <a href="" ng-click="changeQuestion()" class="show text-center guahao">问题不相关？点此<i class="ion-loop"></i>换一批</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

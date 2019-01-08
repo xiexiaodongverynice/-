@@ -1,0 +1,256 @@
+<ion-view hide-nav-bar="isIos" view-title="圈子广场" id="jkqlist">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right"> </ion-nav-buttons>
+    <style>
+        #jkqlist {
+            color: #666;
+        }
+        #jkqlist ion-content{
+            padding-top: 0px;height: 100%;width: 100%; overflow: hidden;
+        }
+
+        #jkqlist .has-footer {
+            bottom: 49px;
+        }
+
+        #jkqlist .scroll {
+            position: absolute;
+            margin-bottom: 50px;
+        }
+
+        #jkqlist .tab-list span {
+            display: inline-block;
+            height: 42px;
+            padding: 0 20px;
+            line-height: 42px;
+            box-sizing: border-box;
+        }
+
+        #jkqlist ion-footer-bar {
+            height: 49px;
+            border-top: 1px solid #d9d9d9;
+            color: #666;
+            background-color: #F3F4F5;
+            box-sizing: border-box;
+        }
+
+        #jkqlist .tab:first-child {
+            border-right: 1px solid #d9d9d9;
+        }
+
+        #jkqlist .tab {
+            width: 50%;
+            float: left;
+            text-align: center;
+            height: 48px;
+            line-height: 48px;
+            box-sizing: border-box;
+        }
+
+
+        #jkqlist .bar {
+            background-image: none;
+            padding: 0;
+        }
+
+        #jkqlist .s-list {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            border-color: #ebebeb;
+            border-style: solid;
+            border-width: 0 0 1px 0;
+
+        }
+
+        #jkqlist .s-list ul {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #jkqlist .s-list li {
+            width: 25%;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            float: left;
+            box-sizing: border-box;
+        }
+
+        #jkqlist .s-list li span {
+            height: 44px;
+            padding: 0 7px;
+            display: inline-block;
+        }
+
+        #jkqlist .s-list li.current_tj span {
+            border-bottom: 2px solid #18B4ED;
+            box-sizing: border-box;
+        }
+
+        #jkqlist .list_box {
+            height: 10rem;
+            border-bottom: 1px solid #ebebeb;
+        }
+
+        #jkqlist .image_box {
+            margin: 1.5rem 1.25rem;
+            position: absolute;
+            width: 8.5rem;
+            height: 7rem;
+        }
+
+
+        #jkqlist .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #jkqlist .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 11rem;
+            padding-right: 1.25rem;
+            white-space: nowrap;
+            height: 10rem;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        #jkqlist .content p {
+            margin: 0;
+        }
+
+        #jkqlist .content h4 {
+            margin: 0 0 .5rem;
+            padding: 0;
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        #jkqlist .content span.px {
+            font-weight: normal;
+            font-size: 14px;
+            color: #999;
+
+        }
+
+        #jkqlist .content p {
+            font-size: 14px;
+            color: #999;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .tj-op {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+        }
+
+        .tj-op .left-lb {
+            width: 100%;
+            min-height: 110%;
+            height: auto;
+            box-sizing: border-box;
+            overflow-y: unset;
+        }
+
+        .tj-op .left-lb li {
+            font-size: 15px;
+            padding-left: 15px;
+            padding-right: 5px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        #left-lb>ul>li>span {
+            line-height: 1.2;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .tj-op .left-lb .show_li_list {
+            border-right: none;
+        }
+
+        #zyys .tj-op .right-lb {
+            width: 100%;
+            height: auto;
+            min-height: 110%;
+            overflow-y: unset;
+            margin-bottom: 150px;
+        }
+
+        .tj-op .right-lb i {
+            color: #00b5ee;
+        }
+
+        .left-lb .chose {
+            border-left: 2px solid #00b5ee;
+        }
+
+        .curTab {
+            color: #00b5ee;
+        }
+    </style>
+
+    <ion-content id="img-content" ng-style="{top:(isIos)? '45px': '89px'}">
+        <div class="tj-op" ng-if="showFood">
+            <!-- 左 -->
+            <ion-scroll delegate-handle="left" style="background:#f5f5f5;float: left; height: 100%;width: 27%;">
+                <div class="liebiao left-lb" id="left-lb">
+                    <ul class="list no-float">
+                        <li class="show_li_list" ng-click="queryContentList()" ng-class="[{'chose':!curChose[mrysCurrentTab]}]">
+                            <span>全部</span>
+                        </li>
+                        <li class="show_li_list" ng-repeat="sx in mrysShowZdList" ng-click="queryContentList(sx.code)" ng-class="[{'chose':curChose[mrysCurrentTab]===sx.code}]">
+                            <span>{{sx.title}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isShow" immediate-check="false" on-infinite="loadMicMore()" distance="1%"
+                    icon="ion-loading-c"></ion-infinite-scroll>
+            </ion-scroll>
+            <!-- 右 -->
+            <ion-scroll delegate-handle="right" style="float: left;height: 100%;width: 73%;">
+                <div class="liebiao right-lb" id="right-lb">
+                    <ul class="list no-float">
+                        <li class="show_li_list show_qz_list" style="border-bottom: 1px solid #dedede;" ng-repeat="qz in qzlist">
+                            <div ng-click="chooseqz(qz.mc)">
+                                <div class="qz_image"><img id="img" src={{qz.img}}></div>
+                                <div class="qz_name">
+                                    <span class="show_qz_info" style="font-size:2rem;">{{qz.mc}}</span>
+                                    <span class="show_qz_info" style="font-size:1rem;">成员:{{qz.num}}</span> 
+                                </div>
+                            </div>
+                            <div class="qz_tb" ng-click="add_quanZi(qz.mc)" ng-if="qz.isAddQz=='0'">
+                                <span><i class="icon ion-person-add tubiao tb_area not_jr"></i></span>
+                                <span class="tubiao_word tb_area not_jr">加入圈子</span>
+                            </div>
+                            <div class="qz_tb" ng-if="qz.isAddQz=='1'">
+                                    <span><i class="icon ion-person-stalker tubiao tb_area was_jr"></i></span>
+                                    <span class="tubiao_word tb_area was_jr">已加入</span>
+                                </div>
+                        </li>
+                    </ul>
+                </div>
+            </ion-scroll>
+
+        </div>
+    </ion-content>
+
+</ion-view>

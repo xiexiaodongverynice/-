@@ -1,0 +1,184 @@
+<ion-view hide-nav-bar="isIos" view-title="药品指南" class="ypzn">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="back()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+        .ypzn ion-content {
+            background: #F6F6F6;
+        }
+
+        .ypzn .i_tuBiao {
+            font-size: 20px;
+            color: #00b5ee;
+            margin-right: 15px;
+
+        }
+
+        .titleBox>ul {
+            overflow: hidden;
+            width: 90%;
+            border: 1px solid #00b5ee;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin: 10px auto;
+        }
+
+        #fxpg-main {
+            width: 100%;
+            padding-top: 44px;
+        }
+
+        .ypzn .body {
+            margin-top: -50px;
+        }
+
+        .ypzn .zy-item {
+            position: relative;
+            width: 90%;
+            background: #fff;
+            border-radius: 15px;
+            margin: 20px auto;
+
+        }
+
+        .div-wod {
+            width: 100%;
+            align-items: center;
+            display: inline-flex;
+        }
+
+        .yszs_footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            color: #C5C5C5;
+            font-size: 14px;
+            text-align: center;
+
+        }
+
+        #fxpg-main .ion-chevron-right::before {
+            color: #999999;
+        }
+
+        .ypzn .img-sty {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            flex-basis: 75px;
+            color: #fff;
+            margin-left: 15px;
+            margin-right: 10px;
+            margin-top: 18px;
+            margin-bottom: 18px;
+            border-radius: 50%;
+        }
+
+        .ypzn .img-sty.img1 {
+            background-color: #FFB356;
+        }
+
+        .ypzn .img-sty.img2 {
+            background-color: #4AA1FE;
+        }
+
+        .ypzn .img-sty.img3 {
+            background-color: #00C582;
+        }
+        .ypzn .img-sty i{
+            font-size: 25px;
+            line-height: 50px;
+        }
+        .ypzn .p-sty {
+            font-size: 14px;
+            color: #666;
+            width: 100%;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .ypzn div.p-title,
+        .ypzn span.p-title {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            font-weight: bold;
+
+        }
+
+        .ypzn div.p-title {
+            font-size: 18px;
+            margin: 15px 10px;
+            color: #424242
+        }
+
+        .cut-line {
+            width: 100%;
+        }
+
+        .ybbg {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            border-top: 1px solid #d4d4d4;
+
+        }
+
+        .div-cjyp {
+            display: flex;
+            width: 25%;
+            justify-content: center;
+            align-items: center;
+
+            color: #666;
+            font-size: 14px;
+
+            text-align: center;
+            height: 60px;
+            line-height: 20px;
+
+            padding: 0 5px 0 5px;
+            border-right: 1px solid #d4d4d4;
+            border-bottom: 1px solid #d4d4d4;
+        }
+    </style>
+    <ion-content>
+        <div class="header-top">
+            <img class="imgstyle" src="img/ypzn-banner.png">
+        </div>
+        <div class="body">
+
+            <div class="zy-item" ng-click="ssys()">
+                <div class="div-wod">
+                    <div class="img-sty img1"><i class="icon iconfont icon-jiatingchangyongyao"></i></div>
+                    <p class="p-sty">
+                        <span class="p-title">按病症找药</span>
+                        <span>咳嗽、感冒、发烧、肠胃不适</span>
+                    </p>
+                    <i class="icon iconfont icon-right_fill i_tuBiao "></i>
+                </div>
+            </div>
+            <div class="zy-item" ng-click="xwys()">
+                <div class="div-wod">
+                    <div class="img-sty img2"><i class="icon iconfont icon-yaopinzhinan"></i></div>
+                    <p class="p-sty">
+                        <span class="p-title">按系统找药</span>
+                        <span>心脑血管、神经系统、呼吸系统</span>
+                    </p>
+                    <i class="icon iconfont icon-right_fill i_tuBiao "></i>
+                </div>
+            </div>
+            <div class="zy-item" ng-click="tzpg()">
+                <div class="div-wod">
+                    <div class="img-sty img3"><i class="icon iconfont icon-yaopinzhinan"></i></div>
+                    <p class="p-sty"><span class="p-title">合理用药</span>
+                        <span>中医体质辨识及健康指导</span>
+                    </p>
+                    <i class="icon iconfont icon-right_fill i_tuBiao"></i>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

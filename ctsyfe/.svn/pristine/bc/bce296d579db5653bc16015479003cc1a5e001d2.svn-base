@@ -1,0 +1,153 @@
+<ion-view hide-nav-bar="isIos" view-title="膳食养生" class="ssys">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+   
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div class="search-bar" ng-click="goSearch()">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="搜膳食名称、体质、主治功效、适应症">
+                <i class="icon iconfont icon-yuyin"></i>
+            </label>
+        </div>
+        <div class="query-menu">
+            <div class="dropdown">
+                <div ng-click="changeButton(0)" class="menuBtn" ng-class="{true:'on',false:''}[isShowPx[0]||choseStr['2'].length>0]">
+                    <span ng-hide="choseStr['2']">{{shaixuanList[0].title}}</span>
+                    <div ng-if="choseStr['2']" class="c-blue">{{choseStr["2"]}}</div>
+                    <i ng-class="{true:'ion-android-arrow-dropup',false:'ion-android-arrow-dropdown'}[isShowPx[0]]"></i>
+                </div>
+                <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx[0]]">
+                    <div class="content-div">
+                        <ul class="tz m-15">
+                            <li class="item item-checkbox" ng-repeat="sx in mrysZdList['2']" ng-click="chooseTj(sx)">
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-checked="sx.checked" ng-model="sx.checked">
+                                </label>
+                                {{sx.title}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="button-div">
+                        <a class="cansel" ng-click="cansel()">重置</a>
+                        <a class="ok" ng-click="doQuery()">确定</a>
+                    </div>
+                </div>
+            </div>
+            <i class="icon iconfont icon-vertical_line fg"></i>
+            <div class="dropdown">
+                <div ng-click="changeButton(1)" class="menuBtn" ng-class="{true:'on',false:''}[isShowPx[1]||choseStr['1'].length>0]">
+                    <span ng-hide="choseStr['1']">{{shaixuanList[1].title}}</span>
+                    <div ng-if="choseStr['1']" class="c-blue">{{choseStr["1"]}}</div>
+                    <i ng-class="{true:'ion-android-arrow-dropup',false:'ion-android-arrow-dropdown'}[isShowPx[1]]"></i>
+                </div>
+                <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx[1]]">
+                    <div class="s-container">
+                        <div class="selected">
+                            <span ng-repeat="it in choseItems['1']" ng-click=delTj(it)>{{it.title}}<i class="icon iconfont icon-guanbi1"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="content-div" id="contentDiv1">
+                        <ion-scroll delegate-handle="left" style="height: 100%;">
+                            <ul class="gx">
+                                <li ng-repeat-start="sx in mrysZdList['1'] track by $index" ng-if="$index==0|| sx.pinYin!=mrysZdList['1'][$index-1].pinYin"
+                                    class="pinyin"> {{sx.pinYin}}</li>
+
+                                <li class="item item-checkbox m-15" ng-repeat-end ng-click="chooseTj(sx)">
+                                    <label class="checkbox">
+                                        <input type="checkbox" ng-checked="sx.checked" ng-model="sx.checked">
+                                    </label>
+                                    {{sx.title}}
+                                </li>
+                            </ul>
+                            <!-- <div ng-hide="task_hasMoreItem" style="text-align: center; margin-top: 15px;">
+                                    <span style="font-size: 14px; color: #8F8E94">{{reusltNullTip}}</span>
+                                </div> -->
+                            <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isShow" immediate-check="false"
+                                on-infinite="loadMicMore()" distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+
+                        </ion-scroll>
+                    </div>
+
+                    <right-list cru-gn="'ZYYS'" style="z-index: 10000;" id="zimu1"></right-list>
+                    <div ng-show="ishsowzimu&&zimu">{{zimu}}</div>
+
+                    <div class="button-div">
+                        <a class="cansel" ng-click="cansel()">重置</a>
+                        <a class="ok" ng-click="doQuery()">确定</a>
+                    </div>
+                </div>
+            </div>
+            <i class="icon iconfont icon-vertical_line fg"></i>
+            <div class="dropdown">
+                <div ng-click="changeButton(2)" class="menuBtn" ng-class="{true:'on',false:''}[isShowPx[2]||choseStr['3'].length>0]">
+                    <span ng-hide="choseStr['3']">{{shaixuanList[2].title}}</span>
+                    <div ng-if="choseStr['3']" class="c-blue">{{choseStr["3"]}}</div>
+                    <i ng-class="{true:'ion-android-arrow-dropup',false:'ion-android-arrow-dropdown'}[isShowPx[2]]"></i>
+                </div>
+                <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx[2]]">
+                    <div class="s-container">
+                        <div class="selected">
+                            <span ng-repeat="it in choseItems['3']" ng-click=delTj(it)>{{it.title}}<i class="icon iconfont icon-guanbi1"></i></span>
+                        </div>
+                    </div>
+                    <div class="content-div" id="contentDiv3">
+                        <ion-scroll delegate-handle="left" style="height: 100%;">
+                            <ul class="syz">
+                                <li ng-repeat-start="sx in mrysZdList['3'] track by $index" ng-if="$index==0|| sx.pinYin!=mrysZdList['3'][$index-1].pinYin"
+                                    class="pinyin"> {{sx.pinYin}}</li>
+                                <li class="item item-checkbox m-15" ng-repeat-end ng-click="chooseTj(sx)">
+                                    <label class="checkbox">
+                                        <input type="checkbox" ng-checked="sx.checked" ng-model="sx.checked">
+                                    </label>
+                                    {{sx.title}}
+                                </li>
+                            </ul>
+                            <!-- <div ng-hide="task_hasMoreItem" style="text-align: center; margin-top: 15px;">
+                                <span style="font-size: 14px; color: #8F8E94">{{reusltNullTip}}</span>
+                            </div> -->
+                            <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isShow" immediate-check="false"
+                                on-infinite="loadMicMore()" distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+                        </ion-scroll>
+                    </div>
+                    <right-list cru-gn="'ZYYS'" style="z-index: 10000;" id="zimu2"></right-list>
+                    <div ng-show="ishsowzimu&&zimu">{{zimu}}</div>
+
+                    <div class="button-div">
+                        <a class="cansel" ng-click="cansel()">重置</a>
+                        <a class="ok" ng-click="doQuery()">确定</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <style></style>
+    <ion-content ng-style="{top:(isIos)? '94px': '138px'}">
+        <ul class="list no-float">
+            <li class="show_li_list" ng-repeat="item in ShanShilist" ng-click="goDetail(item.pid)">
+                <div class="list_box">
+                    <div class="image_box">
+                        <img class="image" ng-src="{{imgBaseUrl+item.iconImage}}">
+                    </div>
+                    <div class="content">
+                        <h4>{{item.shanShiMing}}</h4>
+                        <p style="margin: 0;">中医体质：{{item.shiyingTizhiDisplay}}</p>
+                        <p style="margin: 0;">主治功效：{{item.zhongyiGongxiaoDisplay}}</p>
+                        <p style="margin: 0;" ng-bind-html="'适应症:'+item.shiyingZhengDisplay" compile-html></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- <div ng-hide="task_hasSsMoreItem" style="text-align: center; margin-top: 15px;">
+            <span style="font-size: 14px; color: #8F8E94">{{reusltSsNullTip}}</span>
+        </div> -->
+        <ion-infinite-scroll ng-if="doLoadSsMore" ng-hide="isSsShow" immediate-check="false" on-infinite="!isSsShow&&loadShanShiMore()"
+            distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+
+    </ion-content>
+
+</ion-view>

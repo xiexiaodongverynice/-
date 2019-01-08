@@ -1,0 +1,148 @@
+<ion-view hide-nav-bar="isIos" view-title="正常值标准" class="yqhh fanwei">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        .fanwei section {
+            background: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .fanwei .title {
+            font-size: 16px;
+            font-weight: 500;
+            padding-left: 25px;
+        }
+        
+        .fanwei .content {
+            font-size: 16px;
+            padding: 10px 0 10px 25px;
+        }
+        
+        .fanwei .content label {
+            font-size: 16px;
+        }
+        
+        .fanwei .content label.pg {
+            color: #ff6666;
+        }
+        .fanwei .content label.pg-2 {
+            color: #ff3333;
+        }
+        .fanwei .content label.pg-3 {
+            color: #cc3333;
+        }
+        .fanwei .content label.pd {
+            color: #ff9500;
+        }
+        
+        .fanwei .content label.zc {
+            color: #00d641;
+        }
+       .fanwei .rightvalue{
+        position: absolute;
+    	right: 0px;
+    	padding-right: 10px;
+        }
+        .fanwei .shuzhangya{
+        text-align: right;
+        padding-right: 10px;
+        }
+    </style>
+    <ion-content>
+        <div ng-if="type=='xy'">
+            <section>
+                <div class="title">血压</div>
+                <div class="content">
+                    <p>
+                        <label class="pd">低血压:</label>
+                        <span class="value rightvalue">收缩压：<90mmHg</span>
+                        <p class="value shuzhangya" >舒张压：<60mmHg</span>
+                    </p>
+                    <p>
+                        <label class="zc">正常:</label>
+                        <span class="value rightvalue">收缩压：90~140mmHg</span>
+                        <p class="value shuzhangya" >舒张压：60~90mmHg</span>
+                    </p>
+                    <p>
+                        <label class="pg">一级高血压:</label>
+                        <span class="value rightvalue">收缩压：140~160mmHg</span>
+                        <p class="value shuzhangya" >舒张压：90~100mmHg</span>
+                    </p>
+                    <p>
+                        <label class="pg-2">二级高血压:</label>
+                        <span class="value rightvalue">收缩压：160~180mmHg</span>
+                        <p class="value shuzhangya" >舒张压：100~110mmHg</span>
+                    </p>
+                    <p>
+                        <label class="pg-3">三级高血压:</label>
+                        <span class="value rightvalue">收缩压：≥180mmHg</span>
+                        <p class="value shuzhangya" >舒张压：≥110mmHg</span>
+                    </p>
+                </div>
+            </section>
+            <section>
+                <div class="title">心率</div>
+                <div class="content">
+                    <p>
+                        <label class="pd">偏低:</label>
+                        <span class="value rightvalue"><60次/分</span>
+                    </p>
+                    <p>
+                        <label class="zc">正常:</label>
+                        <span class="value rightvalue">60~100次/分</span>
+                    </p>
+                    <p>
+                        <label class="pg">偏高:</label>
+                        <span class="value rightvalue">>100次/分</span>
+                    </p>
+                </div>
+            </section>
+           
+        </div>
+        <div ng-if="type=='xt'">
+            <section>
+                <div class="title">血糖</div>
+                <div class="content">
+                    <p>
+                        <label class="pd">空腹全血血糖:</label>
+                        <span class="value rightvalue">3.9～6.1mmol/L</span>
+                    </p>
+                    <p>
+                        <label class="zc">餐后1小时全血血糖:</label>
+                        <span class="value rightvalue">≤11.1mmol/L</span>
+                    </p>
+                    <p>
+                        <label class="pg">餐后2小时全血血糖:</label>
+                        <span class="value rightvalue">≤7.8mmol/L</span>
+                    </p>
+                </div>
+            </section>
+        </div>
+        <div ng-if="type=='tz'">
+            <section>
+                <div class="title">身体质量指数(BMI)</div>
+                <div class="content">
+                    <p>
+                        <label class="pd">偏瘦:</label>
+                        <span class="value rightvalue"><18.5</span>
+                    </p>
+                    <p>
+                        <label class="zc">正常:</label>
+                        <span class="value rightvalue">18.5～23.9</span>
+                    </p>
+                    <p>
+                        <label class="pg">超重:</label>
+                        <span class="value rightvalue">24～27</span>
+                    </p>
+                    <p>
+                        <label class="pg-2">肥胖:</label>
+                        <span class="value rightvalue">≥28</span>
+                    </p>
+                </div>
+            </section>
+        </div>
+    </ion-content>
+</ion-view>

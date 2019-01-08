@@ -1,0 +1,118 @@
+<ion-view hide-nav-bar="isIos" view-title="全部疫苗">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons> -->
+    <style>
+        input[readonly]:not(.cloned-text-input){
+            background-color: white
+
+        }
+        .vaccineslist_div{
+            position: relative;
+            background: #F7F7F7;
+            width: 100%
+        }
+        .vaccineslist_ul{
+            width: 100%;
+            position: relative;
+        }
+        .vaccineslist_li_top{
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
+            border-left: 5px solid #03B6EF;
+            border-bottom: 1px solid #F2F2F2;
+        }
+        .vaccineslist_li{
+            margin-top: 20px;
+            background: white;
+            width: 100%;
+        }
+        .vaccineslist_li_bottom{
+            margin-left: 15px;
+            margin-right: 15px;
+            border-bottom: 1px solid #F2F2F2;
+        }
+        .childhood_li_left{
+            width: 45%;
+            display: inline-block;
+            margin-left: 12px;
+            font-size: 18px;
+            white-space: normal;
+        }
+        .li_top{
+            margin-top: 15px;
+        }
+        .childhood_li_middle{
+            position: absolute;
+            font-size: 14px;
+            color: #AAAAAA
+        }
+        .childhood_li_bottom{
+            position: absolute;
+            right: 15px;
+            background: #CCF2FD;
+            color: #04B7EF;
+            padding: 4px;
+
+        }
+        .childhood_li_bottoms{
+            position: absolute;
+            right: 15px;
+            background: #FFECE1;
+            color: #F17D79;
+            padding: 4px;
+
+        }
+        .li_bottom{
+            margin-top: 10px;
+            margin-left: 12px;
+        }
+        .li_bottom input {
+            display: inline-block;
+            width: 30%;
+            color: #DADADA
+        }
+    </style>
+    <ion-content style="background-color:#F7F7F7">
+        <div class="vaccineslist_div">
+            <ul class="vaccineslist_ul">
+                <li class="vaccineslist_li" ng-repeat="item in allvaccinesdata">
+                     <div class="vaccineslist_li_top"> 
+                            <span style="margin-left: 10px">{{item.yueling}}</span>
+                    </div>
+                    <div class="vaccineslist_li_bottom"  ng-repeat="yimiao in item.jlList">
+                        <div class="li_top">
+                                <div class="childhood_li_left">
+                                    <span>{{yimiao.YMMC}}</span>
+                                </div>
+                                <span  class="childhood_li_middle" style="color: #666">第{{yimiao.YMJC}}剂（共{{yimiao.JZZJC}}剂）</span>
+                                <span  class="childhood_li_bottom" ng-if="yimiao.MIANFEI==1">免费</span>
+                                <span  class="childhood_li_bottoms" ng-if="yimiao.MIANFEI==0">收费</span>
+                        </div>
+                        <div class="li_bottom">
+                            <span style="color:#aaa">{{yimiao.GONGXIAO}}</span>
+                        </div>
+                        <div class="li_bottom">
+                                <input type="text" id="{{yimiao.ID}}" name="{{yimiao.ID}}" data-year="" data-month="" data-date="" style="color:#aaa"  ng-change="timechange(yimiao.ID)" ng-readonly="true" ng-model="yimiao.JZSJ"/>
+                                <i class="icon ion-edit" ng-click="datePiker(yimiao.ID,yimiao.JZSJ)" style="color: #03B6EF"></i>
+                        </div>
+                        <div style="height: 10px;"></div>
+                    </div>
+                  
+                </li>
+
+            </ul>
+        </div>
+       
+    </ion-content>
+</ion-view>

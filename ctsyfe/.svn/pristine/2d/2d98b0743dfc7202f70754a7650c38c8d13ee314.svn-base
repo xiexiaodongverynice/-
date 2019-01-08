@@ -1,0 +1,188 @@
+<ion-view hide-nav-bar="isIos" view-title="药品指南" class="color-6 ypzn">
+    <style>
+        .foot_wrap {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            z-index: 99;
+            /* min-height: 44px; */
+        }
+        
+        .foot {
+            padding: 9px 10px;
+            text-align: center;
+            height: 48px;
+        }
+        
+        .footText {
+            height: 100% !important;
+            outline: none;
+            border: none;
+            border-radius: 40px;
+            margin: 2px 0;
+            background: #eff0f4;
+            padding: 6px 6px;
+            position: relative;
+            line-height: 20px;
+            width: 80%;
+            overflow-y: hidden;
+            font-size: 18px;
+        }
+        .yuyinimgsize{
+        font-size: 35px;
+    	width: 60px;
+    	height: 60px;
+	    color: #FFF;
+	    border-color: #2db4ee;
+	    -webkit-text-stroke: 1px #fafafa;
+	    background: #2db4ee;
+	    box-shadow: 0 0 2px #2db4ee;
+	    margin: 10px;
+    	}
+        
+        .searrh-title {
+            color: #333;
+            height: 40px;
+            line-height: 42px;
+        }
+        
+        .searrh-title label {
+            font-size: 16px;
+        }
+        
+        .searrh-title i {
+            margin-top: 12px;
+        }
+        
+        .span-his-btn {
+            display: inline-block;
+            color: #666;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            margin: 0 10px 10px 0;
+            padding: 5px;
+            border-radius: 2px;
+        }
+        
+        .search-p {
+            margin: 0px 15px;
+            border-bottom: 1px solid #dedede;
+        }
+        .show_yp_list {
+            overflow: hidden;
+            border-bottom: 1px solid #dedede;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+        
+        .tagTab {
+            background: #FFFFFF;
+            color: aqua;
+        }
+        
+        .yp_sub {
+            font-size: 15px;
+        }
+        
+        .titlecolor {
+            color: #fff;
+            background-color: #18b4ed;
+        }
+        
+        .chooseCurrent {
+            color: #18B4ED;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center;">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a ng-click="back()">
+                <button class="button button-clear icon ion-ios-home-outline">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div class="bar item-input-inset" style="background: #f3f4f5">
+            <div class="item-input-wrapper" style="background: #fff;">
+                <button ng-click="searchDrugName()" type="button" name="" class="button button-clear ion-android-search" style="color: #999; font-size: 20px; height: 28px;"></button>
+                <input ng-model="data.keyword" type="search" ng-change="jibinglist()"  id="keyword"  name="keyword" ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="{{inputHold}}" > 
+                <i ng-click="clean()" ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']" style="font-size: 16px; padding-right: 8px; padding-top: 1px;height:28px;"></i>
+                <i ng-click="clean()" style="font-size: 20px; padding-right: 8px;height:28px;line-height:28px;color:#ccc" class="icon iconfont icon-yuyin"></i>
+            </div>
+         </div>
+    </nav>
+    <ion-content delegate-handle="dashboard" ng-style="{top:(isIos)? '60px': '104px'}" style="padding-top: 0px;background-color:#F8F8F8">
+        <div ng-if="loadtab" style="background-color:#fff">
+            <div ng-if="historyList.length != 0" class="search-p">
+                <div class="searrh-title">
+                    <label>最近搜索</label>
+                    <i class="icon iconfont icon-delet_SFontCN" style="float: right;margin-right: 5px;" ng-click="deleteRecord()"></i>
+                </div>
+                <span class="span-his-btn" ng-repeat="it in historyList" ng-click="show_yp_list(it)">{{it}}</span>
+            </div>
+
+            <div ng-if="hostSearchList.length != 0" class="search-p">
+                <div class="searrh-title">
+                    <label>热门搜索</label>
+                </div>
+                <span class="span-his-btn" ng-repeat="item in hostSearchList" ng-click="show_yp_list(item)">{{item}}</span>
+            </div>
+        </div>
+        <div ng-if="!loadtab" style="background-color:#fff">
+            <ul>
+                <div ng-repeat='micItem in micList'>
+                    <li class="show_yp_list" ng-click="go_yp_detail(micItem.id,micItem.tymc,micItem.spmc)">
+                        <span ng-if="micItem.spmc!=''" class="show_yp_info" style="font-size: 16px;">
+                            {{micItem.tymc}}
+                            <!-- <span class="yp_sub">({{micItem.spmc}}) -->
+                            <span class="yp_sub">
+                                <span style="float : right">
+                                    <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span>
+                                    <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                                    <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                                </span>
+                            </span>
+                        </span>
+                        <span ng-if="micItem.spmc==''" class="show_yp_info">{{micItem.tymc}}
+                            <!-- <span class="yp_sub">({{micItem.cjsx}}) -->
+                            <span class="yp_sub">
+                                <span style="float : right">
+                                    <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span>
+                                    <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                                    <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                                </span>
+                            </span>
+                        </span>
+                        </span>
+                        <span ng-if="micItem.spmc && (!micItem.count || micItem.count==1 )" class="show_yp_info" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin-top: 5px; font-size:14px; color: #999;">
+                            {{micItem.spmc}}
+                        </span>
+                        <span ng-if="!micItem.spmc && (!micItem.count || micItem.count==1 ) && micItem.cjsx " class="show_yp_info yp-spmc">
+                            {{micItem.cjsx}}
+                        </span>
+                        <span class="show_yp_info yp-discription" ng-bind-html="micItem.syz" compile-html>
+                        </span>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </ion-content>
+    <footer ng-if="loadtab" class="foot_wrap" id="foot_wrap">
+        <!-- 按住说话图标 -->
+        <div style="display: flex; justify-content: space-around;" class="inputpanel">
+            <div class="flexcolumn" ng-class="{true: 'zBot', false: 'zTop'}[zIndex]">
+                <span style="color: #999999;" ng-bind="data.voiceTip"></span>
+                <div>
+                    <i ng-touchstart="startRecord($event)" ng-touchmove="moveaction($event)" ng-touchend="finishRecord($event)"
+                        ng-touchcancel="finishRecord($event)" class="flexcircle icon iconfont icon-yuyin yuyinimgsize"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+</ion-view>

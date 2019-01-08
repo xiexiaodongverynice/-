@@ -1,0 +1,19 @@
+<ion-scroll class="city_group">
+    <ion-item-group ng-if="cityhistory.length">
+        <ion-item-divider class="divider">历史记录<a ng-click="delhistory()">清除记录</a></ion-item-divider>
+        <div class="city-div">
+            <button class="button button-city" ng-repeat="item in cityhistory track by item.csdm" ng-click="choose(item)">{{item.mc}}</button>
+        </div>
+    </ion-item-group>
+    <!-- <ion-item-group>
+        <ion-item-divider class="divider" id="热">热门城市</ion-item-divider>
+        <ion-item ng-repeat="item in value" ng-click="choose(item)">{{item}}</ion-item>
+    </ion-item-group> -->
+    <ion-item-group  ng-repeat="(key, value) in cityData">
+        <ion-item-divider class="divider" id="anchor{{key}}">{{key}}</ion-item-divider>
+        <ion-item ng-repeat="city in value" ng-click="choose(city)">{{city.mc}}</ion-item>
+    </ion-item-group>
+</ion-scroll>
+<div class="city_anchor">
+    <a href="" ng-click="goto(key)" ng-repeat="(key, value) in cityData">{{key}}</a>
+</div>

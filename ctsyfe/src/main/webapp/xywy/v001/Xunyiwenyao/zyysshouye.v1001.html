@@ -1,0 +1,125 @@
+<ion-view hide-nav-bar="isIos" view-title="中医养生">
+	<ion-nav-buttons side="left">
+		<div>
+			<a nav-direction="back" href="javascript:history.back()">
+				<button class="button button-clear icon ion-chevron-left">
+				</button>
+			</a>
+		</div>
+	</ion-nav-buttons>
+
+	<ion-nav-buttons side="right">
+		<div>
+			<a nav-direction="back">
+				<go-home-android></go-home-android>
+			</a>
+		</div>
+	</ion-nav-buttons>
+
+	<style>
+		.zyys-content {
+			display: -webkit-inline-box;
+			display: -ms-inline-flexbox;
+			display: inline-flex;
+
+			width: 100%;
+			padding: 10px 7px;
+
+			border-bottom: 1px solid #ddd;
+			background: #fff;
+
+			-webkit-box-pack: justify;
+
+			-ms-flex-pack: justify;
+
+			justify-content: space-between;
+
+			border-bottom: 1px solid #ddd;
+			height: 70px
+		}
+
+		.zyys-content .zyys-content-msg {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			-ms-flex-direction: column;
+			flex-direction: column;
+
+			padding-left: 10px;
+
+			-webkit-box-flex: 1;
+
+			-ms-flex-positive: 1;
+
+			flex-grow: 1;
+			padding-top: 0px;
+			width: 70%
+		}
+
+		.zyys-img {
+			display: block;
+			over-flow: hidden;
+			width: 100%;
+			height: 100%;
+
+			vertical-align: middle;
+		}
+
+		.zyys-article-name {
+			font-size: 110%;
+			font-weight: 600;
+			padding-bottom: 0px
+		}
+
+		.zyys-span-center {
+			/* position: absolute;
+		    top: 50%;
+		    transform: translateY(-50%); */
+			padding-top: 5px;
+			float: left;
+		}
+
+		.zyys-jieshao {
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 3;
+			overflow: hidden;
+			color: #444;
+		}
+
+		.zyys-title {
+			margin-top: 15px;
+			margin-bottom: 10px;
+		}
+
+		.zyys-hr {
+			margin-top: 15px;
+			margin-bottom: 25px;
+		}
+	</style>
+	<ion-content>
+		<div style="margin:10px;" ng-click="open_win('sljk.html')">
+			<div>
+				<img class="zyys-img" ng-src="img/sanliao.jpg" alt="">
+			</div>
+			<div style="margin-left:10px">
+				<h4 class="zyys-title">三疗中心</h4>
+				<p class="zyys-jieshao">{{sanliao}}</p>
+			</div>
+			<hr class="zyys-hr">
+		</div>
+		<div style="margin:10px;" ng-click="open_win('http://u244637.viewer.maka.im/k/RY8HSN06')">
+			<div>
+				<img class="zyys-img" ng-src="img/qixiu.jpg" alt="">
+			</div>
+			<div style="margin-left:10px;">
+				<h4 class="zyys-title">七修书院</h4>
+				<p class="zyys-jieshao">{{qixiu}}</p>
+			</div>
+			<hr class="zyys-hr">
+		</div>
+
+	</ion-content>
+</ion-view>

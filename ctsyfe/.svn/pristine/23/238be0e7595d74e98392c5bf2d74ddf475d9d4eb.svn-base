@@ -1,0 +1,357 @@
+<ion-view hide-nav-bar="isIos" view-title="{{title}}" class="yyjh">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css">
+        .foot_wrap {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            z-index: 99;
+        }
+
+        .foot {
+            padding: 9px 10px;
+            text-align: center;
+            height: 48px;
+        }
+
+        .footText {
+            height: 100% !important;
+            outline: none;
+            border: none;
+            border-radius: 40px;
+            margin: 2px 0;
+            background: #eff0f4;
+            padding: 6px 6px;
+            position: relative;
+            line-height: 20px;
+            width: 80%;
+            overflow-y: hidden;
+            font-size: 18px;
+        }
+
+        .more_wrap {
+            margin: 0 5%;
+            padding: 5% 0;
+            border-top: 1px solid #eff0f4;
+        }
+
+        .more_wrap .more_item {
+            width: 18%;
+            margin: 2% 2%;
+            float: left;
+            text-align: center;
+            color: #999;
+            height: 58px;
+        }
+
+        ol li label {
+            font-size: 13px !important;
+        }
+
+        .btn_show_jjList {
+            width: 90px;
+            height: 50px;
+            text-align: center;
+            float: right;
+            border-bottom-left-radius: 35px;
+            border-top-left-radius: 35px;
+            color: #2db4ee;
+            margin-top: 20px;
+            clear: both;
+            background-color: white;
+            opacity: 0.9;
+            border: 1px solid #ebebeb;
+        }
+
+        .jjypList {
+            float: right;
+            width: 100%;
+            margin-top: 8px;
+            overflow: hidden;
+            background-color: rgb(255, 255, 255);
+        }
+
+        .jjypList ul .jjList:last-child {
+            padding-bottom: 10px;
+        }
+
+        .nldList {
+            color: #2db4ee;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .blypList {
+            float: right;
+            width: 100%;
+            margin-top: 8px;
+            overflow: hidden;
+            background-color: rgb(255, 255, 255);
+        }
+
+        .jbsslmxx {
+            padding: 0;
+        }
+
+        .jbsslmxx .header-top {
+            width: 1000px;
+            padding: 10px;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            height: 43px;
+        }
+
+        .jbsslmxx .header-top span {
+            display: inline-block;
+            font-size: 1.5em;
+            line-height: 1.2;
+            color: #FF9600;
+            vertical-align: middle;
+        }
+
+        .jbsslmxx .close {
+            position: absolute;
+            line-height: 2em;
+            top: 1.25em;
+            right: 1.25em;
+        }
+
+        .jbsslmxx .close i {
+            opacity: 0.5;
+            font-size: 2em;
+            color: #333;
+        }
+
+        .jbsslmxx .mainpadding {
+            padding: 0 10px 5px 10px;
+            margin-bottom: 5px;
+        }
+
+        .jbsslmxx .mainpadding.lm {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .mainpadding h3 {
+            font-size: 18px;
+            margin: 0;
+        }
+    </style>
+    <!-- <header ng-show="true" style="z-index: 1;position: fixed;top: 45px;width: 100%;opacity: 0.9;border-radius: 10px;" >
+    <div>
+     <gun-dong yonghu-input="yonghuinput" title-sx="curgn"></gun-dong>
+    </div> 
+    </header> -->
+    <!--  <header ng-show="true" style="z-index: 1;position: fixed;width: 100%;border-radius: 10px;" ng-style="{top:(isIos)? '15px':'45px'}"> -->
+    <!-- <div class="newstart-pos">
+        <new-start gn="curgn" message-arr="messageArr" question-type="questiontype"></new-start>
+    </div> -->
+
+
+    <!--  </header> -->
+    <ion-content ng-click="isHidePopup()" scroll="false">
+        <div style="display: none">
+            <input style="display: none;" name="su_id" id="suId">
+            <input style="display: none;" name="wei_id" id="weiId">
+            <span id="showGeneral">点击开始</span>
+        </div>
+        <!--遮罩层 <div ng-if="start" class="backdrop visible active" style="bottom:205px"></div> -->
+        <!-- ng-style="{bottom:(!data.hideVoice && inputMethod==='voice')?'134px':'44px'}" -->
+        <ion-scroll style="position: absolute;top:0;bottom:44px;width:100%;height:auto;overflow-y: hidden;" ng-style="stylebottom()"
+            delegate-handle="small" overflow-scroll="false">
+            <message-dialog message-data="item" is-ios="isIos" ng-repeat="item in messageArr track by $index"></message-dialog>
+        </ion-scroll>
+        <!-- <div ng-show="isshowimg" style="float: left;position:absolute;top: 30%;left: 20%;text-align: center;"><img src="img/yyquxiao.jpg" style="width: 60%;height:50%;opacity:0.7"><br><span style="margin-top: -30px;color: #18b4ed;position: relative;"ng-bind="data.voiceTip"></span></div> -->
+        <div ng-show="isshowimg" style="float: left; position: absolute; top: 30%; left: 20%; text-align: center;">
+            <img src="img/yyquxiao.jpg" style="width: 65%; height: 50%; opacity: 0.7">
+            <br>
+            <span style="margin-top: -30px; color: white; position: relative; float: left; width: 100%;" ng-bind="data.voiceTip"></span>
+        </div>
+    </ion-content>
+    <footer class="foot_wrap" id="foot_wrap" ng-switch on="inputMethod">
+        <!-- 语音输入 -->
+        <div ng-switch-when="voice" class="yy-pan">
+            <input type="checkbox" id="{{'checkbox'+randomId}}" class="hide" ng-model="data.hideVoice" ng-change="resize()">
+            <div ng-click="switchInput()" class="flexcolumn jp-sw">
+                <i class="icon iconfont icon-jianpan"></i>
+            </div>
+            <div style="display: flex; justify-content: space-around;" class="inputpanel">
+
+                <div class="flexcolumn" ng-class="{true: 'zBot', false: 'zTop'}[zIndex]">
+                    <span ng-bind="data.voiceTip"></span>
+                    <div ng-class="start?'circle-recording flexcircle circle-warp':'flexcircle circle-warp'">
+                        <i ng-touchstart="startRecord($event)" ng-touchmove="moveaction($event)" ng-touchend="finishRecord($event)"
+                            ng-touchcancel="finishRecord($event)" class="flexcircle  icon iconfont icon-yuyin"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--   键盘输入 -->
+        <div ng-switch-when="keyboard" class="choose-item foot input-bar jp-pan">
+            <i ng-click="switchInput()" class="icon iconfont icon-yuyin"></i>
+            <!--  <input ng-if="inputMethod='keyboard'" ng-model="data.textValue" autofocus make-focus="inputFocus" type="text" style="border-bottom: 1px solid rgb(221, 221, 221);flex-grow: 1;font-size: 18px;line-height: 20px;padding: 6px;"> -->
+            <input ng-if="inputMethod='keyboard'" class="input-none" ng-model="data.textValue" autofocus make-focus="inputFocus"
+                type="text" placeholder="{{inputtishi}}">
+            <!-- <i ng-click="send($event);" ng-disabled="data.textValue" ng-style="{color:data.textValue?'#0e0':''}" class="mainicon ion-android-send"></i> -->
+            <span ng-click="send($event);" ng-disabled="data.textValue" class="sub-bt">发送</span>
+        </div>
+        <!-- class="choose-item foot input-bar" -->
+
+    </footer>
+    <script id="jbssbmcx/modal.v1001.html" type="text/ng-template">
+        <ion-modal-view>
+            <style>
+                .jbsslmxx .wt-list li {
+                    margin: 1.25em;
+                    border-bottom: 1px solid #f8f8f8;
+                }
+                
+                .jbsslmxx .en-r,
+                .jbsslmxx .zn-l {
+                    padding: 0 10px;
+                }
+                
+                .jbsslmxx li{
+                    display:table-cell;
+                    vertical-align:top;
+                }
+                .jbsslmxx li:first-child{
+                    padding:0 0 0 10px;
+                    width:10%;
+                    white-space:nowrap;
+                }
+                .jbsslmxx li:nth-child(2){
+                    width:45%;
+                }
+                .jbsslmxx li:last-child{
+                    width:45%;
+                }
+                .jbsslmxx li i,
+                .jbsslmxx li i {
+                    font-size: 8px;
+                }
+                
+                .jbsslmxx article {
+                    color: #333;
+                    font-size: 11px;
+                    margin-bottom: 11px;
+                }
+                .jbsslmxx article img{
+                   width:100%;
+                }
+                
+                .jbsslmxx article ul {
+                    display:table-row;
+                }
+                
+                .jbsslmxx article h4 {
+                    color: #333;
+                    font-size: 11px;
+                }
+            </style>
+            <div class="jbsslmxx">
+            <div class="header-top">
+                    <span>类目详情</span>
+                    <div class="close" ng-click="jbssmodal.hide()"><i class="icon iconfont icon-guanbi1"></i> </div>
+                </div>
+                <div class="mainpadding lm">
+                    <h3 class="inline">{{curJbSs.mc}}</h3>
+                </div>
+            </div>
+            <ion-content class="jbsslmxx"  style="top:91px;" id="jbsslm{{modalNum}}">
+                <div class="lm-list">
+                    <article ng-repeat="item in modalData" ng-click="modalSubmit(item.bm)" repeat-finish ng-class="{true:'cur-lm'+modalNum,false:''}[curBm==item.bm]">
+                        <ul>
+                            <li>{{item.bm}}<input type="hidden" id="item-{{item.bm}}"/></li>
+                            <li class="zn-l">
+                                <img ng-if="item.tucn" ng-src="{{imgBaseUrl}}{{item.tucn}}" />
+                                <pre ng-if="!item.tucn">{{item.zwmc}}</pre>
+                            </li>
+                            <li class="en-r">
+                                <img ng-if="item.tuen" ng-src="{{imgBaseUrl}}{{item.tuen}}" />
+                                <pre ng-if="!item.tuen">{{item.ywmc}}</pre>
+                            </li>
+                        </ul>
+                        <!-- <ul>
+                            <li class="zn-l"><pre>{{item.zwjs}}</pre>
+
+                            </li>
+                            <li class="en-r">
+                                    <pre>{{item.ywjs}}</pre>
+                            </li>
+                        </ul> -->
+                        <!-- <ul>
+                            <li class="zn-l">
+                                <ul class="l-st">
+                                    <li><i class="icon iconfont icon-dian" />穿孔</li>
+                                    <li><i class="icon iconfont icon-dian" />破裂或穿孔后的腹膜炎(弥漫性)</li>
+                                    <li><i class="icon iconfont icon-dian" />破裂</li>
+                                </ul>
+                            </li>
+                            <li class="en-r">
+                                <ul class="l-st">
+                                    <li><i class="icon iconfont icon-dian" />generalized peritionitis</li>
+                                    <li><i class="icon iconfont icon-dian" />peritionitis</li>
+                                    <li><i class="icon iconfont icon-dian" />rupture</li>
+                                </ul>
+                            </li>
+                        </ul> -->
+
+                    </article>
+                </div>
+
+            </ion-content>
+        </ion-modal-view>
+    </script>
+    <script id="jbssbmcx/jbxqmodal.v1001.html" type="text/ng-template">
+        <ion-modal-view>
+            <style>
+
+            </style>
+            <ion-content class="jbsslmxx">
+                <div class="header-top">
+                    <!-- <span>{{curJbSs.mc}}的类目信息</span> -->
+                    <span>疾病详情</span>
+                    <div class="close" ng-click="jbxqmodal.hide()"><i class="icon iconfont icon-guanbi1"></i> </div>
+                </div>
+                <div ng-if="jbxq.haveResult" class="detail" style="padding-bottom: 20px">
+                    <div class="mainpadding">
+                        <h3 class="inline">{{jbxq.title}}</h3>
+                        <span ng-bind="jbxq.spmc" class="title_spmc"></span>
+                        <span ng-if="showotc" style="color:#18b4ed;" ng-bind="jbxq.otc"></span>
+                        <span ng-if="showybyw" style="color:green;" ng-bind="jbxq.ybyw"></span>
+                        <span ng-if="showjbyw" style="color:rgb(255, 160, 21);" ng-bind="jbxq.jbyw"></span>
+                        <p ng-bind="jbxq.subtitle"></p>
+                    </div>
+                    <dl>
+                        <dt ng-repeat-start="item in jbxq.items">
+                            <label class="checklabel" for="{{'id'+$id+$index}}">
+                                <h4 ng-bind="item.title"></h4>
+                                <i ng-class="item.show ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+                            </label>
+                        </dt>
+                        <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}">
+                        <dd ng-repeat-end>
+                            <audio-content>
+                                <div class="ptext" ng-if="!item.content.constructor.isArray" ng-bind-html="item.content||'无相关信息'" compile-html></div>
+                                <!---->
+                                <div ng-if="item.content.constructor.isArray">
+                                    <p class="ptext" style="margin-bottom: 2px;" ng-repeat="p in item.content track by $index" ng-bind-html="p" compile-html></p>
+                                </div>
+                            </audio-content>
+                        </dd>
+                    </dl>
+                </div>
+
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>

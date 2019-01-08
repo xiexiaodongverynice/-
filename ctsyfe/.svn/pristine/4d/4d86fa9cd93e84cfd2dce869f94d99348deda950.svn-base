@@ -1,0 +1,282 @@
+<ion-view hide-nav-bar="isIos" view-title="药品指南" class="color-6 ypzn">
+    <style>
+        .titleBox {
+            position: absolute;
+            width: 100%;
+            background-color: #fff;
+            z-index: 10;
+            border-bottom: 1px solid #dedede;
+        }
+        
+        .titleBox>ul {
+            overflow: hidden;
+            width: 90%;
+            border: 1px solid #18b4ed;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin: 10px auto;
+        }
+        
+        .tabTitle {
+            width: 50%;
+            float: left;
+            text-align: center;
+            /*border: 1px solid #dedede;*/
+            height: 38px;
+            color: #18B4ED;
+            font: 16px Microsoft Yahei;
+            line-height: 36px;
+        }
+        /*ul>.show_yp_list:first-child{*/
+        /*border-top: 1px solid #dedede;*/
+        /*}*/
+        
+        .ypzn .show_yp_list {
+            margin-right: 24px;
+        }
+        .show_yp_info {
+            width: 85%;
+            margin-left: 5px;
+            font: 15px Microsoft Yahei;
+            padding: 10px 0;
+            display: inline-block;
+        }
+        
+        .yp_sub {
+            font-size: 15px;
+        }
+        
+        .titlecolor {
+            /*color: #18bebe;*/
+            /*border-left: 20px solid transparent;*/
+            /*border-right: 20px solid transparent;*/
+            /*border-bottom: 41px solid #FFF;*/
+            color: #fff;
+            background-color: #18b4ed;
+        }
+        
+        .tuBiao {
+            float: right;
+            margin-right: 30px;
+            font-size: 18px;
+            padding: 15px 0;
+        }
+        /*查询没有没有返回值时的提示框样式*/
+        
+        .popup-body span {
+            text-align: -webkit-center;
+            width: 100%;
+            margin: 7px auto;
+            display: inline-block;
+        }
+        
+        .popup-head {
+            background-color: #18b4ed;
+        }
+        
+        .popup-head h3 {
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        /*
+.dropdown:hover .dropdown-content {
+  display: block;
+}*/
+        
+        .tabClick {
+            display: block;
+        }
+        
+        .chooseCurrent {
+            color: #18B4ED;
+        }
+        
+        .bar.item-input-inset .item-input-wrapper input {
+            padding-left: 0px;
+            width: 94%;
+            height: 28px;
+            background: 0 0;
+            line-height: normal;
+        }
+        /* .tabCurrentClass{
+    border-bottom: 3px solid #18B4ED
+} */
+        
+        .otc {
+            color: #18B4ED;
+            margin-left: 10px;
+        }
+        
+        .jbyw {
+            color: rgb(255, 160, 21);
+        }
+        
+        .ybyw {
+            color: green;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .chooseCurrent {
+            color: #18B4ED;
+        }
+        
+        .notChoose {
+            color: #333
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 126px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+        }
+        
+        .tabClick {
+            display: block;
+        }
+        
+        .dropdown-content li {
+            font-size: 14px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+        
+        #sortButton {
+            padding-right: 10px;
+        }
+        
+        #sortButton span {
+            margin-left: 15px;
+        }
+    </style>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center;">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a ng-click="back()">
+                <button class="button button-clear icon ion-ios-home-outline">
+                    </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div style="background-image: none;top:2px; overflow:visible" class="bar item-input-inset">
+            <div class="item-input-wrapper" ng-click="displaySelect()">
+                <button ng-click="searchDrugName()" type="button" name="" class="button button-clear ion-android-search" style="color: #ccc; font-size: 20px; height: 28px; padding-top: 1px;"></button>
+                <input ng-model="data.keyword" ng-change="searchDrugName()" type="search" ng-class="{true: 'inputIos',false: ''}[isIos]" placeholder="请输入药品名称"> <i ng-click="clean()" ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']"
+                    style="font-size: 16px; padding-right: 8px; padding-top: 1px;height:28px;"></i>
+
+            </div>
+            <div class="dropdown">
+                <div ng-click="changeButton()" id="sortButton">
+                    <span ng-if="currentPx==1">全部药品</span>
+                    <span ng-if="currentPx==2">儿童禁忌</span>
+                    <span ng-if="currentPx==3">孕妇禁忌</span>
+                    <span ng-if="currentPx==4">老人禁忌</span>
+                    <span ng-if="currentPx==5">儿童不良反应</span>
+                    <span ng-if="currentPx==6">孕妇不良反应</span>
+                    <span ng-if="currentPx==7">老人不良反应</span>
+                    <i class="ion-android-arrow-dropdown"></i>
+                </div>
+                <div class="dropdown-content" style="right: -10px; top: 30px;" ng-class="{true:'tabClick',false:''}[isShowPx]">
+                    <div style="margin-left: 27px;margin-top: -29px;width:0px;height:0px;border-width: 10px;border-style: solid;border-color: white transparent transparent;transform: rotate(180deg);"></div>
+                    <ul>
+                        <li ng-click="menuSearch(1,'',0)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 1]">全部药品</li>
+                        <li ng-click="menuSearch(2,'1',1)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 2]">儿童禁忌</li>
+                        <li ng-click="menuSearch(3,'2',1)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 3]">孕妇禁忌</li>
+                        <li ng-click="menuSearch(4,'3',1)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 4]">老人禁忌</li>
+                        <li ng-click="menuSearch(5,'1',2)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 5]">儿童不良反应</li>
+                        <li ng-click="menuSearch(6,'2',2)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 6]">孕妇不良反应</li>
+                        <li ng-click="menuSearch(7,'3',2)" ng-class="{true:'chooseCurrent',false:'notChoose'}[currentPx == 7]">老人不良反应</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div style=" margin-top: -6px;">
+            <ul>
+                <li class="tabSelect" style="margin-left:0px" ng-class="{true:'tabCurrentClass',false:''}[flag1]">
+                    <div class="dropdown" style="width: 100%">
+                        <div ng-click="quanbuClick()">
+                            <span style="margin-left:-20px;" ng-class="{true:'chooseCurrent',false:''}[flag1]">全部药品</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="tabSelect" style="margin-left:0px" ng-class="{true:'tabCurrentClass',false:''}[flag2]">
+                    <div class="dropdown" style="width: 100%">
+                        <div ng-click="jinjiClick()">
+                            <span ng-model="rqlist1" style="margin-left:-15px;" ng-class="{true:'chooseCurrent',false:''}[flag2]">{{rqlist1.nld}}</span>
+                            <i class="ion-android-arrow-dropdown"></i>
+                        </div>
+                        <div class="dropdown-content" style="left: 0px;top: 50px;" ng-class="{true:'tabClick',false:''}[isShowJinjiList]">
+                            <div style="margin-left: 27px;margin-top: -29px;width:0px;height:0px;border-width: 10px;border-style: solid;border-color: white transparent transparent;transform: rotate(180deg);"></div>
+                            <ul>
+                                <li ng-repeat="item in rqType" ng-click="changeJinji(item)" ng-class="{true:'chooseCurrent',false:''}[rqlist1.nld == (item.nld + '禁忌')]">{{item.nld}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="tabSelect" ng-class="{true:'tabCurrentClass',false:''}[flag3]">
+                    <div class="dropdown" style="width: 100%">
+                        <div ng-click="buliangClick()">
+                            <span ng-model="rqlist2" ng-class="{true:'chooseCurrent',false:''}[flag3]">{{rqlist2.nld}}</span>
+                            <i class="ion-android-arrow-dropdown"></i>
+                        </div>
+                        <div class="dropdown-content" style="left: 0px;top: 50px;" ng-class="{true:'tabClick',false:''}[isShowBuliangList]">
+                            <div style="margin-left: 29px;margin-top: -29px;width:0px;height:0px;border-width: 10px;border-style: solid;border-color: white transparent transparent;transform: rotate(180deg);"></div>
+                            <ul>
+                                <li ng-repeat="item in rqType" ng-click="changeBuliang(item)" ng-class="{true:'chooseCurrent',false:''}[rqlist2.nld == (item.nld + '不良反应')]">{{item.nld}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div> -->
+    </nav>
+    <!-- <ion-content delegate-handle="dashboard" ng-click="isHidePopup()" ng-style="{top:(isIos)? '80px': '124px'}" style="padding-top: 0px;"> -->
+    <ion-content delegate-handle="dashboard" ng-click="isHidePopup()" ng-style="{top:(isIos)? '45px': '89px'}" style="padding-top: 0px;">
+        <ion-refresher on-refresh="micRefresh()" pulling-text="下拉刷新..." refreshing-icon="ion-loading-c"> </ion-refresher>
+        <ul>
+
+            <div ng-repeat='micItem in micList'>
+                <div style="background: #ebebeb;font-size: 1.3em;padding-left: 22px;line-height:30px;height: 30px;margin-top:-1px" ng-if="micItem.szm!=micList[$index-1].szm">{{micItem.szm}}</div>
+                <li class="show_yp_list" ng-click="go_yp_detail(micItem.id)">
+                    <span ng-if="micItem.spmc!=''" class="show_yp_info">{{micItem.tymc}}
+                    <span class="yp_sub">({{micItem.spmc}})
+                        <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                    <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                    <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span> 
+                    </span>
+                    </span>
+                    <span ng-if="micItem.spmc==''" class="show_yp_info">{{micItem.tymc}}
+                    <span class="yp_sub">({{micItem.cjsx}})
+                        <span class="otc" ng-if="micItem.isotc == '1'">OTC</span>
+                    <span class="ybyw" ng-if="micItem.ybyw == '1'">保</span>
+                    <span class="jbyw" ng-if="micItem.jbyw == '1'">基</span> 
+                    </span>
+                    </span>
+                    <!-- <span ng-if="micItem.isotc == '1'">OTC</span> -->
+                </li>
+            </div>
+
+        </ul>
+
+        <div ng-hide="task_hasMoreItem" style="text-align: center; margin-top: 15px;">
+            <span style="font-size: 14px; color: #8F8E94">{{reusltNullTip}}</span>
+        </div>
+        <ion-infinite-scroll ng-hide="isShow" immediate-check="false" on-infinite="loadMicMore()" distance="1%"></ion-infinite-scroll>
+    </ion-content>
+    <right-list cru-gn="'WYP'"></right-list>
+    <div ng-show="ishsowzimu&&zimu" id="dazimudiv" style="position: fixed;z-index: 2;background: #bcbcbc;width: 80px;height: 80px;text-align: center;vertical-align: middle;padding-top: 30px;font-size: 2em;margin-left: 40%;margin-top: 70%;border-radius: 50%;opacity: 0.8;color:white;">{{zimu}}</div>
+</ion-view>

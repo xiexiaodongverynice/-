@@ -1,0 +1,465 @@
+<ion-view hide-nav-bar="isIos" view-title="话题详情">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons> -->
+    <style>
+		input[type=text]{
+			padding-left: 2rem
+		}
+       .div-host{
+       		border-bottom: 0.8rem solid #ebebeb;
+       }
+       .host-title{
+		   	display: inline;
+       		font-size: 16px;
+       		padding: 1.87rem;
+       		margin-bottom: 0;
+       		padding-bottom: 1.25rem;
+			line-height: 5rem;
+       	
+       }
+       .cut-line{
+			margin: 0 1.25rem;
+			background-color:#ebebeb;
+			height:1px;
+			border:none;
+		}
+		.host-msg{
+			min-height:8.12rem;
+			margin: 0rem 1.25rem;
+			position: relative;
+		}
+		.host-pic{
+			width: 5rem;
+			height: 5rem;
+			border-radius: 5rem;
+			/* border: 1px solid #dedede; */
+			left: 0.62rem;
+			position: absolute;
+			top: 2.43rem;
+		}
+		.host-info{
+			position: relative;
+			min-height:8.12rem;
+			padding-left: 6.95rem;
+			padding-right:13.12rem;
+		}
+		.info-p{
+			margin-bottom:0rem;
+			padding-top:2rem;
+			font-size:16px;
+			color: #333;
+			line-height: 16px;
+		}
+		.info-sign{
+			font-size:12px;
+			background-color: #FF8400;	
+			color: #ffffff;
+			padding: 0rem 1rem;
+			border-radius: 1.5rem;
+			display: inline-block;
+			line-height: 20px;
+			margin-left: 10px;
+
+			
+		}
+		.info-time{
+			position: absolute;
+			color:#888;
+			font-size:2rem;
+			/* bottom: 1rem; */
+		}
+		.go-gc{
+			position: absolute;
+			right: 5.5rem;
+			top: 3rem;
+			display: inline-block;
+			height: 35px;
+			line-height: 35px;
+			padding: 0 10px;
+			font-size: 12px;
+			border: 1px solid #d9d9d9;
+			box-sizing: border-box;
+			border-radius: 15px;
+		}
+		.icon-quanzi {
+			color: #04B0F8;
+			font-size: 14px;
+			margin-right: 5px;
+		}
+		.host-content{
+			position: relative;
+			min-height:2rem;
+			margin-top: 1.87rem;
+			padding: 0rem 2rem;
+			font-size: 2rem;
+			overflow: hidden;
+			color: #666666;
+			line-height: 3.5rem;
+		}
+		.watch-time{
+			padding: 2rem;
+			color: #333;
+		}
+		.host-icon{
+			margin:0rem 2rem;
+			padding-top: 2.25rem;
+			height: 15rem;
+		}
+		.single-icon{
+			float: left;
+			width:49%;
+			text-align:center;
+		}
+		.visitor{
+			height: 5.2rem;
+			background-color: #F5FAFD;
+			padding-left:2rem;
+			padding-top: 1rem;
+			font-size: 1.75rem;
+		}
+		.visitor-right{
+			float: right;
+			margin-right: 2rem;
+		}
+		.visitor-right span{
+			margin-left: 1.87rem;
+			font-size: 1.5rem;
+			border: 1px solid #8F8E94;
+			border-radius: 0.8rem;
+			padding: 0.5rem;
+		}
+		.div-visit{
+			min-height: 6.56rem;
+			position:relative;
+			border-bottom: 0.8rem solid #ebebeb;
+		}
+		.visit-msg{
+			position: relative;
+			padding-left: 8.43rem;
+			padding-right: 6rem;
+			color: #333;
+			min-height: 6.56rem;
+		}
+		.pic2{
+			left: 1.75rem;
+			top: 1.62rem;
+		}
+		.visit-like{
+			width:2rem;
+			height:2.19rem;
+			position: absolute;
+			right: 1rem;
+			top: 3rem;
+		}
+		.visit-likes{
+			width:5.38rem;
+			height:2.19rem;
+			position: absolute;
+			right: 2rem;
+			top: 3rem;
+		}
+		.visit-name{
+			margin-top: 15px;
+			position: absolute;
+			font-size: 14px;
+		}
+		.visit-names{
+			margin-top: 40px;
+			position: absolute;
+			font-size: 14px;
+		}
+		.visit-content{
+			margin-top: 15px;
+			margin-left: 68px;
+			color: #333;
+			font-size: 1.87rem;
+			line-height: 3.2rem;
+		}
+		.visit-time{
+			font-size:1.5rem;
+			color: #999;
+			/* text-indent: 8rem; */
+			text-align: center;
+			margin-top: 20px
+			
+		}
+		.smalleye{
+			font-size: 16px;
+		}
+		.visitIsClick{
+			color:#FFA800;
+		}
+		.ListIsClick{
+			background-color:#8F8E94;
+			color:#fff;
+		}
+		.IsClick{
+			color:#C5C5C5;
+		}
+		.realyimg{
+			width: 2rem;
+			height: 2rem;
+			border-radius: 2rem;
+			top: 5rem;
+			position: absolute;
+		}
+		.realy-msa{
+			padding-left:2.5rem;
+			color: #333;
+			min-height: 6.56rem;
+		}
+		.realy-name{
+			font-size:1.5rem;
+			color: #999;
+			text-align: center
+		}
+		.realy-content{
+			margin: 0.75rem 1rem;
+			color: #333;
+			font-size: 14px;
+			line-height:25px;
+		}
+		.realy-tou{
+			color: #89D8F3;
+			font-size: 14px;
+			line-height:25px;
+		}
+		.deletetiezi{
+			position: absolute;
+			top: 10px;
+			right: 20px
+		}
+		.buttom_input{
+			width: 75%;
+			margin-left: 5%;
+			height: 4.3rem;
+			margin-top: 1rem;
+			border-radius: 4.3rem;
+			padding:0rem 2rem;
+			background: white;
+			color: #888;
+			line-height: 4.3rem;
+			text-align: left
+		}
+		.buttom_inputs{
+			width: 90%;
+			margin-left: 5%;
+			height: 4.3rem;
+			margin-top: 1rem;
+			border-radius: 4.3rem;
+			padding:0rem 2rem;
+			background: white;
+			color: #888;
+			line-height: 4.3rem;
+			text-align: left
+		}
+		.huifu_p{
+			position: relative;
+			color: green;
+		}
+		.huifu_span{
+			position: absolute;
+			right: 0;
+		}
+		.tubiao{
+			position: absolute;
+			right: 10px;
+			font-size: 32px;
+			top: 25px;
+		}
+		.liebiao{
+			position: absolute;
+			background: #F5FAFD;
+			width: 50%;
+			border-radius: 4px;
+			top: 60px;
+			right: 0;
+			z-index: 10;
+		}
+		.con-ret{  
+            border: 7px solid transparent;  
+            border-bottom-color:#F5FAFD;   
+            position: absolute;  
+            right: 12px;  
+            top:-15px;  
+        }
+		.shai_xuan_list{
+            text-align: left;
+            font-size: 18px;
+            height:50px;
+			line-height: 50px;
+			margin-left: 15px;
+			margin-right: 15px;
+			border-bottom: 1px solid #DEDEDE;
+        }
+		.pl_tubiao{
+			position: absolute;
+			right: 30px;
+			font-size: 32px;
+			top: 15px;
+		}
+		.ql_liebiao{
+			position: absolute;
+			background: #F5FAFD;
+			width: 45%;
+			border-radius: 4px;
+			top: 60px;
+			right: 20px;
+			z-index: 10;
+		}
+		.huifutext{
+			position: relative;
+			margin-top: 1.87rem;
+			color: #666666;
+			width: 75%;
+			margin-left: 68px;
+			background: #F6F7F6;
+		} 
+    </style>
+	<!-- <div style="width:100%; height:6rem;background-color:#18b4ed;position: fixed;bottom: 0rem;text-align: center;z-index: 10;">
+		<div ng-class="{true:'buttom_input',false:'buttom_inputs'}[isdelete]" ng-click="goComment()">
+			<span>想对他说点什么</span>
+		</div>
+		<div  class="deletetiezi" ng-if="isdelete">
+			<span ng-click="delete(tzxq.id,1)"><i class="icon icon ion-trash-a" style="font-size: 32px;color: black"></i></span>
+		</div>
+	</div> -->
+    <ion-content ng-click="closeall()">
+    	<div class="div-host">
+			<h1 class="host-title"  ng-if="tzxq.name!=null">{{tzxq.name}}</h1>
+			<hr class="cut-line" />
+			<div class="host-msg">
+			   <img class="host-pic" alt="" ng-src={{tzxq.usertouxiang}}> 
+			   <div class="host-info">
+			   		<p class="info-p">{{tzxq.username}}<span class="info-sign">楼主</span></p>
+			   		<span class="info-time">{{tzxq.ftsj|getDateDiff}}</span>
+					<span class="go-gc" ng-click="goguangchang({{tzxq.qid}})"><i class="icon iconfont icon-quanzi"></i>{{tzxq.qname}}</span>
+					<span class="tubiao" ng-click="changeslb($event)"><i class="icon ion-ios-more"></i></span>
+					<div class="liebiao" ng-if="isshowlb">
+						<div class="con-ret"></div>
+						<ul>
+							<li class="shai_xuan_list" ng-click="goComment()">
+								<span ><i class="icon ion-chatbox IsClick smalleye" ></i></span>
+								<span class="smalleye">评论</span>
+							</li>
+							<li class="shai_xuan_list" ng-click="changeState(tzxq)">
+								<span ><i class="icon ion-thumbsup smalleye" ng-class="{true:'visitIsClick',false:'IsClick'}[tzxq.dianzan==1]"></i></span>
+								<span ng-if="tzxq.dianzan!=1" class="smalleye">点赞</span>
+								<span ng-if="tzxq.dianzan==1" class="smalleye">取消点赞</span>
+							</li>
+							<li class="shai_xuan_list" ng-click="changeshoucang(tzxq)">
+								<span ><i class="icon ion-heart smalleye" ng-class="{true:'visitIsClick',false:'IsClick'}[tzxq.shoucang==1]"></i></span>
+								<span ng-if="tzxq.shoucang!=1" class="smalleye">收藏</span>
+								<span ng-if="tzxq.shoucang==1" class="smalleye">取消收藏</span>
+							</li>
+							<li class="shai_xuan_list" ng-if="isdelete" ng-click="delete(tzxq.id,1)">
+								<span ><i class="icon icon ion-trash-a IsClick smalleye" ></i></span>
+								<span class="smalleye">删除</span>
+							</li>
+							<li style="height:20px;"></li>
+						</ul>
+					</div>
+			   </div>
+			   
+			</div>
+			<p class="host-content">{{tzxq.neirong}}</p>
+			<div class="host-content" ng-if="tzxq.pictureList.length>0">
+				<img ng-if="tzxq.pictureList.length==1" ng-repeat="itemurl in tzxq.pictureList" class="full-image" style="height:10rem; width:30%" ng-src="{{itemurl.picture}}" ng-click="showimg(tzxq.pictureList,0)">
+				<div ng-if="tzxq.pictureList.length>1" ng-repeat="itemurl in tzxq.pictureList track by $index" ng-init="innerindex=$index" style="height: 10rem; width:25%;padding:0.3rem; margin:0.3rem;background:url({{itemurl.picture}});background-position: center;background-size: cover;background-repeat: no-repeat;float: left;" ng-click="showimg(tzxq.pictureList,innerindex)"></div>
+			</div>
+			
+			<div class="watch-time">
+				<span><i class="icon ion-eye smalleye IsClick"></i></span>&nbsp;&nbsp;{{tzxq.ckcs}}
+				<span style="margin-left: 20px"><i class="icon ion-thumbsup IsClick smalleye"></i></span>&nbsp;&nbsp;{{tzxq.dzcs}}
+			</div>
+			<!-- <div class="host-icon">
+				<div class="single-icon" style="border-right: 1px solid #D3D3D3">
+					<i class="icon ion-thumbsup" style="font-size:5rem" ng-class="{true:'visitIsClick',false:'IsClick'}[tzxq.dianzan==1]" ng-click="changeState(tzxq)"></i><br><i class="icon-bfont">点赞</i>
+				</div>
+				<div class="single-icon">
+					<i class="icon ion-heart" style="font-size:5rem;" ng-class="{true:'visitIsClick',false:'IsClick'}[tzxq.shoucang==1]" ng-click="changeshoucang(tzxq)"></i><br><i class="icon-bfont">收藏</i>
+				</div>
+			</div> -->
+		</div>
+		
+		<div class="visitor">
+			所有评论 （{{tzxq.pjcs}}） 
+			<div class="visitor-right">
+			<i style="font-size:1.5rem">只看</i>
+			<span ng-class="{true:'ListIsClick',false:''}[IsLouZhu]" ng-click="changeListState('owner')">楼主</span>
+			<span ng-class="{true:'ListIsClick',false:''}[IsZiJi]" ng-click="changeListState('myself')">自己</span>
+			</div>
+		</div>
+		<div class="div-visit" ng-repeat="x in huifulist">
+			<img class="host-pic pic2" alt="" ng-src={{x.usertouxiang}}> 
+			<div class="visit-msg">
+				<span class="visit-name">{{x.username}}</span>
+				<span class="visit-names">{{$index+1}}楼&nbsp;&nbsp;{{x.hfsj | getDateDiff}} 
+					<!-- <span ng-click="gorelay(x.id,x.tId)" ng-if="x.userId!=userids||x.huifuList.length>0" style="color: green">回复</span> -->
+				</span>
+				<span class="pl_tubiao" ng-click="changespl(x.id,$event)"><i class="icon ion-ios-more"></i></span>
+				<!-- <span class="visit-likes"><i class="icon ion-thumbsup" style="font-size:2rem;" ng-class="{true:'visitIsClick',false:''}[x.dianzan==1]" ng-click="changeVisitState(x)"></i>&nbsp;赞</span>
+				<span class="visit-like" ng-click="delete(x.id,2)"  ng-if="x.userId==userids"><i class="icon icon ion-trash-a" style="font-size: 20px;color: black"></i></span> -->
+				<div class="ql_liebiao" ng-if="isshowpl==x.id">
+					<div class="con-ret"></div>
+					<ul>
+						<li class="shai_xuan_list" ng-if="x.userId!=userids||x.huifuList.length>0"  ng-click="gorelay(x.id,x.tId)">
+							<span ><i class="icon ion-chatbox IsClick smalleye" ></i></span>
+							<span class="smalleye">回复</span>
+						</li>
+						<li class="shai_xuan_list" ng-click="changeVisitState(x)">
+							<span ><i class="icon ion-thumbsup smalleye" ng-class="{true:'visitIsClick',false:'IsClick'}[x.sfdz]"></i></span>
+							<span ng-if="!x.sfdz" class="smalleye">点赞</span>
+							<span ng-if="x.sfdz" class="smalleye">取消点赞</span>
+						</li>
+						<li class="shai_xuan_list" ng-if="x.userId==userids" ng-click="delete(x.id,2)">
+							<span ><i class="icon icon ion-trash-a IsClick smalleye" ></i></span>
+							<span class="smalleye">删除</span>
+						</li>
+						<li style="height:20px;"></li>
+					</ul>
+				
+				</div>
+			</div>
+			<p class="visit-content">{{x.hfnr}}</p>
+			<div class="host-content" ng-if="x.pictureList.length>0">
+				<img ng-if="x.pictureList.length==1" ng-repeat="itemurl in x.pictureList" class="full-image" style="height:10rem; width:33%" ng-src="{{itemurl.picture}}" ng-click="showimg(x.pictureList,0)">
+				<div ng-if="x.pictureList.length>1" ng-repeat="itemurl in x.pictureList track by $index" ng-init="innerindex=$index" style="height: 10rem; width:25%;padding:0.3rem; margin:0.3rem;background:url({{itemurl.picture}});background-position: center;background-size: cover;background-repeat: no-repeat;float: left;" ng-click="showimg(x.pictureList,innerindex)"></div>
+			</div>
+			<div  ng-if="x.huifuList.length>0" class="huifutext" >
+				
+				<!-- <p class="huifu_p">回复信息 <span class="huifu_span" ng-click="delete(x.id,3)" ng-if="item.userId==userids"><i class="icon icon ion-trash-a" style="font-size: 20px;color: black"></i></span></p> -->
+				<!-- <img  class="realyimg" ng-src={{item.usertouxiang}}>  -->
+				<!-- <div class="realy-msa">
+					<span class="realy-name">{{item.username}}</span>
+				</div> -->
+				<div ng-repeat="item in x.huifuList" style="padding:5px">
+					<span class="realy-tou">{{item.username}}:</span>
+					<span  class="realy-tou" ng-if="item.hfusername!=null"><span style="color:black">回复</span>&nbsp;&nbsp;{{item.hfusername}}</span>
+					<span class="realy-content">{{item.hfnr}}</span>
+					<span class="realy-tou" style="display: inline-block;" ng-click="delete(item.id,3)" ng-if="item.userId==userids" >删除</span>
+					<span class="realy-tou" style="display:inline-block" ng-click="gohuifurelay(item.qId,item.tId,item.username)"  ng-if="item.userId!=userids" >回复</span>
+				</div>
+				<!-- <span ng-if="x.hfsl>=5" ng-click="gethuifualllist($event,x.id)" >加载更多</span> -->
+				
+			</div>
+			<div class="watch-time">
+				<span><i class="icon ion-thumbsup IsClick smalleye"></i></span>&nbsp;&nbsp;{{x.dianzan}}
+			</div>
+			
+		</div>
+
+		<!-- 撑底部 -->
+		<div style="width:100%;height:6rem;"></div>
+    </ion-content>
+</ion-view>

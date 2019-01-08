@@ -1,0 +1,41 @@
+<ion-view hide-nav-bar="isIos" view-title="手动记录血糖" class="jkda-item-edit">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style type="text/css"></style>
+    <ion-content>
+        <form id="xueTangForm">
+            <fieldset class="jbxx">
+                <div>
+                    <label for="xueTang">血糖值</label>
+                    <div class="input-div shuru">
+                        <input type="number" id="xueTang" name="xueTang" step="0.01" placeholder="请输入血糖值" ng-model="subData.xueTang" ng-change="valiForm()" required />
+                        <span class="danwei"> <label for="xueTang">mmol/L</label></span>
+                    </div>
+
+                </div>
+                <div>
+                    <label for="ceLiangShiDuan">测量时间段</label>
+                    <input type="text" id="ceLiangShiDuan" name="ceLiangShiDuan" placeholder="请选择时间段" ng-model="subData.ceLiangShiDuanValue" readonly="readonly" ng-click="sjdClick()"  unselectable="on"  onfocus="this.blur()" required />
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div>
+                    <label for="celiangriqi">测量日期</label>
+                    <input type="text" id="celiangriqi" name="celiangriqi" readonly="readonly" data-year="" data-month="" data-date="" ng-blur="valiForm()" ng-click="datePiker('celiangriqi')" unselectable="on"  onfocus="this.blur()" required/>
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+                <div>
+                    <label for="celiangshijian">测量时间</label>
+                    <input type="time" id="celiangshijian" name="celiangshijian" ng-blur="valiForm()" required />
+                    <i class="icon ion-ios-arrow-right i_tuBiao"></i>
+                </div>
+            </fieldset>
+
+        </form>
+    </ion-content>
+    <div class="bar bar-footer bar-gray">
+        <input type="submit" value="保存" form="xueTangForm" id="submit" ng-disabled="valiForm()" ng-click="submitForm()">
+    </div>
+</ion-view>

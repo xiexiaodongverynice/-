@@ -1,0 +1,89 @@
+<ion-view hide-nav-bar="isIos"  view-title="{{ctrl.viewTitle}}">
+    <style>
+        .detail-i{font-size: 1.13em;}
+        .mainpadding h3{
+            font-size: 18px;
+            margin-bottom: 2px;
+            color:#666;
+        }
+        .mainpadding p{
+            line-height: 1.8;
+        }
+        .checklabel h4{
+            font-size: 16px!important;
+        }
+        .detail h4{
+            margin-top: 0;
+        }
+        .padding-bottom{
+            padding-bottom: 0!important;
+        }
+        .title_spmc{
+            font-size:16px;
+            color:#666;
+        }
+    </style>
+    <ion-nav-buttons>
+        <div>
+            <a href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a ng-click="ctrl.backshouye()">
+                <button class="button button-clear icon ion-ios-home-outline">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content>
+        <div ng-if="ctrl.haveResult" class="detail" style="padding-bottom: 20px">
+            <div class="mainpadding">
+                <h3 class="inline" ng-bind="ctrl.title"></h3>
+                <span ng-bind="ctrl.spmc" class="title_spmc"></span>
+                <span ng-if="showotc" style="color:#18b4ed;"ng-bind="ctrl.otc"></span>
+                <span ng-if="showybyw" style="color:green;"ng-bind="ctrl.ybyw"></span>
+                <span ng-if="showjbyw" style="color:rgb(255, 160, 21);"ng-bind="ctrl.jbyw"></span>
+                <p ng-bind="ctrl.subtitle"></p>
+            </div>
+            <dl>
+                <dt ng-repeat-start="item in ctrl.items">
+                    <label class="checklabel" for="{{'id'+$id+$index}}">
+                        <h4 ng-bind="item.title"></h4>
+                        <i ng-class="item.show ? 'ion-chevron-down' : 'ion-chevron-right'" class="detail-i"></i>
+                    </label>
+                </dt>
+                <input class="hide" ng-model="item.show" type="checkbox" id="{{'id'+$id+$index}}">
+                <dd ng-repeat-end>
+                    <audio-content>
+                        <div class="ptext" ng-if="!item.content.constructor.isArray" ng-bind-html="item.content||'无相关信息'" compile-html></div> <!---->
+                        <div ng-if="item.content.constructor.isArray">
+                            <p class="ptext" style="margin-bottom: 2px;" ng-repeat="p in item.content track by $index" ng-bind-html="p" compile-html></p>
+                        </div>
+                    </audio-content>
+                </dd>
+            </dl>
+        </div>
+          <!-- 无数据提示 -->
+          <div ng-if="ctrl.haveResult===false" class="null-div">
+            <img src="img/pg-null.png" />
+            <p class="nullTip">没有找到相关信息</p>
+        </div>
+    </ion-content>
+    <!-- <ion-footer-bar style="height:auto;width: 100%"> -->
+        <!-- <div class="bar bar-footer bar-balanced" style="    height: 60px;background: #18b4ed;">
+            <dl>
+                <dt style="color:#8E7070;color: #d64242;text-indent: 10px;font-family: 微软雅黑;"></dt>
+                <dd style="padding: 6px;font-size:15px;color:white;font-family: 微软雅黑;border: 0px;">免责申明：信息仅供参考，不能作为诊断及医疗的依据，就医请选择正规医疗机构</dd>
+            </dl>
+        </div> -->
+        <!-- <mian-ze></mian-ze> -->
+   <!--  </ion-footer-bar> -->
+</ion-view>

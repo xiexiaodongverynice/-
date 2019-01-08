@@ -1,0 +1,379 @@
+<ion-view hide-nav-bar="isIos" view-title="膳食养生" class="ssys">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div class="search-bar">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="输入您想要搜索的膳食名称">
+                <i class="icon iconfont icon-yuyin"></i>
+            </label>
+        </div>
+        <div class="query-menu">
+            <div class="dropdown">
+                <div ng-click="changeButton(0)" class="menuBtn" ng-class="{true:'on',false:''}[isShowPx[0]]">
+                    <span ng-hide="choseStr['2']">{{shaixuanList[0].title}}</span>
+                    <i ng-hide="choseStr['2']" class="ion-android-arrow-dropdown"></i>
+                    <div ng-if="choseStr['2']" class="c-blue">{{choseStr["2"]}}</div>
+                </div>
+                <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx[0]]">
+                    <div class="content-div">
+                        <ul class="tz">
+                            <li ng-repeat="sx in mrysZdList['2']">
+                                <ion-checkbox ng-model="sx.checked" ng-checked="sx.checked" name="radio{{screen}}"
+                                    ng-click="chooseTj(sx)">
+                                    {{sx.title}}
+                                </ion-checkbox>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="button-div">
+                        <a class="cansel" ng-click="cansel()">重置</a>
+                        <a class="ok" ng-click="doQuery()">确定</a>
+                    </div>
+                </div>
+            </div>
+            <i class="icon iconfont icon-vertical_line fg"></i>
+            <div class="dropdown">
+                <div ng-click="changeButton(1)" class="menuBtn" ng-class="{true:'on',false:''}[isShowPx[1]]">
+                    <span ng-hide="choseStr['1']">{{shaixuanList[1].title}}</span>
+                    <i ng-hide="choseStr['1']" class="ion-android-arrow-dropdown"></i>
+                    <div ng-if="choseStr['1']" class="c-blue">{{choseStr["1"]}}</div>
+                </div>
+                <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx[1]]">
+                    <div class="selected">
+                        <span ng-repeat="it in choseItems['1']" ng-click=delTj(it)>{{it.title}}<i class="icon iconfont icon-guanbi1"></i></span>
+                    </div>
+                    <div class="content-div" id="contentDiv1">
+                        <ion-scroll delegate-handle="left" style="height: 100%;">
+                            <ul class="gx">
+                                <li ng-repeat-start="sx in mrysZdList['1'] track by $index" ng-if="$index==0|| sx.pinYin!=mrysZdList['1'][$index-1].pinYin"
+                                    class="pinyin"> {{sx.pinYin}}</li>
+                                <li ng-repeat-end>
+                                    <ion-checkbox ng-model="sx.checked" ng-checked="sx.checked" name="radio{{screen}}"
+                                        ng-click="chooseTj(sx)">
+                                        {{sx.title}}
+                                    </ion-checkbox>
+                                </li>
+                            </ul>
+                            <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isShow" immediate-check="false"
+                                on-infinite="loadMicMore()" distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+
+                        </ion-scroll>
+                    </div>
+
+                    <right-list cru-gn="'ZYYS'" style="z-index: 10000;" id="zimu1"></right-list>
+                    <div ng-show="ishsowzimu&&zimu" style="position: fixed;z-index: 2;background: #bcbcbc;width: 80px;height: 80px;text-align: center;vertical-align: middle;padding-top: 30px;font-size: 2em;margin-left: 40%;margin-top: 70%;border-radius: 50%;opacity: 0.8;color:white;">{{zimu}}</div>
+
+                    <div class="button-div">
+                        <a class="cansel" ng-click="cansel()">重置</a>
+                        <a class="ok" ng-click="doQuery()">确定</a>
+                    </div>
+                </div>
+            </div>
+            <i class="icon iconfont icon-vertical_line fg"></i>
+            <div class="dropdown">
+                <div ng-click="changeButton(2)" class="menuBtn" ng-class="{true:'on',false:''}[isShowPx[2]]">
+                    <span ng-hide="choseStr['3']">{{shaixuanList[2].title}}</span>
+                    <div ng-if="choseStr['3']" class="c-blue">{{choseStr["3"]}}</div>
+                    <i ng-hide="choseStr['3']" class="ion-android-arrow-dropdown"></i>
+                </div>
+                <div class="dropdown-content" ng-class="{true:'tabClick',false:''}[isShowPx[2]]">
+                    <div class="selected">
+                        <span ng-repeat="it in choseItems['3']" ng-click=delTj(it)>{{it.title}}<i class="icon iconfont icon-guanbi1"></i></span>
+                    </div>
+                    <div class="content-div" id="contentDiv3">
+                        <ion-scroll delegate-handle="left" style="height: 100%;">
+                            <ul class="syz">
+                                <li ng-repeat-start="sx in mrysZdList['3'] track by $index" ng-if="$index==0|| sx.pinYin!=mrysZdList['3'][$index-1].pinYin"
+                                    class="pinyin"> {{sx.pinYin}}</li>
+                                <li ng-repeat-end>
+                                    <ion-checkbox ng-model="sx.checked" ng-checked="sx.checked" name="radio{{screen}}"
+                                        ng-click="chooseTj(sx)">
+                                        {{sx.title}}
+                                    </ion-checkbox>
+                                </li>
+                            </ul>
+                            <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isShow" immediate-check="false"
+                                on-infinite="loadMicMore()" distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+                        </ion-scroll>
+                    </div>
+                    <right-list cru-gn="'ZYYS'" style="z-index: 10000;" id="zimu2"></right-list>
+                    <div ng-show="ishsowzimu&&zimu" style="position: fixed;z-index: 2;background: #bcbcbc;width: 80px;height: 80px;text-align: center;vertical-align: middle;padding-top: 30px;font-size: 2em;margin-left: 40%;margin-top: 70%;border-radius: 50%;opacity: 0.8;color:white;">{{zimu}}</div>
+
+                    <div class="button-div">
+                        <a class="cansel" ng-click="cansel()">重置</a>
+                        <a class="ok" ng-click="doQuery()">确定</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <style>
+        .ssys .titleBox {
+            position: absolute;
+            width: 100%;
+        }
+
+        /* 搜索框样式——start */
+        .ssys .search-bar {
+            background-color: #f5f5f5;
+            padding: 10px 15px;
+        }
+
+        .ssys .search-bar .item-input {
+            height: 32px;
+            border: 1px solid #d4d4d4;
+            padding-right: 15px;
+            border-radius: 5px;
+        }
+
+        .ssys .search-bar .item-input i {
+            color: #ccc;
+            font-size: 20px;
+        }
+
+        .ssys .search-bar .item-input input {
+            height: 30px;
+            line-height: 30px;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        /* 搜索框样式——end */
+
+        /* 查询菜单样式——start */
+        .ssys .query-menu {
+            display: flex;
+            position: relative;
+            align-items: center;
+            color: #666;
+            border: 1px solid #d4d4d4;
+        }
+
+        .ssys .query-menu .fg {
+            color: #d4d4d4;
+        }
+
+        .ssys .dropdown {
+            position: static;
+            width: 30%;
+            flex-grow: 1;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .ssys .dropdown .menuBtn.on {
+            color: #00b5ee;
+        }
+        .ssys .dropdown .c-blue{
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow: ellipsis;
+        }
+        .ssys .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 43px;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        .ssys .dropdown-content.tabClick {
+            display: block;
+        }
+
+        .ssys .dropdown-content .content-div {
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        .ssys .dropdown-content .selected {
+            text-align: left;
+            padding: 0 20px;
+            white-space: nowrap;
+            overflow-x: scroll;
+        }
+
+        .ssys .dropdown-content .selected span {
+            display: inline-block;
+            height: 25px;
+            margin: 5px 5px 0 0;
+            padding: 0 2.5px;
+            background-color: #F2F9FF;
+            line-height: 25px;
+            color: #00b5ee;
+            font-size: 15px;
+            border-radius: 5px;
+        }
+
+        .ssys .dropdown-content ul {
+            overflow: hidden;
+            margin: 0 20px 20px 20px;
+        }
+
+        .ssys .dropdown-content li {
+            border: 1px solid #d4d4d4;
+            border-width: 0 0 1px 0;
+        }
+
+        .ssys .dropdown-content ul.tz li {
+            width: 50%;
+            float: left;
+        }
+
+        .ssys .dropdown-content li.pinyin {
+            height: 22px;
+            line-height: 22px;
+            background: #f5f5f5;
+            font-weight: bold;
+            text-align: left;
+
+            margin: -1px 0;
+            padding: 0 20px;
+        }
+
+        .ssys .dropdown-content ul li label {
+            text-align: left;
+            font-size: 14px;
+            padding-left: 50px;
+            border-width: 0;
+            margin: 0;
+        }
+
+        .ssys .dropdown-content ul li label.item-checkbox .checkbox {
+            margin-top: -17px;
+        }
+
+        .ssys .dropdown-content ul li label i {
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+        }
+
+        .ssys .dropdown-content ul li label i::after {
+            top: 26%;
+            left: 21%;
+            width: 12px;
+        }
+
+        .button-div {
+            font-size: 0;
+            border: 1px solid #d4d4d4;
+        }
+
+        .button-div a {
+            display: inline-block;
+            font-size: 16px;
+            color: #fff;
+            font-weight: bold;
+            height: 50px;
+            width: 50%;
+        }
+
+        .button-div a.ok {
+            background: #00b5ee;
+        }
+
+        .button-div a.cansel {
+            color: #333;
+        }
+
+        /* 查询菜单样式——end */
+        /* 膳食列表样式 */
+        .ssys .list_box {
+            height: 12rem;
+        }
+
+        .ssys .image_box {
+            margin: 1.5rem 1.25rem;
+            position: absolute;
+            width: 12.5rem;
+            height: 9rem;
+        }
+
+
+        .ssys .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ssys .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 15rem;
+            padding-right: 1.25rem;
+            white-space: nowrap;
+            height: 12rem;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        .ssys .content p {
+            margin: 0;
+        }
+
+        .ssys .content h4 {
+            margin: 0 0 .5rem;
+            padding: 0;
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .ssys .content span.px {
+            font-weight: normal;
+            font-size: 14px;
+            color: #999;
+
+        }
+
+        .ssys .content p {
+            font-size: 14px;
+            color: #999;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .ssys right-list {
+            line-height: 20px;
+        }
+    </style>
+    <ion-content ng-style="{top:(isIos)? '94px': '138px'}">
+        <ul class="list no-float">
+            <li class="show_li_list" ng-repeat="item in ShanShilist" ng-click="goDetail(item.pid)">
+                <div class="list_box">
+                    <div class="image_box">
+                        <img class="image" ng-src="{{imgBaseUrl+item.iconImage}}">
+                    </div>
+                    <div class="content">
+                        <h4>{{item.shanShiMing}}</h4>
+                        <p style="margin: 0;">中医体质：{{item.shiyingTizhiDisplay}}</p>
+                        <p style="margin: 0;">主治功效：{{item.zhongyiGongxiaoDisplay}}</p>
+                        <p style="margin: 0;" ng-bind-html="'适应症:'+item.shiyingZhengDisplay" compile-html></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div ng-hide="task_hasSsMoreItem" style="text-align: center; margin-top: 15px;">
+            <span style="font-size: 14px; color: #8F8E94">{{reusltSsNullTip}}</span>
+        </div>
+        <ion-infinite-scroll ng-if="doLoadMore" ng-hide="isSsShow" immediate-check="false" on-infinite="!isSsShow&&loadShanShiMore()"
+            distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+
+    </ion-content>
+
+</ion-view>

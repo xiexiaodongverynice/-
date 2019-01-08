@@ -1,0 +1,105 @@
+<ion-view hide-nav-bar="isIos" view-title="穴位详情">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <style>
+        #zyxw-xq {
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        #xw-list {
+            min-height: 150%;
+        }
+
+        #zyxw-xq pre {
+            line-height: 1.8;
+
+        }
+
+        #zyxw-xq h2 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 0;
+
+        }
+
+        #zyxw-xq h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #zyxw-xq h4 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        pre {
+            font-size: 14px;
+
+        }
+
+        #zyxw-xq section {
+            width: 90%;
+            margin: 1rem 0 0 5%;
+            margin-bottom: 16px;
+        }
+    </style>
+
+    <ion-content id="zyxw-xq">
+        <div id="xw-list">
+            <div>
+                <div style="margin:5% 0 0 5%;">
+                    <h2>
+                        {{xueWei.mingCheng}}
+                    </h2>
+                    <p style="color:#999;font-size: 12px;">发布时间：{{xueWei.publishDate}} 内容支持：{{xueWei.contentSupport}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div style="border-bottom: 1px solid #dedede;">
+
+                </div>
+                <section ng-if="xueWei.gongxiaoZhuzhiDisplay">
+                    <h4>主治功效</h4>
+                    <hr>
+                    <p>{{xueWei.gongxiaoZhuzhiDisplay}}</p>
+                </section>
+                <section ng-if="xueWei.quXue">
+                    <h4>取穴</h4>
+                    <hr>
+                    <p>{{xueWei.quXue}}</p>
+                </section>
+                <section>
+                    <!-- 图片 -->
+                    <div ng-repeat="tp in xueWei.tuPianAry" style="margin:1rem 0 0 0;">
+                        <img ng-if="tp" src="{{imgBaseUrl}}{{tp}}" style="width:100%;" alt="暂无相关图片">
+                    </div>
+                </section>
+                <section ng-if="xueWei.anrouFangfa">
+                    <h4>按揉方法</h4>
+                    <hr>
+                    <p>{{xueWei.anrouFangfa}}</p>
+                </section>
+
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

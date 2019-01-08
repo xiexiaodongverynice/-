@@ -1,0 +1,343 @@
+<ion-view hide-nav-bar="isIos" view-title="{{modelname}}">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <!-- 返回首页 -->
+    <div class="m-body f-m-body" id="m-body" style="display:none" ng-if="isIos">
+        <go-shouye-in-menu></go-shouye-in-menu>
+        <div ng-click="goBack()" class="fl-child" id="tzView">
+            <i class="icon iconfont icon-tzpg"  ng-if="type==='tzpg'"></i>
+            <i class="icon iconfont icon-naozuzhong"  ng-if="type==='ncz'"></i>
+            <i class="icon iconfont icon-yajiankangpinggu"  ng-if="type==='yjk'"></i>
+            <i class="icon iconfont icon-xinlijiankangpinggu"  ng-if="type==='xlzz'"></i>
+            <i class="icon iconfont icon-xietang"  ng-if="type==='tnb'"></i>
+        </div>
+    </div>
+
+    <div class="floatdiv float-menu" id="switch" ng-click="menuSwitch($event)" ng-if="isIos">
+        <i class="icon ion-plus" id="floatIcon" ng-class="{true:'menu-show',false:''}[isMenuShow]" ></i>
+    </div>
+
+
+
+
+    <!-- <div id="sub-line">
+        <input type="submit" value="返回评估首页" ng-click="goBack()">
+    </div> -->
+    <style>
+        h3 {
+            font-size: 2rem;
+            color: #666;
+        }
+
+        h4 {
+            font-weight: bold;
+        }
+
+        /**圆形分值样式*/
+
+        .fenzhi {
+            border-radius: 50%;
+            background-color: #FFA015;
+            width: 100px;
+            height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            text-align: center;
+            padding-top: 35px;
+            margin-bottom: 20px;
+            box-shadow: 0px 10px 10px #9BEFB4;
+            margin-top: 20px;
+        }
+
+        table {
+            border: 1px solid #f3f4f6;
+            margin-bottom: 30px;
+        }
+
+        th {
+            border: 1px solid #f3f4f6;
+            text-align: center;
+        }
+
+        td {
+            border: 1px solid #f3f4f6;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .perjititle {
+            font-size: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f3f3f3;
+        }
+       
+    </style>
+
+    <ion-content ng-click="hideMenuClick($event)">
+        <div id="pgjg">
+            <div class="order-line">
+                <span class="title">评估结果</span>
+                <span class="date" ng-if="pgDate">{{pgDate|limitTo:10}} </span>
+            </div>
+            <div ng-if="type=='tzpg'&&pgResult" class="question-answer">
+                <p ng-if="type=='tzpg'&&pgResult.length>1" class="answer-intro">
+                    您有多种兼夹体质，其中以
+                    <span>{{pgResult[0].P_NAME}}</span>为主，
+                    <span ng-repeat="n in pgResult" ng-if="$index>0&&$index<(pgResult.length-1)">{{n.P_NAME}}、</span>
+                    <span ng-repeat="n in pgResult" ng-if="$index==(pgResult.length-1)">{{n.P_NAME}}</span>为辅。</p>
+                <div ng-click="goShanShi()" class="p-l"><i class="icon iconfont icon-shanshi"></i>营养膳食推荐</div>
+
+                <div class="pg_detail" ng-if="type=='tzpg'" ng-repeat="lab in pgResult" id="tz{{$index}}">
+                    <h3 class="pg_min_title" ng-if="$index==0" ng-click="isshowall($index)">
+                        {{($index+1) +"."+lab.P_NAME}}
+                        <span class="icon ion-ios-arrow-up activated"></span>
+                    </h3>
+                    <h3 ng-if="$index>0" ng-click="isshowall($index)">
+                        {{($index+1) +"."+lab.P_NAME}}
+                        <span class="icon ion-ios-arrow-down activated"></span>
+                    </h3>
+                    <p class="tz-desc" ng-class="{false:'hide',true:''}[$index==0]">
+                        {{lab.DESCR}}
+                    </p>
+                    <ul ng-class="{false:'hide',true:''}[$index==0]">
+                        <li class="jg_detail">
+                            <h4>总体特征</h4>
+                            <p>{{lab.FEATURE}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>形体特征</h4>
+                            <p>{{lab.XTTZ}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>常见表现</h4>
+                            <p ng-bind-html="lab.CJBX" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>心理特征</h4>
+                            <p>{{lab.XLTZ }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>发病倾向</h4>
+                            <p>{{lab.FBQX }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>对外界环境适应能力</h4>
+                            <p>{{lab.DYJHJSYNL }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>养生法则</h4>
+                            <p>{{lab.YSFZ}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>饮食调摄</h4>
+                            <p>{{lab.YSTS}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>精神调摄</h4>
+                            <p>{{lab.JSTS }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>起居调摄</h4>
+                            <p>{{lab.QJTS}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>运动锻炼</h4>
+                            <p>{{lab.YDDL}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>针灸推拿保健</h4>
+                            <p ng-bind-html="lab.ZJTABJ" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>药物保健</h4>
+                            <p>{{lab.YWBJ}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div ng-if="type=='yjk'" class="question-answer">
+                <!-- <p class="perjititle">您的亚健康风险评估情况如下：</p> -->
+                <div class="fenzhi" ng-style="{'background-color':(pgResult.mainValue<25 ? '#06DF48':'#FFA015'),'box-shadow':(pgResult.mainValue<25 ? '0px 10px 10px #9BEFB4':'0px 10px 10px #FFD599')}">
+                    <span style="font-size: 5rem;color:white;">{{pgResult.mainValue}}</span>
+                    <br>
+                    <span style="color:white;">分</span>
+                </div>
+                <p class="answer-intro" style="font-size:2rem;">
+                    您的{{modelname}}总得分为
+                    <span class="pg_min_title" style="font-size:2rem;" ng-style="{'color':(pgResult.mainValue<25 ? '#06DF48':'#FFA015')}">{{pgResult.mainValue}}</span>分，处于
+                    <span class="pg_min_title" style="font-size:2rem;" ng-style="{'color':(pgResult.mainValue<25 ? '#06DF48':'#FFA015')}">{{pgResult.des}}状态</span>。
+                </p>
+                <img style="margin-bottom: 30px;" class="imgstyle" src="img/yjkszz.png" />
+                <div ng-if="pgResult.result == '1'" class="pg_detail">
+                    <ul ng-repeat="lab in pgResult.desList">
+                        <li class="jg_detail">
+                            <h4>{{lab.title}}</h4>
+                            <p>{{lab.des}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div ng-if="type=='ncz'" class="question-answer">
+                <!-- <p class="perjititle">您的脑卒中风险评估情况如下：</p> -->
+                <div class="fenzhi" style="background-color:#FFA015;box-shadow: 0px 10px 10px #FFD599;">
+                    <span style="font-size: 5rem;color:white;">{{pgResult.mainValue}}</span>
+                    <br>
+                    <span style="color:white;">分</span>
+                </div>
+                <p class="answer-intro">
+                    您的{{modelname}}总得分为
+                    <span class="pg_min_title" style="color:#FFA015">{{pgResult.mainValue}}</span>分，10年卒中发病风险为
+                    <span class="pg_min_title" style="color:#FFA015">{{pgResult.result}}%</span>。
+                </p>
+                <div class="order-line" style="background: #F3F4F6;">
+                    <span class="title">脑卒中风险评估标准参考</span>
+                </div>
+                <table>
+                    <tr>
+                        <th style="width: 10%">分值</th>
+                        <th>10年脑卒中患病风险</th>
+                        <th style="width: 10%">分值</th>
+                        <th>10年脑卒中患病风险</th>
+                        <th style="width: 10%">分值</th>
+                        <th>10年脑卒中患病风险</th>
+                    </tr>
+                    <tr ng-if="nczsex=='1'" ng-repeat="item in nczckznan">
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi1)">{{item.fenzhi1}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi1)">{{item.value1}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi2)">{{item.fenzhi2}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi2)">{{item.value2}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi3)">{{item.fenzhi3}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi3)">{{item.value3}}</td>
+                    </tr>
+                    <tr ng-if="nczsex=='2'" ng-repeat="item in nczckznv">
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi1)">{{item.fenzhi1}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi1)">{{item.value1}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi2)">{{item.fenzhi2}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi2)">{{item.value2}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi3)">{{item.fenzhi3}}</td>
+                        <td ng-style="nczcolor(pgResult.mainValue,item.fenzhi3)">{{item.value3}}</td>
+                    </tr>
+                </table>
+                <div class="pg_detail">
+                    <ul>
+                        <li class="jg_detail">
+                            <h4>脑卒中的疾病描述</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jbms" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的临床表现</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.lcbx" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的辅助检查</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jyzs" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的治疗意见</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.zlyz" compile-html></p>
+
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的健康指导</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jkzd" compile-html></p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div ng-if="type=='tnb'" class="question-answer">
+                <!-- <p class="perjititle">您的糖尿病风险评估情况如下：</p> -->
+                <div class="fenzhi" ng-style="{'background-color':(pgResult.mainValue<25 ? '#06DF48':'#FFA015'),'box-shadow':(pgResult.mainValue<25 ? '0px 10px 10px #9BEFB4':'0px 10px 10px #FFD599')}">
+                    <span style="font-size: 5rem;color:white;">{{pgResult.mainValue}}</span>
+                    <br>
+                    <span style="color:white;">分</span>
+                </div>
+                <p class="answer-intro">您的{{modelname}}预测总得分
+                    <span class="pg_min_title" ng-style="{'color':(pgResult.mainValue<25 ? '#06DF48':'#FFA015')}">{{pgResult.mainValue}}</span>分，
+                    {{pgResult.des}}
+                </p>
+                <img style="margin-bottom: 20px;" class="imgstyle" src="img/tnbszz.png" />
+                <div class="pg_detail">
+                    <ul>
+                        <li class="jg_detail">
+                            <h4>糖尿病的疾病描述</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jbms" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的临床表现</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.lcbx" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的辅助检查</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jyzs" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的治疗意见</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.zlyz" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的健康指导</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jkzd" compile-html></p>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+
+            <div ng-if="type=='xlzz'" class="question-answer" id="xlzz">
+                <!-- <p class="perjititle" style="margin-bottom: 20px;">您的心理健康风险评估情况如下：</p> -->
+                <p class="perjititle" style="margin-bottom: 20px;">各项目评估标准如下图：</p>
+                <img style="margin-bottom: 20px;margin-top: 20px;" class="imgstyle" src="img/xljkszz.png" />
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="xljk-table">
+                    <tr>
+                        <th>序号</th>
+                        <th>项目名称</th>
+                        <th>平均分</th>
+                        <th>风险程度</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr ng-repeat-start="lab in pgResult.result track by $index" class="title" ng-if="lab.state==0">
+                        <td>{{($index+1)}}</td>
+                        <td>{{lab.title}}</td>
+                        <td>{{lab.meanValue}}</td>
+                        <td class="xljk-zc">正常</td>
+                        <td></td>
+                    </tr>
+
+                    <tr ng-click="trClick($event,$index)" class="title" ng-if="lab.state!=0">
+                        <td>{{($index+1)}}</td>
+                        <td>{{lab.title}}</td>
+                        <td>{{lab.meanValue}}</td>
+                        <td class="xljk-fx" ng-if="lab.state!=0">{{lab.text}}度风险</td>
+                        <td>
+                            <span class="icon ion-ios-arrow-down activated" ng-click="spanClick($event,$index)"></span>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end class="hide" id="des{{$index}}" ng-if="lab.state!=0">
+                        <td colspan="5">{{lab.des}}</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

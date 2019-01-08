@@ -1,0 +1,91 @@
+<ion-view hide-nav-bar="isIos" view-title="血糖管理" class="xueTang jkda-item-main">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <style type="text/css">
+        .xueTang .chart-container {
+            padding: 0 10px;
+        }
+
+        /* 选项卡样式 */
+        .xueTang .xt-tabs {
+            width: auto;
+            height: 44px;
+            line-height: 44px;
+            border-bottom: 1px solid #d4d4d4;
+            font-size: 16px;
+            color: #666;
+            overflow-y: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            margin: 0 -10px;
+        }
+
+        .xueTang .xt-tabs li {
+            display: inline-block;
+            margin: 0 10px;
+            height: 43px;
+            box-sizing: border-box;
+        }
+
+        .xueTang .xt-tabs li.chose {
+            border-bottom: 2px solid #00b5ee;
+        }
+
+        .xt-tabs::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .xueTang .chart-container h3 {
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+    </style>
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+    <ion-content>
+        <div class="top">
+            <div class="circle {{circleClass}}">
+                <p class="f-12">{{xuetangnew.RIQI|limitTo:10:5}}</p>
+                <p class="f-12">{{xuetangnew.CELIANGSHIDUAN}}</p>
+                <p class="f-28">{{xuetangnew.JIEGUO?xuetangnew.JIEGUO:'--'}}</p>
+                <p class="f-20">{{xuetangnew.XUETANG}}</p>
+                <p class="f-12">mmol/L</p>
+            </div>
+            <button class="blue-border-button btn-sdjl" ng-click="goXtEdit()">手动记录</button>
+            <div class="zcz">
+                <p ng-click="goFanWei()"><i class="icon ion-help-circled"></i><span>正常值标准</span></p>
+            </div>
+
+        </div>
+        <div class="p-10 xt-info">
+            <h3 class="{{iconCls}}"><i class="icon iconfont icon-xietang"></i>{{xuetangnew.JIEGUO?xuetangnew.JIEGUO:'未知'}}</h3>
+            <p class="color-9"><span ng-if="xuetangnew.JIEGUO=='偏高'">您的血糖高。</span><span ng-if="xuetangnew.JIEGUO=='偏低'||xuetangnew.JIEGUO=='低'">您的血糖低。</span><span
+                    ng-if="xuetangnew.JIEGUO=='正常'">您的血糖正常。</span></p>
+
+        </div>
+        <div class="chart-container">
+            <ul class="xt-tabs">
+                <li class="tab" ng-class="{true:'chose',false:''}[selectIndex==null]" ng-click="selectOption(null,null)">全部</li>
+                <li class="tab" ng-repeat="item in xueTangTime track by $index" ng-class="{true:'chose',false:''}[item.chose&&selectIndex!=null]"
+                    ng-click="selectOption($index,item)">{{item.CODE_NAME}}</li>
+
+            </ul>
+
+
+            <h3 class="s-14 color-3">最近7次血糖趋势图<a class="more" ng-click="goList()">全部<i class="icon ion-ios-arrow-right color-9"></i></a></h3>
+
+            <xue-tang class="chart" id="chartXueTang" userid="userId"></xue-tang>
+        </div>
+    </ion-content>
+</ion-view>

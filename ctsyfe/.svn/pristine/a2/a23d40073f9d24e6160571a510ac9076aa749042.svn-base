@@ -1,0 +1,36 @@
+<ion-view hide-nav-bar="isIos" view-title="用药指南" class="ypk">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+        .yyzn ion-content {
+            background: #F6F6F6;
+        }
+
+        .ypk .body {
+            text-align: center;
+            margin-top: -25px;
+        }
+        .ypk .search-bar{background:none;}
+        .ypk .ypk-bg{width:40%; margin-top: 20%;}
+    </style>
+    <ion-content>
+        <div class="header-top">
+            <img class="imgstyle" src="img/ypk-banner.png">
+        </div>
+        <div class="body">
+            <!-- 搜索条 -->
+            <div class="search-bar" ng-click="goSearch()">
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" placeholder="搜药品名称">
+                    
+                </label>
+            </div>
+            <img class="ypk-bg" src="img/ypk-bg.png">
+
+        </div>
+    </ion-content>
+</ion-view>

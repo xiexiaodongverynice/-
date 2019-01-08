@@ -1,0 +1,163 @@
+<ion-view hide-nav-bar="isIos" view-title="气象医学" class="ypzn">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="back()"></button>
+        </div>
+    </ion-nav-buttons>
+    <style>
+        .header-top{
+            position: relative;
+            width: 100%;
+            height: 30%;
+            background: url("./img/weather.png") no-repeat;
+            background-size:100% 100%; 
+        }
+        .temp{
+            position: absolute;
+            width: 100%;
+            top: 25%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+        .weather{
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            height: 12px;
+            line-height: 12px;
+            text-align: center;
+        }
+        .tempall{
+            position: absolute;
+            width: 100%;
+            bottom: 30%;
+            height: 12px;
+            line-height: 12px;
+            text-align: center;
+        }
+        .measure{
+            position: relative;
+            width: 100%;
+            background: #FFFBEB;
+            padding:15px 20px 15px 15px;
+            height: 59px;
+            overflow: hidden;
+        }
+        .weatherother{
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            height: 60px;
+        }
+        .weatherother_div{
+            width: 20%;
+            flex: 1;
+            border-right: 1px solid #D4D4D4 ;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .bootom_span{
+            margin-top: 10px;
+            font-size: 12px;
+            color: #D3D3D3;
+        }
+        .top_span{
+            font-size: 14px;
+            font-weight: bold;
+            color: #43CB83;
+        }
+        .manbingweather{
+            position: relative;
+            width: 100%;
+            margin-top: 10px;
+            border-top: 10px solid #F5F5F5;
+            
+        }
+        .manbingweather_top{
+            position: relative;
+            width: 100%;
+            height: 35px;
+            border-bottom: 1px solid #F5F5F5;
+        }
+        .manbingweather_top_left{
+            width: 50%;
+            margin: 15px;
+            border-left: 7px solid #00B5EE;
+            
+        }
+        .manbingweather_top_left span{
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        .manbingweather_top_right{
+            position: absolute;
+            right: 15px;
+            top: 0;
+        }
+        .city{
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            left: 10px;
+        }
+    </style>
+    <ion-content style="background: #FFFFFF">
+            <div class="header-top">
+                <div class="temp">
+                    <p  style="color:#FFFFFF"><span style="font-size:40px">{{weather.temp}}</span>℃</p>
+                </div>
+                <div class="weather">
+                    <p  style="color:#FFFFFF">{{weather.weather}}</p>
+                </div>
+                <div class="tempall">
+                    <p style="color:#FFFFFF">{{weather.temphigh}}℃/{{weather.templow}}℃</p>
+                </div>
+                <div class="city">
+                    <i class="icon ion-location" style="color:#FFFFFF"></i>
+                    <span  style="color:#FFFFFF">{{weather.city}}</span>
+                </div>
+            </div>
+            <div class="measure">
+                <p>{{weather.aqi.aqiinfo.measure}}</p>
+            </div>
+            <div class="weatherother">
+               <div class="weatherother_div">
+                   <span class="top_span">{{weather.aqi.quality}}</span>
+                   <span class="bootom_span">空气质量</span>
+               </div>
+               <div class="weatherother_div">
+                    <span class="top_span">{{weather.aqi.pm2_5}}</span>
+                    <span class="bootom_span">PM2.5</span>
+               </div>
+               <div class="weatherother_div">
+                    <span class="top_span" style="color:#27BDE0">{{weather.humidity}}%</span>
+                    <span class="bootom_span">空气湿度</span>
+               </div>
+               <div class="weatherother_div">
+                    <span class="top_span">{{weather.windpower}}级</span>
+                    <span class="bootom_span">风力</span>
+               </div>
+               <div class="weatherother_div">
+                    <span class="top_span">{{weather.winddirect}}</span>
+                    <span class="bootom_span">风向</span>
+               </div>
+            </div>
+            <div class="manbingweather"  ng-click="gomanbingweather()">
+                <div class="manbingweather_top">
+                    <div class="manbingweather_top_left">
+                        <span>慢病气象健康</span>
+                    </div>
+                    <div class="manbingweather_top_right">
+                        <i class="icon iconfont icon-right_fill" style="color:#00B5EE;font-size: 24px"></i>
+                    </div>
+                </div>
+            </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,365 @@
+<ion-view hide-nav-bar="isIos" view-title="{{modelname}}" class="color-6">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div ng-if="type != 'tzpg'">
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <!-- 新图标返回首页 -->
+    <!-- <div style="z-index: 10;position: fixed;border-radius: 10px;float: right;top:115px;right:3px; " ng-if="isIos">
+        <div id="pg-goShouYe" ng-click="goPgShouYe()">
+            <i class="icon iconfont icon-shouye" style="color:#FFF;"></i>
+        </div>
+    </div> -->
+
+    <!-- <div style="z-index: 10;position: fixed;border-radius: 10px;top:110px;right: 0;" ng-if="isIos">
+        <go-shouye gn="curgn" message-arr="messageArr" ng-show="isFromShouye==='false'"></go-shouye>
+        <div ng-show="isShowFxpgBtn" ng-click="goFxpg()" style="width: 90px; height:50px;text-align:center;float: right;border-bottom-left-radius: 35px;border-top-left-radius: 35px;color: #2db4ee;margin-top: 20px;clear:both; background-color: white;opacity:0.9;border: 1px solid #ebebeb;">
+            <i class="icon-lb" style="margin-top: 3px;display:block;font-size:22px;padding-left:10px;"></i>
+            <p style="padding-top: 0;padding-left:10px;" class="ng-binding">评估列表</p>
+        </div>
+    </div> -->
+
+ <!-- 返回首页 -->
+ <div class="m-body f-m-body" id="m-body" style="display:none" ng-if="isIos">
+    <go-shouye-in-menu></go-shouye-in-menu>
+    <div ng-click="goBack()" class="fl-child" id="tzView">
+        <i class="icon iconfont icon-fxpg" ></i>
+    </div>
+</div>
+<div class="floatdiv float-menu" id="switch" ng-click="menuSwitch($event)" ng-if="isIos">
+    <i class="icon ion-plus" id="floatIcon" ng-class="{true:'menu-show',false:''}[isMenuShow]" ></i>
+</div>
+
+    <!-- <div id="sub-line" ng-show="isShowFxpgBtn">
+        <input type="submit" value="返回风险评估页" ng-click="goFxpg()">
+    </div> -->
+    <style>
+        /* #pg-goShouYe {
+            height: 45px;
+            width: 45px;
+            background-color: #00B5EE;
+            border-radius: 45px;
+            opacity: 0.9;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #pg-goShouYe i {
+            font-size: 30px;
+            line-height: 45px;
+        } */
+        
+        .button-pannel {
+            width: 100%;
+            bottom: 2rem;
+            position: absolute;
+            text-align: center;
+        }
+        
+        .button-pannel>button {
+            border: none;
+            outline: none;
+            color: #FFF;
+            width: 11rem;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            border-radius: 3.5rem;
+            font-size: 1.75rem;
+        }
+        
+        .button-pannel>button:first-child {
+            margin-right: 3rem;
+        }
+        
+        .but-his {
+            background-color: #FF9500;
+        }
+        
+        .but-cxpg {
+            background-color: #00B6ED;
+        }
+        
+        #tzpg h1 {
+            font-size: 2.87rem;
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+        
+        .order-num {
+            color: #00b6ed;
+            text-align: center;
+        }
+        
+        .order-line .order-total {
+            color: #666;
+        }
+        
+        .box_header {
+            color: #00b6ed;
+            font-size: 2rem;
+            text-align: center;
+            background-color: #aedceb;
+            height: 2.5rem;
+            line-height: 2.5rem;
+        }
+        
+        .pg_title {
+            height: 2.5rem;
+            font-size: 2rem;
+            line-height: 2.5rem;
+            padding: 0 10px;
+        }
+        
+        h3 {
+            font-size: 2rem;
+            color: #666;
+        }
+        
+        .jg_detail li {
+            margin-top: .5rem;
+            text-indent: 2em;
+        }
+        /**圆形分值样式*/
+        
+        .fenzhi {
+            border-radius: 50%;
+            background-color: #FFA015;
+            width: 100px;
+            height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            text-align: center;
+            padding-top: 35px;
+            margin-bottom: 20px;
+            box-shadow: 0px 10px 10px #9BEFB4;
+            margin-top: 20px;
+        }
+        
+        table {
+            border: 1px solid #EBEBEB;
+            margin-bottom: 30px;
+        }
+        
+        th {
+            border: 1px solid #EBEBEB;
+            text-align: center;
+        }
+        
+        td {
+            border: 1px solid #EBEBEB;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .perjititle {
+            font-size: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f3f3f3;
+        }
+    </style>
+
+    <ion-content ng-click="hideMenuClick($event)">
+        <div class="header-top">
+            <img class="imgstyle" ng-if="type=='tzpg'" src="img/tzpg.jpg" />
+            <img class="imgstyle" ng-if="type=='ncz'" src="img/nzz.jpg" />
+            <img class="imgstyle" ng-if="type=='tnb'" src="img/tnb.jpg" />
+            <img class="imgstyle" ng-if="type=='yjk'" src="img/yjk.jpg" />
+            <img class="imgstyle" ng-if="type=='xlzz'" src="img/xljkpg.jpg" />
+            <div class="button-pannel">
+                <button class="but-his" ng-click="go_pgHistory()">评估历史</button>
+                <button class="but-cxpg" ng-click="cxpg()">重新评估</button>
+            </div>
+
+        </div>
+        <div id="pgjg">
+            <!-- 评估结果 -->
+            <div class="order-line">
+                <span class="title">评估结果</span>
+                <span class="date">{{pgResult.createTime|limitTo:10}} </span>
+            </div>
+
+
+            <div ng-if="type=='yjk'&&datas" class="question-answer">
+                <!-- <p class="perjititle">您的亚健康风险评估情况如下：</p> -->
+                <div class="fenzhi" ng-style="{'background-color':(datas.mainValue<25 ? '#06DF48':'#FFA015'),'box-shadow':(datas.mainValue<25 ? '0px 10px 10px #9BEFB4':'0px 10px 10px #FFD599')}">
+                    <span style="font-size: 5rem;color:white;">{{datas.mainValue}}</span>
+                    <br>
+                    <span style="color:white;">分</span>
+                </div>
+                <p class="answer-intro" ng-if="datas">
+                    您的{{modelname}}总得分为
+                    <span class="pg_min_title" style="font-size:2rem;" ng-style="{'color':(datas.mainValue<25 ? '#06DF48':'#FFA015')}">{{datas.mainValue}}</span>分，处于
+                    <span class="pg_min_title" style="font-size:2rem;" ng-style="{'color':(datas.mainValue<25 ? '#06DF48':'#FFA015')}">{{datas.des}}状态</span>。
+                </p>
+                <img style="margin-bottom: 30px;" class="imgstyle" src="img/yjkszz.png" />
+                <div ng-if="datas.result == '1'" class="pg_detail">
+                    <ul ng-repeat="lab in datas.desList">
+                        <li class="jg_detail">
+                            <h4>{{lab.title}}</h4>
+                            <p>{{lab.des}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div ng-if="type=='ncz'&&datas" class="question-answer">
+                <!-- <p class="perjititle">您的脑卒中风险评估情况如下：</p> -->
+                <div class="fenzhi" style="background-color:#FFA015;box-shadow: 0px 10px 10px #FFD599;">
+                    <span style="font-size: 5rem;color:white;">{{datas.mainValue}}</span>
+                    <br>
+                    <span style="color:white;">分</span>
+                </div>
+                <p ng-if="datas" class="answer-intro">
+                    您的{{modelname}}总得分为
+                    <span class="pg_min_title" style="color:#FFA015">{{datas.mainValue}}</span>分，10年卒中发病风险为
+                    <span class="pg_min_title" style="color:#FFA015">{{datas.result}}%</span>。
+                </p>
+                <div class="order-line" style="background: #F3F4F6;">
+                    <span class="title">脑卒中风险评估标准参考</span>
+                </div>
+                <table>
+                    <tr>
+                        <th style="width: 10%">分值</th>
+                        <th>10年脑卒中患病风险</th>
+                        <th style="width: 10%">分值</th>
+                        <th>10年脑卒中患病风险</th>
+                        <th style="width: 10%">分值</th>
+                        <th>10年脑卒中患病风险</th>
+                    </tr>
+                    <tr ng-if="nczsex=='1'" ng-repeat="item in nczckznan">
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi1)">{{item.fenzhi1}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi1)">{{item.value1}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi2)">{{item.fenzhi2}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi2)">{{item.value2}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi3)">{{item.fenzhi3}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi3)">{{item.value3}}</td>
+                    </tr>
+                    <tr ng-if="nczsex=='2'" ng-repeat="item in nczckznv">
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi1)">{{item.fenzhi1}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi1)">{{item.value1}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi2)">{{item.fenzhi2}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi2)">{{item.value2}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi3)">{{item.fenzhi3}}</td>
+                        <td ng-style="nczcolor(datas.mainValue,item.fenzhi3)">{{item.value3}}</td>
+                    </tr>
+
+                </table>
+                <div class="pg_detail">
+                    <ul>
+                        <li class="jg_detail">
+                            <h4>脑卒中的疾病描述</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jbms" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的临床表现</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.lcbx" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的辅助检查</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jyzs" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的治疗意见</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.zlyz" compile-html></p>
+
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的健康指导</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jkzd" compile-html></p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div ng-if="type=='tnb'&&datas" class="question-answer">
+                <!-- <p class="perjititle">您的糖尿病风险评估情况如下：</p> -->
+                <div class="fenzhi" ng-style="{'background-color':(datas.mainValue<25 ? '#06DF48':'#FFA015'),'box-shadow':(datas.mainValue<25 ? '0px 10px 10px #9BEFB4':'0px 10px 10px #FFD599')}">
+                    <span style="font-size: 5rem;color:white;">{{datas.mainValue}}</span>
+                    <br>
+                    <span style="color:white;">分</span>
+                </div>
+                <p class="answer-intro" ng-if="datas">您的{{modelname}}总得分为
+                    <span class="pg_min_title" ng-style="{'color':(datas.mainValue<25 ? '#06DF48':'#FFA015')}">{{datas.mainValue}}</span>分，{{datas.des}}
+                </p>
+                <img style="margin-bottom: 20px;" class="imgstyle" src="img/tnbszz.png" />
+                <div class="pg_detail">
+                    <ul>
+                        <li class="jg_detail">
+                            <h4>糖尿病的疾病描述</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jbms" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的临床表现</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.lcbx" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的辅助检查</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jyzs" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的治疗意见</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.zlyz" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的健康指导</h4>
+                            <p class="bind-html" ng-bind-html="jbDes.jkzd" compile-html></p>
+                        </li>
+                        
+                    </ul>
+                </div>
+
+
+            </div>
+
+            <div ng-if="type=='xlzz'&&datas" class="question-answer" id="xlzz">
+                <p class="perjititle" style="margin-bottom: 20px;">各项目评估标准如下图：</p>
+
+                <img style="margin-bottom: 20px;margin-top: 20px;" class="imgstyle" src="img/xljkszz.png" />
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="xljk-table">
+                    <tr>
+                        <th>序号</th>
+                        <th>项目名称</th>
+                        <th>平均分</th>
+                        <th>风险程度</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr ng-repeat-start="lab in datas.result track by $index" class="title" ng-if="lab.state==0">
+                        <td>{{($index+1)}}</td>
+                        <td>{{lab.title}}</td>
+                        <td>{{lab.meanValue}}</td>
+                        <td class="xljk-zc">正常</td>
+                        <td></td>
+                    </tr>
+
+                    <tr ng-click="trClick($event,$index)" class="title" ng-if="lab.state!=0">
+                        <td>{{($index+1)}}</td>
+                        <td>{{lab.title}}</td>
+                        <td>{{lab.meanValue}}</td>
+                        <td class="xljk-fx" ng-if="lab.state!=0">{{lab.text}}度风险</td>
+                        <td>
+                            <span class="icon ion-ios-arrow-down activated" ng-click="spanClick($event,$index)"></span>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end class="hide" id="des{{$index}}" ng-if="lab.state!=0">
+                        <td colspan="5">{{lab.des}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 无数据提示 -->
+            <div ng-if="nullTip" class="null-div">
+                <img src="img/pg-null.png" />
+                <p class="nullTip">{{nullTip}}</p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

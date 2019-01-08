@@ -1,0 +1,41 @@
+<ion-view hide-nav-bar="isIos" view-title="体质评估">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    </ion-nav-buttons>
+    <style>
+        .tzjs{
+        	padding-top:0.62rem;
+        	font-size:2rem;
+        }
+        .tzjs-p{
+        	padding-left:2rem;
+        	padding-right:2rem;
+        	padding-bottom:2rem;
+        	color:#666;
+        }
+        .tzpg-span{
+        	color:#FF9500;
+        }
+    </style>
+    <ion-content>
+    <div class="tzjs">
+    <h4 style="text-align:center;font-size:2.5rem;">中医体质介绍</h4>
+        <p class="tzjs-p">中医9种体质划分如下：</p>
+        <p class="tzjs-p"><span class="tzpg-span">平和质：</span>是指阴阳气血调和，以体态适中、面色红润、精力充沛等为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">气虚质：</span>是指元气不足，以疲乏、气短、自汗等气虚表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">阳虚质：</span>是指阳气不足，以畏寒怕冷、手足不温等虚寒表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">阴虚质：</span>是指阴液亏少，以口干舌燥、手足心热等虚热表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">痰湿质：</span>是指痰湿凝聚，以体型肥胖、腹部肥满、口黏苔腻等痰湿表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">湿热质：</span>是指湿热内蕴，以面部油光、腹部肥满、口苦苔黄腻等湿热表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">血瘀质：</span>是指血行不畅，以肤色晦暗、舌质紫暗等血瘀表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">气郁质：</span>是指气机郁滞，以神情抑郁、忧虑脆弱等气郁表现为主要特征的体质状态。</p>
+        <p class="tzjs-p"><span class="tzpg-span">特禀质：</span>是指先天异常，以生理缺陷、过敏反应等为主要特征的体质状态。</p>
+    </div>
+        
+       
+    </ion-content>
+</ion-view>

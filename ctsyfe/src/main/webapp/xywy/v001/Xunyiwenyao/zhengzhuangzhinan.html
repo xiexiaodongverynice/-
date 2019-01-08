@@ -1,0 +1,60 @@
+<ion-view hide-nav-bar="isIos" view-title = "症状指南">
+    <style>
+    .titleBox {
+        position: absolute;
+        width: 100%;
+        background-color: #fff;
+        z-index: 10;
+    }
+    .show_List{
+        overflow: hidden;
+        height:40px;
+        border-bottom: 1px solid #dedede;
+        margin: 0 15px;
+        font: 16px Microsoft Yahei;
+        color:#666;
+        line-height: 40px;
+    }
+    .currentChoose{
+        color:#18b4ed;
+    }
+    </style>
+    <!--js:newController.js(zhengzhuangzhinanC)-->
+    <ion-nav-buttons side="left" >
+    <div style="text-align: center;">
+        <button class="button button-clear icon ion-chevron-left"
+            ng-click="goBack()"></button>
+    </div>
+    </ion-nav-buttons>
+   
+    <nav class="titleBox" ng-style="{top:(isIos)? '0': '44px'}">
+        <div style="background-image: none;top:2px" class="bar item-input-inset"
+            >
+            <div class="item-input-wrapper" ng-click="displaySelect()">
+            	<button ng-click="searchZzName()" type="button" name=""
+                    class="button button-clear ion-android-search"
+                    style="color: #ccc; font-size: 20px; height: 28px; padding-top: 1px;"></button>
+                <input ng-model="data.keyword" ng-change="searchZzName()" ng-focus="hideList()" type="search"
+                    ng-class="{true: 'inputIos',false: ''}[isIos]"
+                    placeholder="请输入症状名称" > <i ng-click="clean()"
+                    ng-class="[data.keyword ? 'visible-im' : '','button button-clear ion-close-circled']"
+                    style="font-size: 16px; padding-right: 8px; padding-top: 1px;height:28px;"></i>
+                
+            </div>
+        </div>
+        <hr class="hr-5">
+       
+    </nav>
+    <ion-content delegate-handle="dashboard" ng-click="isHidePopup()" ng-style="{top:(isIos)? '50px': '94px'}" style="padding-top: 0px;"> 
+        <div>
+            <ul>
+                <li ng-repeat = "item in zzList" class = "show_List" ng-click = "goDetail(item.ID)" ng-class="{true :'currentChoose', false :''}[currentChoose === item.ID]">
+                    <span style = "margin-left: 10px;">{{item.MC}}</span>
+                </li>
+            </ul>
+        </div>
+    </ion-content>
+
+
+    </ion-view>
+    

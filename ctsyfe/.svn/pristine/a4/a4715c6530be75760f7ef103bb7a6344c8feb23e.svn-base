@@ -1,0 +1,241 @@
+<ion-view hide-nav-bar="isIos" view-title="{{title}}" class="jkda-item-edit">
+        <ion-nav-buttons side="left">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </ion-nav-buttons>
+        <!-- <ion-nav-buttons side="right">
+                <div>
+                    <a nav-direction="back">
+                        <go-home-android></go-home-android>
+                    </a>
+                </div>
+        </ion-nav-buttons> -->
+        <style type="text/css">
+        #jcsj{
+            border: 1px solid #d4d4d4
+        }
+        #jcjl{
+            border: 1px solid #d4d4d4
+        }
+        .xiala{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border-top: 10px solid #DEDEDE;
+            overflow: scroll;
+            
+        }
+        .xiala_Android{
+            position: absolute;
+            height: 94%;
+            width: 100%;
+            top: 44px;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border-top: 10px solid #DEDEDE;
+            overflow: scroll;
+        }
+        .xialas{
+            position: absolute;
+            height: 92%;
+            width: 100%;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border-top: 10px solid #DEDEDE;
+            overflow: scroll;
+            
+        }
+        .xiala_Androids{
+            position: absolute;
+            height: 80%;
+            width: 100%;
+            top: 44px;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border-top: 10px solid #DEDEDE;
+            overflow: scroll;
+        }
+        .xiala_div{
+            height: 50px;
+            /* line-height: 50px; */
+            font-size: 16px;
+            color: black;
+            border-bottom: 1px solid #DEDEDE;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .xialas_div{
+            height: 70px;
+            /* line-height: 50px; */
+            font-size: 16px;
+            color: black;
+            border-bottom: 1px solid #DEDEDE;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .xiala_b{
+            position: relative;
+            padding: 10px 15px;
+            top: 4px;
+            border-bottom: 1px solid #DEDEDE;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+
+        }
+        .xiala_b span{
+            float: right;
+            margin-left: 10px
+        }
+        .newdiv{
+            margin-top: -1px;
+            background: #f3f4f5;
+            display: flex;
+            flex: 1 0;
+            align-items: center;
+            border-radius: 4px;
+            padding-right: 8px;
+            /* padding-left: 8px; */
+            height: 28px;
+        }
+        .getcheckresut{
+            position: relative;
+            height: 100%;
+            z-index: 10;
+            background: white;
+        }
+        .getcheckresut_bottom{
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            margin-bottom: 0;
+            text-align: center;
+            z-index: 99999;
+            background: #F3F4F5
+        }
+        .button_left{
+            height: 44px;
+            width: 49%;
+            font-size: 16px;
+            color:black;
+            border: 0;
+            outline: 0;
+            background-color: #F3F4F5;
+        }
+        .button_right{
+            height: 44px;
+            width: 49%;
+            font-size:16px;
+            color: #FFF;
+            border: 0;
+            outline: 0;
+            background-color: #00B6ED;
+        }
+        .goresult{
+            float: right;
+            margin-top: 10px;
+            background-color: #00B6ED;
+            border: 0;
+            outline: 0;
+            font-size:12px;
+            color: #FFF;
+            padding: 5px
+        }
+        .goresults{
+            float: right;
+            margin-top: 10px;
+            background-color: #CCCCCC;
+            border: 0;
+            outline: 0;
+            font-size:12px;
+            color: black;
+            padding: 5px
+        }
+        .newxmfl{
+            display: inline-block;
+            float: right;
+            margin-right: 5px;
+        }
+        </style>
+        <div ng-if="ishowxiala"  ng-class="{true:'xiala',false:'xiala_Android'}[isIos]">
+            <div class="xiala_b">
+                    <div class="newdiv">
+                        <button  type="button" name="" class="button button-clear ion-android-search" style="color: #ccc; font-size: 20px; height: 28px; padding-top: 1px;min-width: 20px"></button>
+                        <input ng-model="alljcname" ng-change="getallname(alljcname)" id="alljcname" name="alljcname" type="text"  maxlength="60" style="width: 94%;height: 28px;background: 0 0;" placeholder="请输入项目名称"> 
+                    </div>
+                    
+    
+                    <!-- <label  class="jianyan_label" style="margin-left:10px" for="tjxm">项目名称</label>
+                    <input class="jianyan_inputx" style=" border: 1px solid #d4d4d4" type="text" id="allname" name="allname"  placeholder="请输入项目名称" ng-model="allname" maxlength="60" ng-change="getallname(allname)" required /> -->
+                    <span ng-click="close()"><i class="icon iconfont icon-guanbi1" style="font-size:24px"></i> </span>
+            </div>
+            <div class="xialas_div" ng-repeat="item in detailList"  ng-click="xunazhedata(item)">
+                <div style="margin-top: 20px">
+                    <span>{{item.xmmc}}</span>
+                </div>
+                <div style="margin-top: 20px">
+                    <span style="font-size: 14px;color: #999;" >{{item.bbmc}}</span>
+                </div>
+                <!-- <p><span>正常值</span>{{item.zczmax}}-{{item.zczmin}}<span>检查结果</span>{{item.inspectResult}}</p> -->
+            </div>
+            <!-- <div class="xiala_b">
+                <span ng-click="close()">关闭</span>
+            </div> -->
+                   
+        </div>
+        <div class="getcheckresut" ng-if="isresultlist" >
+            <div ng-class="{true:'xialas',false:'xiala_Androids'}[isIos]">
+                <div class="xiala_b">
+                        <div class="newdiv">
+                            <button type="button" name="" class="button button-clear ion-android-search" style="color: #ccc; font-size: 20px; height: 28px; padding-top: 1px;"></button>
+                            <input ng-model="jcresult"  ng-change="getCheckReult(jcresult)" id="jcresult" name="jcresult" type="text"  maxlength="60" style="width: 94%;height: 28px;background: 0 0;" placeholder="请输入检查结论"> 
+                        </div>
+                </div>
+                <div class="xiala_div" ng-repeat="item in getCheckReultlist" ng-click="selectOne(item.JCJL,$index)">
+                    <div style="margin-top: 20px">
+                        <input type="checkbox" id="{{$index}}">
+                        <span >{{item.JCJL}}</span>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="getcheckresut_bottom">
+                    <button class="button_left" ng-click="getclose()">取消</button>
+                    <button class="button_right" ng-click = "getqueding()">确定</button>
+            </div>
+        </div>
+        <ion-content>
+            <form id="jianchaForm">
+                <fieldset class="jbxx">
+                    <div>
+                        <label for="xmmc">项目名称</label>
+                         <input type="text" style="right:5px"  id="xmmc" name="xmmc"  placeholder="请输入项目名称" maxlength="60" ng-model="xmmc"   ng-focus="gettanchu()" required />
+                    </div>
+                   
+                    <div ng-if="ishavexmfl">
+                        <label for="xmfl">项目分类</label>
+                        <div class="newxmfl">
+                                <span>{{xmfl}}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;border: none">
+                        <label  for="jcjl">检查结论</label>
+                        <button  ng-if="isgetxuanzhe" ng-class="{true:'goresults',false:'goresult'}[!isgetxuanzhe]"  ng-click="goresult()">选择</button>
+                        <textarea  rows="3" style="width: 100%;padding: 5px"  id="jcjl"  name="jcjl"  ng-model="jcjl" ng-change="valuedata()" maxlength="500" ></textarea>
+                    </div>
+                </fieldset>
+    
+            </form>
+        </ion-content>
+        <div class="bar bar-footer bar-gray">
+            <input type="submit" value="保存" form="jianchaForm" id="submit" disabled="true" ng-click="submitForm()">
+        </div>
+    </ion-view>

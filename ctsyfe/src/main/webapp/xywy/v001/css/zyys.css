@@ -1,0 +1,293 @@
+
+         .top-sousuo {
+            position: absolute;
+            width: 100%;
+            z-index: 99;
+           
+        }
+
+        /* 搜索框样式——start */
+         .search-bar {
+            background-color: #f5f5f5;
+            padding: 10px 15px;
+        }
+
+         .search-bar .item-input {
+            height: 32px;
+            border: 1px solid #d4d4d4;
+            padding-right: 15px;
+            border-radius: 5px;
+        }
+        .bar.item-input-inset .item-input-wrapper{
+            background: #fff;
+            margin-top: 0;
+        }
+        .item-input-wrapper{
+            border: 1px solid #d4d4d4;
+            padding: 0 15px 0 16px;
+            
+        }
+        .bar.item-input-inset .item-input-wrapper input{
+            font-size: 14px;
+            height: 27px;
+        }
+        .item-input-inset i,
+         .search-bar .item-input i {
+            color: #ccc;
+            font-size: 20px;
+        }
+
+         .search-bar .item-input input {
+            height: 30px;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        /* 搜索框样式——end */
+
+        /* 查询菜单样式——start */
+        .ssys .query-menu {
+            display: flex;
+            position: relative;
+            align-items: center;
+            color: #666;
+            border: 1px solid #d4d4d4;
+        }
+
+        .ssys .query-menu .fg {
+            color: #d4d4d4;
+        }
+
+        .ssys .dropdown {
+            position: static;
+            width: 30%;
+            flex-grow: 1;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .ssys .dropdown .menuBtn {
+            font-weight: bold;
+            font-size:0; 
+        }
+        .ssys .dropdown .menuBtn span{
+            font-size:14px;
+        }
+        .ssys .dropdown .menuBtn i{
+            font-size:14px;
+            margin-left: 5px;
+        }
+
+
+        .ssys .dropdown .menuBtn.on {
+            color: #00b5ee;
+        }
+
+        .ssys .dropdown div.c-blue {
+            display: inline-block;
+            font-size:14px; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align:top;
+            max-width: 80%;
+        }
+
+        .ssys .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 43px;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        .ssys .dropdown-content.tabClick {
+            display: block;
+        }
+
+        .ssys .m-15 {
+            margin: 0 15px !important;
+        }
+
+        .ssys .dropdown-content .content-div {
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        .ssys .dropdown-content .s-container {
+            padding: 0 20px;
+        }
+
+        .ssys .dropdown-content .selected {
+            text-align: left;
+            white-space: nowrap;
+            overflow-x: scroll;
+        }
+
+        .ssys .dropdown-content .selected span {
+            display: inline-block;
+            height: 25px;
+            margin: 5px 5px 0 0;
+            padding: 0 2.5px;
+            background-color: #F2F9FF;
+            line-height: 25px;
+            color: #00b5ee;
+            font-size: 15px;
+            border-radius: 5px;
+        }
+
+        .ssys .dropdown-content ul {
+            font-size: 14px;
+            color: #666;
+            overflow: hidden;
+            margin: 0 0 20px 0;
+
+        }
+
+        .ssys .dropdown-content li {
+            border-width: 0 0 1px 0;
+            text-align: left;
+        }
+
+        .ssys .dropdown-content li.item-checkbox {
+            margin: 0;
+            padding: 4px 0 4px 35px;
+        }
+        .ssys .dropdown-content li:last-child{
+            border:none; 
+        }
+        .ssys .item-checkbox .checkbox {
+            left: 0;
+            margin-top: -25px;
+            padding: 15px 0;
+        }
+
+        .ssys .item-checkbox .checkbox input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .ssys .item-checkbox .checkbox input:after {
+            width: 11px;
+        }
+
+        .ssys .dropdown-content ul.tz li {
+            width: 50%;
+            float: left;
+        }
+
+        .ssys .dropdown-content li.pinyin {
+            position: relative;
+            height: 22px;
+            line-height: 22px;
+            background: #f5f5f5;
+            font-weight: bold;
+            text-align: left;
+            padding: 0 20px;
+            z-index: 2;
+            margin-top: -1px;
+
+        }
+
+        .ssys .dropdown-content ul li label {
+            font-size: 14px;
+        }
+
+        .button-div {
+            font-size: 0;
+            border: 1px solid #d4d4d4;
+        }
+
+        .button-div a {
+            display: inline-block;
+            width: 50%;
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .button-div a.ok {
+            background: #00b5ee;
+        }
+
+        .button-div a.cansel {
+            color: #333;
+        }
+
+        /* 查询菜单样式——end */
+        /* 膳食列表样式 */
+        .ssys ul.list li:last-child{
+            border:none;
+        }
+        .ssys .list_box {
+            height: 12rem;
+        }
+
+        .ssys .image_box {
+            margin: 1.5rem 1.25rem;
+            position: absolute;
+            width: 12.5rem;
+            height: 9rem;
+        }
+
+
+        .ssys .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ssys .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 15rem;
+            padding-right: 1.25rem;
+            white-space: nowrap;
+            height: 12rem;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        .ssys .content p {
+            margin: 0;
+        }
+
+        .ssys .content h4 {
+            margin: 0 0 .5rem;
+            padding: 0;
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .ssys .content h4 .peixue{
+            font-weight: normal;
+        }
+        .ssys .content span.px {
+            font-weight: normal;
+            font-size: 14px;
+            color: #999;
+
+        }
+
+        .ssys .content p {
+            font-size: 14px;
+            color: #999;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .ssys right-list {
+            line-height: 20px;
+        }
+    

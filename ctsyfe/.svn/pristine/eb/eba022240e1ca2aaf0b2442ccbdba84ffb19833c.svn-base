@@ -1,0 +1,175 @@
+<ion-view hide-nav-bar="isIos" view-title="儿童保健">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons> -->
+    <style>
+        .childhood_div{
+            position: relative;
+            margin-top: 10px;
+            background: white;
+            width: 100%
+        }
+        .childhood_div_top{
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            border-bottom: 1px solid #EDEDED;
+            font-size: 18px;
+
+        }
+        .div_top_left{
+            margin-left: 15px;
+            float: left;
+        }
+        .div_top_right{
+            margin-right: 30px;
+            float: right;
+        }
+        .childhood_ul{
+            margin-left: 15px;
+            margin-right: 15px;
+            /* width: 100%; */
+            position: relative;
+            margin-top: 2px;
+        }
+        .childhood_ul_top{
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
+            color: #04B7EF
+        }
+        .childhood_li{
+            border-top: 1px solid #EDEDED
+        }
+        .childhood_li_left{
+            width: 45%;
+            display: inline-block;
+            margin-left: 12px;
+            font-size: 18px;
+            white-space: normal;
+        }
+        .li_top{
+            margin-top: 15px;
+        }
+        .childhood_li_middle{
+            position: absolute;
+            font-size: 14px;
+        }
+        .childhood_li_bottom{
+            position: absolute;
+            right: 0;
+            background: #CCF2FD;
+            color: #04B7EF;
+            padding: 4px;
+
+        }
+        .childhood_li_bottoms{
+            position: absolute;
+            right: 0;
+            background: #FFECE1;
+            color: #F17D79;
+            padding: 4px;
+
+        }
+        .li_bottom{
+            margin-top: 10px;
+            margin-left: 12px;
+        }
+        .li_top p{
+            margin-left: 12px;
+            font-size: 16px;
+        }
+        .child_i{
+            margin-left: 10px;
+            color: #999;
+        }
+        .allcolor{
+            color: #aaaaaa
+        }
+        .tjcolor{
+            color: #666
+        }
+    </style>
+    <ion-content style="background-color:#f3f4f5">
+        <div class="childhood_div">
+            <div class="childhood_div_top"> 
+                <div class="div_top_left">
+                    <i class="icon iconfont icon-ertongyimiao" style="color: #04B7EF;font-size: 22px"></i>
+                    <span>疫苗接种</span>
+                </div>
+                <div class="div_top_right" ng-click="goallvaccines()">
+                    <span  style="color: #04B7EF">全部</span>
+                    <i class="icon ion-ios-arrow-right child_i"></i>
+                </div>
+               
+            </div>
+            <ul class="childhood_ul">
+                <div class="childhood_ul_top"> 
+                    <i class="icon ion-ios-bell-outline"></i>
+                    <span>建议下次接种时间&nbsp;&nbsp;{{jztime}}</span>
+                </div>
+                <li class="childhood_li" ng-repeat="item in vaccinesdata">
+                    <div class="li_top">
+                        <div class="childhood_li_left">
+                            <span> {{item.YMMC}}</span>
+                        </div>
+                        <span  class="childhood_li_middle tjcolor ">第{{item.YMJC}}剂（共{{item.JZZJC}}剂）</span>
+                        <span  class="childhood_li_bottom" ng-if="item.MIANFEI==1">免费</span>
+                        <span  class="childhood_li_bottoms" ng-if="item.MIANFEI==0">收费</span>
+                    </div>
+                    <div class="li_bottom">
+                        <span style="color:#aaa">{{item.GONGXIAO}}</span>
+                    </div>
+                    <div style="height: 10px;"></div>
+                </li>
+
+            </ul>
+        </div>
+        <div class="childhood_div">
+                <div class="childhood_div_top" > 
+                    <div class="div_top_left">
+                        <i class="icon iconfont icon-jianchajianyanbaogao" style="color: #04B7EF;font-size: 22px"></i>
+                        <span>健康体检</span>
+                    </div>
+                    <div class="div_top_right" ng-click="goalljktj()">
+                        <span  style="color: #04B7EF">全部</span>
+                        <i class="icon ion-ios-arrow-right child_i "></i>
+                    </div>
+                   
+                </div>
+                <ul class="childhood_ul">
+                    <div class="childhood_ul_top"> 
+                        <i class="icon ion-ios-bell-outline"></i>
+                        <span>建议下次体检时间&nbsp;&nbsp;{{jiankangdata.jysj}}</span>
+                    </div>
+                    <li class="childhood_li" >
+                        <div class="li_top">
+                           <p class="tjcolor">{{jiankangdata.tjxm.tjxm}}</p>
+                        </div>
+                        <div style="height: 10px;"></div>
+                    </li>
+    
+                </ul>
+            </div>
+            <div class="childhood_div"  ng-click="gomore()">
+                    <div class="childhood_div_top"> 
+                        <div class="div_top_left">
+                            <i class="icon iconfont icon-jiankangtijian" style="color: #04B7EF;font-size: 18px"></i>
+                            <span>成长知识</span>
+                        </div>
+                        <div class="div_top_right" ng-click="goallvaccines()">
+                            <i class="icon ion-ios-arrow-right child_i"></i>
+                        </div>
+                     </div>
+                   
+    </ion-content>
+</ion-view>

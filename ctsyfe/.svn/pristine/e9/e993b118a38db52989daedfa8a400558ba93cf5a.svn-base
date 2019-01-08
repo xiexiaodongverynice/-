@@ -1,0 +1,399 @@
+<ion-view hide-nav-bar="isIos" view-title="{{modelname}}" class="color-6" ng-view>
+    <ion-nav-buttons side="left">
+        <div style="text-align: center; height: 100%">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div ng-if="type != 'tzpg'">
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <!-- 新图标返回首页 -->
+    <!-- <div style="z-index: 10;position: fixed;border-radius: 10px;float: right;top:115px;right:3px; " ng-if="isIos">
+        <div id="pg-goShouYe" ng-click="goPgShouYe()">
+            <i class="icon iconfont icon-shouye" style="color:#FFF;"></i>
+        </div>
+    </div> -->
+
+    <!-- 返回首页 -->
+    <div class="shouye-pos" ng-if="isIos&&isFromShouye==='false'">
+        <go-shouye></go-shouye>
+          <!-- 返回风险评估页 -->
+          <!-- <div ng-show="isShowFxpgBtn" ng-click="goFxpg()" style="width: 90px; height:50px;text-align:center;float: right;border-bottom-left-radius: 35px;border-top-left-radius: 35px;color: #2db4ee;margin-top: 20px;clear:both; background-color: white;opacity:0.9;border: 1px solid #ebebeb;"><i class="ion-paper-airplane" style="margin-top: 3px;display:block;font-size:22px;padding-left:10px;"></i><p style="padding-top: 0;padding-left:10px;" class="ng-binding">评估列表</p></div> -->
+    </div>
+    <!-- <div id="sub-line" ng-show="isShowFxpgBtn">
+        <input type="submit" value="返回风险评估页" ng-click="goFxpg()">
+    </div> -->
+    <style>
+        /* #pg-goShouYe {
+            height: 45px;
+            width: 45px;
+            background-color: #00B5EE;
+            border-radius: 45px;
+            opacity: 0.9;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #pg-goShouYe i {
+            font-size: 30px;
+            line-height: 45px;
+        } */
+
+        .button-pannel {
+            width: 100%;
+            bottom: 2rem;
+            position: absolute;
+            text-align: center;
+        }
+
+        .button-pannel>button {
+            border: none;
+            outline: none;
+            color: #FFF;
+            width: 11rem;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            border-radius: 3.5rem;
+            font-size: 1.75rem;
+        }
+
+        .button-pannel>button:first-child {
+            margin-right: 3rem;
+        }
+
+        .but-his {
+            background-color: #FF9500;
+        }
+
+        .but-cxpg {
+            background-color: #00B6ED;
+        }
+
+        #tzpg h1 {
+            font-size: 2.87rem;
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+
+        .order-num {
+            color: #00b6ed;
+            text-align: center;
+        }
+
+        .order-line .order-total {
+            color: #666;
+        }
+
+        .box_header {
+            color: #00b6ed;
+            font-size: 2rem;
+            text-align: center;
+            background-color: #aedceb;
+            height: 2.5rem;
+            line-height: 2.5rem;
+        }
+
+        .pg_title {
+            height: 2.5rem;
+            font-size: 2rem;
+            line-height: 2.5rem;
+            padding: 0 10px;
+        }
+
+        h3 {
+            font-size: 2rem;
+            color: #666;
+        }
+
+        .jg_detail li {
+            margin-top: .5rem;
+            text-indent: 2em;
+        }
+       
+    </style>
+
+    <ion-content>
+        <div class="header-top">
+            <img class="imgstyle" ng-if="type=='tzpg'" src="img/tzpg.jpg" />
+            <img class="imgstyle" ng-if="type=='ncz'" src="img/nzz.jpg" />
+            <img class="imgstyle" ng-if="type=='tnb'" src="img/tnb.jpg" />
+            <img class="imgstyle" ng-if="type=='yjk'" src="img/yjk.jpg" />
+            <img class="imgstyle" ng-if="type=='xlzz'" src="img/xljkpg.jpg" />
+            <div class="button-pannel">
+                <button class="but-his" ng-click="go_pgHistory()">评估历史</button>
+                <button class="but-cxpg" ng-click="cxpg()">重新评估</button>
+            </div>
+
+        </div>
+        <div id="pgjg">
+            <!-- 评估结果 -->
+            <div class="order-line">
+                <span class="title">评估结果</span>
+                <span class="date">{{pgResult.createTime|limitTo:10}} </span>
+            </div>
+
+            <div ng-if="type=='tzpg'&&datas.DATAS" class="question-answer">
+                <p ng-if="datas.DATAS.length>1" class="answer-intro">
+                    您有多种兼夹体质，其中以
+                    <span></span>{{datas.DATAS[0].P_NAME}}</span>为主，
+                    <span ng-repeat="n in datas.DATAS" ng-if="$index>0&&$index<(datas.DATAS.length-1)">{{n.P_NAME}}、</span>
+                    <span ng-repeat="n in datas.DATAS" ng-if="$index==(datas.DATAS.length-1)">{{n.P_NAME}}</span>为辅。</p>
+
+                    <div ng-click="goShanShi()" class="p-l"><i class="icon iconfont icon-shanshi"></i>营养膳食推荐</div>
+
+                <div class="pg_detail" ng-if="type=='tzpg'" ng-repeat="lab in datas.DATAS track by $index" id="tz{{$index}}">
+                    <h3 class="pg_min_title" ng-if="$index==0" ng-click="isshowall($index)">
+                        {{($index+1) +". "+lab.P_NAME}}
+                        <span class="icon ion-chevron-down activated"></span>
+                    </h3>
+                    <h3 ng-if="$index>0" ng-click="isshowall($index)">
+                        {{($index+1) +". "+lab.P_NAME}}
+                        <span class="icon ion-chevron-right activated"></span>
+                    </h3>
+                    <p class="tz-desc" ng-class="{false:'hide',true:''}[$index==0]">
+                        {{lab.DESCR}}
+                    </p>
+                    <ul ng-class="{false:'hide',true:''}[$index==0]">
+                        <li class="jg_detail">
+                            <h4>总体特征</h4>
+                            <p>{{lab.FEATURE}}</p>
+                        </li>
+
+                        <li class="jg_detail">
+                            <h4>形体特征</h4>
+                            <p>{{lab.XTTZ}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>常见表现</h4>
+                            <p ng-bind-html="lab.CJBX" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>心理特征</h4>
+                            <p>{{lab.XLTZ }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>发病倾向</h4>
+                            <p>{{lab.FBQX }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>对外界环境适应能力</h4>
+                            <p>{{lab.DYJHJSYNL }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>养生法则</h4>
+                            <p>{{lab.YSFZ}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>饮食调摄</h4>
+                            <p>{{lab.YSTS}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>精神调摄</h4>
+                            <p>{{lab.JSTS }}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>起居调摄</h4>
+                            <p>{{lab.QJTS}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>运动锻炼</h4>
+                            <p>{{lab.YDDL}}</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>针灸推拿保健</h4>
+                            <p ng-bind-html="lab.ZJTABJ" compile-html></p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>药物保健</h4>
+                            <p>{{lab.YWBJ}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-if="type=='yjk'" class="question-answer">
+                <p style="font-size:2rem;" class="answer-intro" ng-if="datas">
+                    您的{{modelname}}总得分为
+                    <span class="pg_min_title" style="font-size:2rem;">{{datas.mainValue}}</span>分，处于
+                    <span class="pg_min_title" style="font-size:2rem;">{{datas.des}}状态</span>。
+                </p>
+
+                <div ng-if="datas.result == '1'" class="pg_detail">
+                    <ul ng-repeat="lab in datas.desList">
+                        <li class="jg_detail">
+                            <h4>{{lab.title}}</h4>
+                            <p>{{lab.des}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div ng-if="type=='ncz'&&datas" class="question-answer">
+                <p ng-if="datas" class="answer-intro">
+                    您的{{modelname}}总得分为
+                    <span class="pg_min_title">{{datas.mainValue}}</span>分，10年卒中发病风险为
+                    <span class="pg_min_title">{{datas.result}}%</span>。
+                </p>
+                <div class="pg_detail">
+                    <ul>
+                        <li class="jg_detail">
+                            <h4>脑卒中的症状描述</h4>
+                            <p>“脑卒中”（cerebral stroke）又称“中风”、“脑血管意外”（cerebralvascular accident，CVA）。中风是中医学对急性脑血管疾病的统称。是以一过性或永久性脑功能障碍的为主要症状的一类脑血液循环障碍性疾病。由于中风发病率高、死亡率高、致残率高、复发率高以及并发症多的特点，发病年龄也趋向年轻化，所以医学界把它同冠心病、癌症并列为威胁人类健康的三大疾病之一。
+                                临床上主要表现为猝然昏扑、不省人事或突然发生口眼歪斜、半身不遂、语言不利和/或智力障碍。有一定局限性神经症状，发生在一侧大脑半球者，有对侧三瘫，即对侧的偏瘫、偏身感觉障碍、偏盲症状，或同时有失语。发生在脑干、小脑者则有同侧脑神经麻痹、对侧偏瘫或偏身感觉障碍，同侧肢体共济失调。严重病例有头痛、呕吐、意识障碍，甚至发生脑疝或死亡。
+                                动脉粥样硬化、高血压病、风心病、心源性栓塞、动脉炎、血液病、代谢病、药物反应、肿瘤、结缔组织病等可导致或伴发脑部血管狭窄、闭塞，使脑局部缺血或因血管的破裂而出血引发脑中风。脑中风按病因可分为缺血性中风（短暂性脑缺血发作、动脉粥样硬化性血栓性脑梗塞、腔隙性脑梗塞、脑栓塞）、出血性中风（脑出血、蛛网膜下腔出血）、高血压脑病和血管性痴呆四大类。
+                            </p>
+
+
+
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的就诊指南</h4>
+                            <p>立即就医发生脑中风，应立即就诊。</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的自我处置</h4>
+                            <ol>
+                                <li>1、应使病人仰卧，可不放枕头或将头肩部稍垫高，使下颌略微仰起。解开领口纽扣、领带、裤带、胸罩，如有假牙也应取出。</li>
+                                <li>2、头偏向一侧，防止痰液或呕吐物回流吸入气管造成窒息。</li>
+                                <li>3、如果病人是清醒的，要注意安慰病人，缓解其紧张情绪。</li>
+                                <li>4、对于昏迷的病人，若医生暂时不能到来，可即从冰箱中取出冰块装在塑料袋内，小心地放在病人头上。</li>
+                                <li>5、若病人鼾声明显，提示其气道被下坠的舌根堵住，此时应抬起病人下颌，使之成仰头姿势，同时用毛巾随时擦去病人的呕吐物。</li>
+                            </ol>
+                            </p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>脑卒中的健康指导</h4>
+                            <ol>
+                                <li>1、恢复期治疗的主要目的为促进瘫痪肢体和语言障碍的功能恢复，改善脑功能，减少后遗症以及预防复发。防止血压过高和情绪激动，生活要规律，饮食要适度，大便不宜干结。进行功能锻炼。药物治疗可选用促进神经代谢药物，如脑复康、胞二磷胆碱、脑活素、维生素B类、维生素E及扩张血管药物等，也可选用活血化瘀、益气通络，滋补肝肾、化痰开窍等中药方剂。还可以针灸理疗。</li>
+                                <li>2、中风预防重于治疗，要注意引起脑中风的危险因素：遗传、高血压、低血压、心脏病、心律失常、眼底动脉硬化、糖尿病、高脂血症、吸烟、饮酒、肥胖、口服避孕药，饮食因素如高盐、多肉、高动物油饮食，饮浓咖啡浓茶等，均被认为是脑卒中的危险因素。对高危患者需定期体检，增加对慢性病药物治疗的依从性。</li>
+                                <li>3、为了防止中风，高危人群要注意饮食。
+                                    <ul>
+                                        <li> 控制油脂摄取量：少吃油炸、油煎或油酥的食物及猪皮、鸡皮、鸭皮、鱼皮等。烹调时宜多采用清蒸、水煮、凉拌、炖、卤等方式。</li>
+
+                                        <li>少吃胆固醇含量高的食物：如内脏(脑、肝、腰子等)、肥肉、蟹黄、虾卵、鱼卵等。有血胆固醇过高的人，则每周摄取的蛋黄以不超过三个为原则。
+                                        </li>
+                                        <li>控制盐的摄取：摄取过量的盐份会使人体内的水份滞留，引起血压上升。宜多食用新鲜的天然食物，而腌渍食品、腊味食品及调味浓重的罐头食品等较咸的人工或加工食物尽量少吃。
+                                        </li>
+                                        <li>少饮用含有咖啡因的饮料：如咖啡、茶类都属于含咖啡因的饮料，应适可而止。 炒菜油宜选用不饱和脂肪酸高者，如花生油、菜籽油、橄榄油等。
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>4、脑血管病人常因偏瘫，长期卧床不起，加之有些病人较胖，不易翻身护理，骶尾部，内外踝，足跟，髋部等骨突出部位易发生褥疮。要积极防治褥疮、坠积性肺炎等慢性并发症。</li>
+
+                            </ol>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div ng-if="type=='tnb'&&datas" class="question-answer">
+                <p class="answer-intro" ng-if="datas">您的{{modelname}}总得分为
+                    <span class="pg_min_title">{{datas.mainValue}}</span>分， {{datas.des}}
+                </p>
+                <div class="pg_detail">
+                    <ul>
+                        <li class="jg_detail">
+                            <h4>糖尿病的疾病描述</h4>
+                            <p>糖尿病是由遗传因素和环境因素交互作用致胰岛素分泌障碍和(或)周围靶组织对胰岛素产生抵抗而造成持续性高血糖症，以及由于长期代谢紊乱引起全身组织器官损害的代谢综合征。急性代谢紊乱可致危象而危及生命，而眼、肾、心血管及神经病变等慢性并发症更是糖尿病致残或致死的主要原因，应及早进行防治。</p>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的临床表现</h4>
+                            <ol>
+                                <li>1型糖尿病通常起病急，有明显的多饮、多尿、多食、消瘦及乏力（三多一少)症状。可伴有视力模糊、皮肤感觉异常和麻木，女性患者可伴有外阴瘙痒。</li>
+                                <li>
+                                    2型糖尿病一部分亦可出现典型的三多一少症状，在体重减轻前常先有肥胖史。发病早期或糖尿病前期，可出现午餐或晚餐前低血糖症状。但不少患者可长期无明显症状，仅于体检或因其他疾病检查始发现血糖升高，或因并发症就诊才诊断为糖尿病。
+                                </li>
+                            </ol>
+                        </li>
+                        <li class="jg_detail">
+                            <h4>糖尿病的治疗意见</h4>
+                            <ol>
+                                <li>(一）糖尿病知识教育和饮食管理 1.患者对糖尿病有关知识的了解程度是治疗成功的关键。 2.饮食治疗的原则控制总热量和体重，减少食物中脂肪尤其是饱和脂肪酸的含量，增加食物中纤维含量，使食物中碳水化合物、脂肪和蛋白质所占比例合理。肥胖者的总热量限制更严，消瘦者可偏宽，且蛋白质摄入量可适当增加。减少钠摄入，饮酒宜少量。
+                                </li>
+                                <li>
+                                    (二）无严重或活动性并发症者 鼓励适当增加体力活动。
+                                </li>
+                                <li>(三）戒烟。</li>
+                                <li>(四）降糖治疗 1.原则一般要求空腹及餐后血糖控制达标，按ADA(2002)或IDF西太区目标，FPG
+                                    <6.lmmol/L,PPG<7.8mmol/L,AIC<7%或<6.5%。妊娠糖尿病FPG≤5.8mmol/L,lhPPG≤8.6mmol/L，2hPPG≤7.2mmol/L。特殊情况如老、幼、已有较重晚期并发症或反复发作低血糖者，血糖控制标准可适当放宽(FPG<7.8mmol/L，PPG＜12mmol/L)。
+                                        2.经糖尿病饮食营养疗法(MNT)及运动疗法1个月血糖控制不达标者，应在继续上述处理基础上加用降糖药物治疗。 (1)口服降糖药： 1）磺酰脲类:用于有一定胰岛素分泌功能、肝、肾功能正常的2型糖尿病人。常用剂量为甲磺丁脲0.5～1.Og/d，格列本脲(优降糖)2.5～15mg/d，格列齐特(达美康)40～320mg/d，格列吡嗪(美吡达)5～30mg/d，糖适平(格列喹酮）30～160mg/d，以上各种药物日剂量分为2～3次，口服。瑞易宁5～10mg，格列美脲1～6mg/d,l次/日，糖适平仅95%从胆道排泄，有轻中度肾功能减退者仍可应用，但应监测肾功变化。
+                                        2）二甲双胍(格华止，立克糖，美迪康）:肥胖的2型糖尿病人为首选。肝、肾功能不良、心肺疾病、休克等缺氧状态为禁忌，高龄患者慎用。剂量为0.25～2.25g/d。 3）α-葡萄糖苷酶抑制剂:本品尤适于餐后血糖高的2型糖尿病，阿卡波糖(拜糖平)50～150mg/d，伏格列波糖(倍欣)0.2～0.6mg/d，老年人应用安全，但有明显消化道症状者慎用。
+                                        4）胰岛素增敏剂：罗格列酮（文迪雅）4～8mg/d，匹格列酮（艾汀）15～45mg/d，本品除降糖外，尚有降压、调脂及减轻胰岛素抵抗(提髙胰岛素敏感性）的作用。 5）格列奈类:瑞格列奈(诺和龙,孚来迪）0.5～6mg/d，那格列奈（唐力）0.5～6mg/d，本类为改善胰岛素I相分泌的餐时血糖调节剂。
+                                        上述各类可单用或联合应用(两种或三种）,并可与胰岛素合用，联合用药时各制剂均应减少剂量。对每一患者药物的恰当选择，取决于病情(血糖高低，系空腹或餐后高血糖，胰岛功能，肝、肾功能，并发症，肥胖与消瘦）、药物特点、病人对药物的反应、年龄、价格、货源等因素。
+                                        胰岛素:常用胰岛素制剂的使用。 适应证:1型糖尿病；2型糖尿病胰岛功能差，饮食控制及口服降糖药不能使代谢控制达标者；2型糖尿病患者遇严重应激时(如较大手术、较严重感染、心肌梗死、脑血管意外等)；妊娠糖尿病或2型糖尿病伴妊娠和分娩时；2型糖尿病有严重心、眼、肾、神经等并发症；2型糖尿病合并急性并发症，如酮症酸中毒、高渗综合征；以及禁忌使用口服降糖药时，可改用胰岛素。
+                                        剂量:剂量根据病情先给予10～30U/d，以后根据血糖控制情况逐步调整。 用法:一般于餐前30min皮下注射。①轻型患者可将每日剂量早上一次注射(通常长效和短效胰岛素各占1/3和2/3,或用预混胰岛素）②病情较重或胰岛素用量大于30U/d者，应每日早晚各1次或每餐前各1次；严重者每日3～4次或使用胰岛素泵。
+                                        制剂品种：动物及人胰岛素（诺和诺德礼来人胰岛素的3中短、中、长效制剂或笔芯）均可，但人胰岛素的应用日益普及，妊娠糖尿病推荐使用人胰岛素。最常见和严重的副作用为低血糖，治疗时务必进行血糖检测。
+                                        降压治疗约20%～60%的糖尿病或者伴高血压，对糖尿病高血压者应强化降压治疗，对保护心、脑、肾靶器官、减少心血管事件发生率及病死率至关重要。降压目标：＜13/80mmHg伴糖尿病肾病者，收缩压降至125/75mmHg一下。首选ACE抑制剂或血管紧张素II受体阻断剂（ARBS）单用，或与β受体阻断剂或利尿剂或钙通道拮抗剂合用。
+                                        调脂合用单纯TG增高或HDL-C低者应用贝特类，如非洛贝特（力平之，微粒化力平之），200mg/d。TG及胆固醇均增高者应用他汀类治疗，使目标达TG＜1.5或1.7mmol/L，总胆固醇＜4.5mmol/L，HDL-C＞1.1mmol/L，LDL-C＜3.0mmol/L。
+                                        抗血小板治疗可用肠溶阿司匹林50～100mg/d，以减少心脑血管事件的发生率。 </li>
+                            </ol>
+                            </li>
+                            <li class="jg_detail">
+                                <h4>糖尿病的健康指导</h4>
+                                <ol>
+                                    <li>一、饮食指导： 禁烟、酒。控制碳水化合物的摄入，以减轻胰岛β细胞的负担。应低糖饮食，多食富含多种维生素、蛋白质的食物，如：瘦肉、鸡蛋及蔬菜等。三餐热量按早、午、晚各1/5、2/5、2/5分配。避免高糖、高淀粉及长时间熬煮的食物。
+                                    </li>
+                                    <li>
+                                        二、康复指导： <br>1.继续坚持饮食治疗：遵医嘱定时定量用餐，做到少食多餐，禁甜食。 <br>2.适当参加运动：当您的症状控制较好，可结合自己的爱好选择快走、慢跑、登山、打球、游泳、跳绳、跳舞、做操、打拳等运动。运动的时间应在吃第一口饭后的1小时开始运动，不宜空腹运动，每周至少运动3次，每次运动30至60分钟，不可过度运动。
+                                        <br>3.遵医嘱按时服药，不要擅自减量。遵医嘱注射胰岛素剂量，勿自行调整胰岛素剂量。注意胰岛素注射方法、部位、时间以及注意事项。如有心悸、饥饿、出冷汗等，是低血糖反应症状，应立即进食或饮糖水。当您外出或工作时应随身携带几块糖，以防低血糖发生。经常出差或进餐不规律的患者尤其要注意降糖药和胰岛素的使用。
+                                        <br>4.遵医嘱定期复查门诊：第一次复查一般是出院后两周，复查的项目包括： （1）血糖：即空腹血糖和早餐后2小时血糖。至少每个月到医院测空腹和早餐后2小时血糖1次。 （2）糖化血红蛋白：每3个月测一次，它反映过去2-3个月平均血糖控制情况。
+                                        （3）尿微量白蛋白：每6个月测一次，它是早期糖尿病肾病的标志。 （4）血生化全项：每6个月查一次。 （5）血压：每月复诊时均应测量血压。 （6）心电图：每半年做一次，平时感到心前区不适时随时检查。
+                                        （7）眼底检查：每年做一次，出现视力下降、视物模糊时随时检查。 （8）腰围、臀围和体重：每3个月测一次。 <br>5.预防酮症酸中毒：当您多尿、口渴、恶心、呕吐、腹痛、呼吸深快且出现伴有烂苹果味的呼吸、昏昏欲睡、极度乏力时，可能是酮症酸中毒，应急诊就医。
+                                        <br>6.随身携带急救卡：注明姓名、住址、家属姓名、联系电话、糖尿病类型、简要病史（患病时间、有无伴随其它疾病）、使用药物名称、剂量、用药途径、经常就诊的医院等信息，如一旦发生糖尿病急性并发症，便于及时联系医院抢救治疗。
+                                    </li>
+                                    <li>
+                                        三、生活指导： <br>1.劳逸结合：“生命在于运动”，运动不仅对正常人的健康有益，也是治疗糖尿病的主要方法，但要避免劳累，以不感觉疲劳为宜。 <br>2.积极预防感染：血糖长期控制不好者，会出现体质下降，抵抗力下降，很容易感染。应少去公共场所，天气变化时要及时增减衣服，如有感冒等要及早治疗。
+                                        <br>3.注意个人卫生：糖尿病病人易患疖痈等皮肤问题，应保持全身皮肤清洁，勤洗澡、勤换内衣裤，保持床单清洁。如发生皮肤感染应及时治疗，并保持口腔清洁，早晚刷牙，避免口腔疾患。
+                                        <br>4.讲究足部保健：糖尿病患者容易较早发生动脉硬化，而足疽的发生率更高，因此足部保健非常重要。 <br>5.心情舒畅，情绪稳定，避免不良情绪刺激,了解基本的糖尿病知识，消除对本病的恐惧心理和悲观情绪。
+                                    </li>
+                                </ol>
+                            </li>
+                           
+                </div>
+
+
+            </div>
+
+            <div ng-if="type=='xlzz'" class="question-answer">
+                <p class="answer-intro" ng-if="datas">
+                    参考诊断：各因子评估结果分为“正常”、“轻度”、“中度”、“重度”。各因子平均分<2，为“正常”。3>因子平均分≥2为“轻度”。 3.6>因子平均分≥3为“中度”。≥3.6为“重度”。
+                </p>
+                
+                <div class="pg_detail" ng-if="type=='xlzz'" ng-repeat="lab in datas.result track by $index">
+                    <h3 class="pg_min_title" ng-if="$index==0&&lab.state==0">
+                        {{($index+1) +". "+lab.title}}平均分：{{lab.meanValue}} 正常
+                    </h3>
+                    <h3 class="pg_min_title" ng-if="$index==0&&lab.state!=0" ng-click="isshowall($event)">
+                        {{($index+1) +". "+lab.title}}平均分： {{lab.meanValue}} {{lab.text}}度风险
+                        <span class="icon ion-chevron-down activated"></span>
+                    </h3>
+                    <h3 ng-if="$index>0&&lab.state==0" >
+                        {{($index+1) +". "+lab.title}}平均分：{{lab.meanValue}} 正常
+                    </h3>
+                    <h3 ng-if="$index>0&&lab.state!=0" ng-click="isshowall($event)">
+                        {{($index+1) +". "+lab.title}}平均分： {{lab.meanValue}} {{lab.text}}度风险
+                        <span class="icon ion-chevron-right activated"></span>
+                    </h3>
+                    <ul ng-class="{false:'hide',true:''}[$index==0]">
+                        <li class="jg_detail">
+                            <p ng-if="lab.state!=0">{{lab.des}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+          <!-- 无数据提示 -->
+          <div ng-if="nullTip" class="null-div">
+                <img src="img/pg-null.png" />
+                <p class="nullTip">{{nullTip}}</p>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

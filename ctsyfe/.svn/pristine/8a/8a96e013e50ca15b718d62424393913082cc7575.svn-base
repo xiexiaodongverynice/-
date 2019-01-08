@@ -1,0 +1,144 @@
+<ion-view hide-nav-bar="isIos" view-title="家庭用药" class="jtyy">
+    <ion-nav-buttons side="left">
+        <div style="text-align: center;">
+            <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a ng-click="back()">
+                <button class="button button-clear icon ion-ios-home-outline">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <nav class="titleBox top-sousuo" ng-style="{top:(isIos)? '0': '44px'}">
+        <div class="search-bar" ng-click="goSearch()">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="搜病症、系统分类">
+                <i class="icon iconfont icon-yuyin"></i>
+            </label>
+        </div>
+        <hr>
+        <div class="tabs">
+            <a href="javascript:void(0)"  ng-click="switchTabs(0)" ng-class="{true:'on',false:''}[currtab==0]">按病症找药</a>
+            <a href="javascript:void(0)"  ng-click="switchTabs(1)" ng-class="{true:'',false:'on'}[currtab==0]">按系统找药</a>
+        </div>
+    </nav>
+    <style>
+        .jtyy .search-bar {
+            background-color: #fff;
+        }
+        .jtyy hr{
+        margin: 0;
+        border-top:10px solid #f5f5f5; 
+        }
+
+        .jtyy .left-lb .show_span_info {
+            display: flex;
+            align-items: center;
+            width: 100px;
+            margin-right: 15px;
+            margin-left: 15px;
+            height: 50px;
+            padding: 0;
+        }
+
+        .jtyy .right-lb li {
+            position: relative;
+        }
+
+        .jtyy .right-lb li i {
+            position: absolute;
+            top: 17px;
+            right: 15px;
+            font-size: 16px;
+            line-height: 16px;
+
+        }
+
+        .jtyy .right-lb .show_span_info {
+            margin: 0;
+            width: auto;
+        }
+
+        .ejContainer {
+            margin: 0 10px 10px 0px;
+        }
+
+        .ejfl-list {
+            font-size: 14px;
+            margin-left: 15px;
+            margin-bottom: 10px;
+        }
+
+        .ejfl-div {
+            display: none;
+        }
+
+        .chooseCurrent-yjfl {
+            color: #00b5ee;
+        }
+
+        .chose {
+            background-color: #fff;
+        }
+
+        .jtyy .right-lb li {
+            margin-left: 10px;
+        }
+        .jtyy .tabs{
+            position: relative;
+            text-align: center;
+            background: #fff;
+            padding: 9px;
+            border-bottom: 1px solid #dedede;
+        }
+        .jtyy .tabs a{
+            display: inline-block;
+            text-decoration: none;
+            height: 28px;
+            line-height: 28px;
+            color: #00b5ee;
+            border:1px solid #00b5ee;
+            padding: 0 10px;
+        }
+        .jtyy .tabs a.on{
+            color: #fff;
+            background: #00b5ee;
+        }
+        .jtyy .tabs a:first-child{
+            border-radius: 5px 0 0 5px;
+        }
+        .jtyy .tabs a:last-child{
+            border-radius:0 5px 5px 0;
+        }
+    </style>
+    <ion-content ng-style="{top:(isIos)? '109px': '153px'}" style="padding-top: 0px;">
+        <div class="liebiao left-lb">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-repeat="item in leftList[currtab]" ng-click="loadyjfl(item)" ng-class="[currentChoose[currtab].xt == item ? 'chose':'']">
+                    <!-- <span ng-if="item===data.yjfl" id="curBw" style="position:relative;" value="{{$index}}"></span> -->
+                    <span class="show_span_info" on-finish-render-filters="Complete">{{item}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="liebiao right-lb">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-click="chooseEjfl(data.YJFL)" ng-repeat="data in righList[currtab]">
+                    <div ng-click="loadEjfl(data.YJFL,data.ejflList)">
+                        <span ng-class="[currentChoose[currtab].yjfl == data.YJFL ? 'chooseCurrent-yjfl':'']" class="show_span_info zz">{{data.YJFL}}</span>
+                        <i ng-if="data.ejflList" ng-class="[currentChoose[currtab].yjfl == data.YJFL ? 'ion-ios-arrow-up':'ion-ios-arrow-down']"></i>
+                    </div>
+                    <div ng-if="data.ejflList" ng-style="{display:(currentChoose[currtab].yjfl == data.YJFL)? 'block': 'none'}"
+                        class="ejContainer">
+                        <div class="ejfl-list" ng-repeat="ejfl in data.ejflList" ng-click="goDrugDetail(ejfl)" ng-style="{color:(currentChoose[currtab].ejfl == ejfl)? '#00b5ee': ''}">
+                            {{ejfl}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>

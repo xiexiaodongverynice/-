@@ -1,0 +1,356 @@
+<ion-view hide-nav-bar="isIos" view-title="家庭健康档案" class="dangan-list">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+    <style>
+        #dalist {
+            background-color: #F9F9F9;
+        }
+
+        .dalist_member {
+            width: auto;
+            margin: auto 10px 20px 10px;
+            background-color: #fff;
+            overflow: hidden;
+            min-height: 80px;
+            border-radius: 8px;
+        }
+
+        .dalist_blueh {
+            position: relative;
+            background-color: #5FA2FD;
+            height: 80px;
+            overflow: hidden;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .dalist_headimg {
+            width: 60px;
+            height: 60px;
+            margin: 10px;
+            border-radius: 50%;
+        }
+
+        .dalist_blueh p {
+            font-size: 16px;
+            color: #fff;
+            margin: 0;
+        }
+
+        .dalist_blueh p i {
+            font-size: 20px;
+        }
+
+        .dalist_shensuo {
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            right: 20px;
+        }
+
+        .dalist_shensuo p {
+            display: flex;
+        }
+
+        .dalist_addBtn {
+            position: fixed;
+            bottom: 40px;
+            right: 20px;
+
+            width: 44px;
+            height: 44px;
+            text-align: center;
+            line-height: 44px;
+
+            background-color: #00b5ee;
+            opacity: .6;
+
+            border-radius: 50%;
+            z-index: 100;
+            /* box-shadow: 0px 5px 10px #72D5F5; */
+        }
+
+        .dalist_tianchong {
+            width: 100%;
+            height: 10px;
+        }
+
+        .dangan-list .icon-xieya {
+            color: #2eb7ee;
+        }
+
+        .dangan-list .icon-xietang {
+            color: #ff9500;
+        }
+
+        .dangan-list .icon-tizhong {
+            color: #33cd5f;
+        }
+
+        .dangan-list .icon-yunqihehu {
+            color: #FAB3BB;
+        }
+
+        .dangan-list .icon-tijianbaogaojiedu1 {
+            color: #770fb0;
+        }
+
+        .dangan-list .icon-jianchajianyanbaogao {
+            color: #66CC99;
+        }
+
+        .dangan-list .icon-ertongyimiao {
+            color: #66CC99;
+        }
+
+        .dalist-comongray {
+            color: #cccccc;
+        }
+
+        .dalist_itemname {
+            font-size: 16px;
+            margin: 0px 6px 0px 0px;
+        }
+
+        .dangan-list li {
+            position: relative;
+            border-bottom: 1px solid #d9d9d9;
+            padding: 15px 0 15px 10px;
+            margin: 0 15px 0 20px;
+        }
+
+        .dangan-list li p {
+            color: #333;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+        }
+
+        .dangan-list li i {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+
+        .dangan-list mark {
+            display: inline-block;
+            background-color: #fff;
+            margin-left: 40px;
+            color: #666;
+        }
+
+        .dangan-list .blue-border-button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            bottom: 50%;
+            margin-top: -13px;
+            width: 64px;
+        }
+
+        .dangan-list li.color-c i,
+        .dangan-list li.color-c mark,
+        .color-c {
+            color: #ccc;
+        }
+
+        .dangan-list li mark span.riqi {
+            margin-right: 10px;
+        }
+
+        .dangan-list li mark span.jieguo {
+            margin-left: 10px;
+        }
+
+        .dangan-list .dsp-block {
+            display: block;
+        }
+
+        .color-o {
+            color: #ff9500;
+        }
+
+        .color-g {
+            color: #00d64e;
+        }
+
+        .color-r {
+            color: #EB4F4E;
+        }
+
+        .color-b {
+            color: #00b5ee;
+        }
+        .color-blbg{
+        	color: #1BBC9B;
+        }
+
+        .dangan-list .age {
+            margin-left: 10px;
+        }
+    </style>
+    <!-- 书写内容标记 -->
+    <!-- <div ng-click="addMemberDA()" class="dalist_addBtn">
+        <i class="icon ion-plus-round" style="color: white;font-size: 20px;"></i>
+    </div> -->
+    <!-- 返回首页 -->
+    <div class="m-body f-m-body" id="m-body" style="display:none">
+        <go-shouye-in-menu></go-shouye-in-menu>
+        <div ng-click="addMemberDA()" class="fl-child" id="tzView">
+            <i class="icon iconfont icon-xinzengyonghu"></i>
+        </div>
+    </div>
+
+    <div class="floatdiv float-menu" id="switch" ng-click="menuSwitch($event)">
+        <i class="icon ion-plus" id="floatIcon" ng-class="{true:'menu-show',false:''}[isMenuShow]" ></i>
+    </div>
+    <ion-content id="dalist"  ng-click="hideMenuClick($event)">
+        <div class="dalist_tianchong"></div>
+        <!-- 单个用户档案 -->
+        <div class="dalist_member" ng-repeat="member in memberMsg track by $index" id="cy{{$index}}" repeat-finish>
+            <!-- 蓝色div -->
+            <!-- 初始情况下，第一行展开 -->
+            <div class="dalist_blueh" ng-if="ssflag[$index]=='show'" ng-click="isshowAll($index,member.id,member.chuShengRiQi)">
+                <img class="dalist_headimg" ng-if="$index==0" ng-click="gotoEdit($event,member.id,member.guanXi)"
+                    ng-src="{{(member.imgUrl?member.imgUrl:weiXinTX)}}">
+                <img class="dalist_headimg" ng-if="$index>0" ng-click="gotoEdit($event,member.id,member.guanXi)" ng-src="{{(member.imgUrl?member.imgUrl:'img/DA_touxiang.svg')}}">
+                <p>
+                    <span class="dsp-block">{{member.xingMing}}</span>
+                    <span>{{member.xingbievalue}}</span>
+                    <span class="age">{{member.age}}</span>
+                </p>
+                <div class="dalist_shensuo">
+                    <p>收起<i style="margin-left: 8px;" class="icon ion-ios-arrow-up"></i></p>
+                </div>
+            </div>
+            <!-- 初始情况下，第一行之外关闭 -->
+            <div class="dalist_blueh" ng-if="ssflag[$index]=='hide'" ng-click="isshowAll($index,member.id,member.chuShengRiQi)">
+                <img class="dalist_headimg " ng-if="$index==0 " ng-click="gotoEdit($event,member.id,member.guanXi) "
+                    ng-src="{{(member.imgUrl?member.imgUrl:weiXinTX)}} ">
+                <img class="dalist_headimg" ng-if="$index>0" ng-click="gotoEdit($event,member.id,member.guanXi)" ng-src="{{(member.imgUrl?member.imgUrl:'img/DA_touxiang.svg')}}">
+                <p>
+                    <span class="dsp-block">{{member.xingMing}}</span>
+                    <span>{{member.xingbievalue}}</span>
+                    <span class="age">{{member.age}}</span>
+                </p>
+                <div class="dalist_shensuo ">
+                    <p>展开<i style="margin-left: 8px; " class="icon ion-ios-arrow-down "></i></p>
+                </div>
+            </div>
+            <ul ng-if="ssflag[$index]=='show' ">
+                <!-- 血压 -->
+                <li ng-class="{true: '',false: 'color-c'}[member.xueya!=null&&member.xueya.iskaiqi]" ng-click="gotoDetail( 'xueya',member.id, 'li',member.xueya) ">
+                    <p><i class="icon iconfont icon-xieya "></i>血压管理</p>
+                    <mark ng-if="member.xueya.GAOYA==null ">科学有效控制血压</mark>
+                    <mark ng-if="member.xueya.GAOYA!=null ">
+                        <span class="riqi ">{{member.xueya.rq}}</span>
+                        <span class="{{member.xueya.style}}">{{member.xueya.GAOYA}}</span>
+                        /
+                        <span class="{{member.xueya.style}}">{{member.xueya.DIYA}}</span>
+                        mmHg
+                        <span class="jieguo {{member.xueya.style}}">{{member.xueya.JIEGUO}}</span>
+                    </mark>
+                    <button class="blue-border-button " ng-if="member.xueya==null||member.xueya.iskaiqi==false"
+                        ng-click="gotoDetail( 'xueya',member.id, 'btn',member.xueya) ">开启</button>
+                </li>
+                <!-- 血糖 -->
+                <li ng-class="{true: '',false: 'color-c'}[member.xuetang!=null&&member.xuetang.iskaiqi]" ng-click="gotoDetail( 'xueTang',member.id, 'li',member.xuetang) "
+                    ng-disabled="member.xuetang==null ">
+                    <p><i class="icon iconfont icon-xietang "></i>血糖管理</p>
+                    <mark ng-if="member.xuetang.XUETANG==null">科学有效控制血糖</mark>
+                    <mark ng-if="member.xuetang.XUETANG!=null ">
+                        <span class="riqi ">{{member.xuetang.rq}}</span>
+                        <span>{{member.xuetang.CELIANGSHIDUAN}}</span>
+                        <span class="{{member.xuetang.style}}">{{member.xuetang.XUETANG}}</span>
+                        mmol
+                        <span class="jieguo {{member.xuetang.style}}">{{member.xuetang.JIEGUO}}</span>
+                    </mark>
+                    <button class="blue-border-button " ng-if="member.xuetang==null||member.xuetang.iskaiqi==false"
+                        ng-click="gotoDetail( 'xueTang',member.id, 'btn',member.xuetang)"> 开启</button>
+                </li>
+                <!-- 体重 -->
+                <li ng-class="{true: '',false: 'color-c'}[member.tizhong!=null&&member.tizhong.iskaiqi]" ng-click="gotoDetail( 'tiZhong',member.id, 'li',member.tizhong)">
+                    <p><i class="icon iconfont icon-tizhong "></i>体重管理</p>
+                    <mark ng-if="member.tizhong.TIZHONG==null ">有效控制体重，保持好身材</mark>
+                    <mark ng-if="member.tizhong.TIZHONG!=null ">
+                        <span class="riqi ">{{member.tizhong.rq}}{{member.tizhong.CELIANGSHIDUAN}}</span>
+                        <span class="{{member.tizhong.style}}">{{member.tizhong.TIZHONG}}</span>
+                        kg
+                        <span class="jieguo {{member.tizhong.style}}">{{member.tizhong.JIEGUO}}</span>
+                    </mark>
+                    <button class="blue-border-button " ng-click="gotoDetail( 'tiZhong',member.id, 'btn',member.tizhong)"
+                        ng-if="member.tizhong==null||member.tizhong.iskaiqi==false">开启</button>
+                </li>
+                <!-- <li ng-class="{true: 'color-c',false: ''}[!isshow] " ng-click="gotoDetail( 'tiJianBGJD',member.id,'li','tiJianBGJD')">
+                    <p><i class="icon iconfont icon-tijianbaogaojiedu1 "></i>体检报告</p>
+                    <mark ng-if="!isshow || medicallist==null">解读体检报告</mark>
+                    <mark ng-if="isshow ">
+                        <span class="riqi ">{{medicallist.createTime|limitTo:6:5}}</span>
+                        <span class="color-g ">
+                            <span ng-if="medicallist.status==5 ">已完成</span>
+                            <span ng-if="medicallist.status==4" class="color-r">待确认</span>
+                            <span ng-if="medicallist.status==1||medicallist.status==2||medicallist.status==3" class="color-r">处理中</span>
+                        </span>
+                        <span class="jieguo " ng-if="medicallist.status==5">
+                            <span ng-if="medicallist.yichangNum!=0"><span class="color-r">{{medicallist.yichangNum}}</span>项异常</span>
+                            <span class="color-g" ng-if="medicallist.yichangNum==0">正常</span>
+                        </span>
+                    </mark>
+                    <button class="blue-border-button " ng-if="!isshow" ng-click="gotoDetail( 'tiJianBGJD',member.id,'btn') ">开启</button>
+                </li> -->
+                <li ng-class="{true:'color-c',false: ''}[!isjcjyshow] " ng-click="gotoDetail( 'jianchajianyanBG',member.id,'li','jianchajianyanBG')">
+                    <p><i class="icon iconfont icon-jianchajianyanbaogao "></i>检查检验报告</p>
+                    <mark ng-if="!isjcjyshow||jianchajianyanlist==null">解读检查检验报告</mark>
+                    <mark ng-if="isjcjyshow ">
+                        <span class="riqi ">{{jianchajianyanlist.createTime|limitTo:6:5}}</span>
+                        <span class="color-g ">
+                            <span ng-if="jianchajianyanlist.status==5 ">已完成</span>
+                            <span ng-if="jianchajianyanlist.status==4" class="color-r">待确认</span>
+                            <span ng-if="jianchajianyanlist.status==1||jianchajianyanlist.status==2||jianchajianyanlist.status==3"
+                                class="color-r">处理中</span>
+                        </span>
+                        <span class="jieguo" ng-if="jianchajianyanlist.status==5 ">
+                            <span ng-if="jianchajianyanlist.yichangNum == 0" class="color-g">正常</span>
+                            <span ng-if="jianchajianyanlist.yichangNum != 0 "><span class="color-r">{{jianchajianyanlist.yichangNum}}</span>项异常</span>
+                        </span>
+                    </mark>
+                    <button class="blue-border-button " ng-if="!isjcjyshow" ng-click="gotoDetail( 'jianchajianyanBG',member.id,'btn')">开启</button>
+                </li>
+                <li ng-if="member.xingbievalue=='女'&&member.agenum>=18&&member.agenum<=50" ng-class="{true: '',false: 'color-c'}[member.yunqihehu!=null&&member.yunqihehu.iskaiqi]"
+                    ng-click="gotoDetail( 'yunQi',member.id, 'li',member.yunqihehu)">
+                    <p><i class="icon iconfont icon-yunqihehu "></i>孕期呵护</p>
+                    <mark ng-if="member.yunqihehu.chanjiantime==null">孕期产检提醒</mark>
+                    <mark ng-if="member.yunqihehu.chanjiantime!=null">
+                        建议下次产检时间：<span class="color-b">{{member.yunqihehu.chanjiantime
+                            }}</span>
+
+                        <!-- <span>怀孕剩余:{{member.yunqihehu.shengYuTian}}</span> -->
+                    </mark>
+                    <button class="blue-border-button" ng-click="gotoDetail('yunQi',member.id, 'btn',null)" ng-if="member.yunqihehu==null||member.yunqihehu.iskaiqi==false">开启</button>
+                </li>
+                <li ng-if="member.agenum<=6" ng-class="{true:'color-c',false: ''}[!isyimiao]" ng-click="gotoDetail( 'ertongyimiao',member.id,member.chuShengRiQi) ">
+                    <p><i class="icon iconfont icon-ertongyimiao "></i>儿童保健</p>
+                    <mark ng-if="!isyimiao">疫苗接种提醒</mark>
+                    <mark ng-if="isyimiao">
+                        建议下次接种时间：<span class="color-b">{{jztime|limitTo:5:5}}</span>
+                    </mark>
+                    <button class="blue-border-button" ng-if="!isyimiao" ng-click="getdata( member.id,member.chuShengRiQi) ">开启</button>
+                </li>
+                 <!-- <li ng-class="{true:'color-c',false: ''}[!member.jlshow]" ng-click="gotoDetail( 'zhenliaojilu', member.id,'li', member.jlshow) ">
+                    <p><i class="icon iconfont icon-binglibaogao color-blbg" ></i><font ng-class="{true:'color-c',false: ''}[!member.jlshow]">病历报告</font></p>
+                    <mark>查看历史报告</mark>
+                    <mark>   
+                    </mark>          
+                </li> -->
+                
+            </ul>
+
+
+    </ion-content>
+</ion-view>

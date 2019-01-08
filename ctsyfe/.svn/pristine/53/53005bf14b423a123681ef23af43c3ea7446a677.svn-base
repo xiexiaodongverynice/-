@@ -1,0 +1,62 @@
+<ion-view hide-nav-bar="isIos" view-title="部位症状" class="color-6 bwzz">
+    <style type="text/css">
+    </style>
+    <ion-nav-buttons side="left">
+        <div>
+            <a nav-direction="back" href="javascript:history.back()">
+                <button class="button button-clear icon ion-chevron-left">
+                </button>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <div>
+            <a nav-direction="back">
+                <go-home-android></go-home-android>
+            </a>
+        </div>
+    </ion-nav-buttons>
+
+    <div class="shouye-pos" ng-if="isIos">
+        <go-shouye></go-shouye>
+    </div>
+
+    <style>
+        .left-lb .show_span_info {
+            width: auto;
+            margin-right: 25px;
+        }
+
+        .bwzz .right-lb li {
+            height: 51px;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        li .zz {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+    </style>
+
+    <ion-content>
+        <div class="liebiao left-lb">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-repeat="item in buwei" ng-click="loadzz(item.mc)" ng-class="[{'chose':item.mc===data.buwei}]" repeat-finish>
+                    <span ng-if="item.mc===data.buwei" id="curBw" style="position:relative;" value="{{$index}}"></span>
+                    <span class="show_span_info" on-finish-render-filters="Complete">{{item.mc}}</span>
+                    <!-- <i class="icon ion-chevron-right i_tuBiao"></i> -->
+                </li>
+            </ul>
+        </div>
+        <div class="liebiao right-lb">
+            <ul class="list no-float">
+                <li class="show_li_list" ng-click="chooseZz(zz)" ng-repeat="zz in zzlist">
+                    <span class="show_span_info zz">{{zz}}</span>
+                    <!-- <i class="icon ion-chevron-right i_tuBiao i-zz"></i> -->
+                </li>
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>
